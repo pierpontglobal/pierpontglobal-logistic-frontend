@@ -1,47 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { withCookies } from 'react-cookie';
 import { MuiThemeProvider } from '@material-ui/core';
-import axios from 'axios';
 import { DefaultTheme } from './Defaults';
-import SignIn from './components/SignIn/SignIn';
+import Dashboard from './components/dashboard/Dashboard';
+import SignIn from './components/sign-in/SignIn';
+import OrderDetail from './components/order-detail/OrderDetail';
+import OrderList from './components/order-list/OrderList';
+import NotFound from './components/not-found/NotFound';
+import { Redirect } from 'react-router-dom';
+import SignInPPG from './components/sign-in-ppg/SignInPPG';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    const { cookies } = this.props;
-
-    axios.interceptors.request.use((config) => {
-      config.headers = { Authorization: `Bearer ${cookies.get('token')}` };
-      return config;
-    }, error => Promise.reject(error));
-
-    axios.interceptors.response.use(response => response,
-      (error) => {
-        if (error.response.request.responseURL.includes('oauth/token')) {
-          return error.response;
-        } if (error.response.status === 401) {
-          cookies.remove('token');
-          window.location.href = '/?signIn=true';
-        }
-        return Promise.reject(error);
-      });
-  }
-
-  render() {
-    const { cookies } = this.props;
-    return (
-      <MuiThemeProvider theme={DefaultTheme}>
-        <Router>
-          <div>
-            <Switch>
-              <Route exact path="/" render={() => (<SignIn cookies={cookies} />)} />
-            </Switch>
-          </div>
-        </Router>
-      </MuiThemeProvider>
-    );
-  }
+function App(props) {
+  const { cookies } = props;
+  const isLoggedIn = !!cookies.get('token');
+  return (
+    <MuiThemeProvider theme={DefaultTheme}>
+      <Router>
+        <div>
+          <Switch>
+            <Route exact path="/" render={() => <SignIn cookies={cookies} /> } />
+            <Route path="/dashboard" render={() => (isLoggedIn? <Dashboard cookies={cookies} /> : <Redirect to='/' />) } />
+            <Route exact path="/orders" render={() => (isLoggedIn? <OrderList cookies={cookies} /> : <Redirect to='/' />) } />
+            <Route exact path="/order/:id" render={() => (isLoggedIn? <OrderDetail cookies={cookies} /> : <Redirect to='/' />) } />
+            <Route exact path="/sign_in_ppg" render={() => <SignInPPG cookies={cookies} /> } />
+            <Route component={NotFound} />
+          </Switch>
+        </div>
+      </Router>
+    </MuiThemeProvider>
+  );
 }
 
 export default withCookies(App);

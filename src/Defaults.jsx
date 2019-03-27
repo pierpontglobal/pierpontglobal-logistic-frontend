@@ -9,6 +9,7 @@ export const DefaultTheme = createMuiTheme({
     accent: { main: '#27E888' },
   },
   typography: {
+    useNextVariants: true,
     fontFamily: 'Raleway, serif',
   },
 });
