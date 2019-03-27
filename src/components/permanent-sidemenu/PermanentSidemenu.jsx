@@ -107,9 +107,10 @@ class MiniDrawer extends React.Component {
   handleLogout = () => {
     this.setState({
       open: false
+    }, () => {
+      this.props.cookies.remove('token');
+      window.location.href = '/';
     });
-    this.props.cookies.remove('token');
-    window.location.href = '/';
   }
 
   render() {
