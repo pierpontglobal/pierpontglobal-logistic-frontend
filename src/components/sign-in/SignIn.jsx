@@ -15,6 +15,7 @@ import axios from 'axios';
 import { withRouter, Redirect } from 'react-router-dom';
 import Img from 'react-image';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { ApiServer, PPGServer, APP_SERVER, PPG_SECRET_KEY, PPG_PUBLIC_KEY } from '../../Defaults';
 
 const styles = theme => ({
   main: {
@@ -89,11 +90,12 @@ class SignIn extends Component {
     this.setState({
       isLoading: true
     });
-    axios.post('https://reqres.in/api/login', {email: email, password: password})
+    axios.post(`${ApiServer}/login`, {user: {email: email, password: password}} )
     .then(data => {
       if (!!data) {
-        let tokenREceived = this.getToken('Bearer 87684Dfhfkreakaiikrridnakjfosdf9sdf8');
-        cookies.set('token', tokenREceived, { path: '/' });
+        console.log(data);
+        let tokenReceived = this.getToken(data.headers['authorization']);
+        cookies.set('token', tokenReceived, { path: '/' });
         this.setState({
           isLoading: false,
           hasErrors: false,
@@ -112,7 +114,7 @@ class SignIn extends Component {
   }
 
   signInWithPPG = () => {
-    this.props.history.push('/sign_in_ppg')
+    window.location.href = `${PPGServer}/static_pages/oauth_login?app_pk=${PPG_PUBLIC_KEY}`;
   }
 
   loadError = () => {

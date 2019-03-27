@@ -7,9 +7,12 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import withStyles from '@material-ui/core/styles/withStyles';
 import axios from 'axios';
-import ArrowBack from '@material-ui/icons/ArrowBack';
+import ArrowForward from '@material-ui/icons/ArrowForward';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
+import { ApiServer, PPGServer } from '../../Defaults';
+import { Redirect } from 'react-router-dom';
 
 const styles = theme => ({
   main: {
@@ -18,7 +21,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
-      width: 400,
+      width: 450,
       marginLeft: 'auto',
       marginRight: 'auto',
     },
@@ -65,54 +68,41 @@ class SignInPPG extends Component {
     this.setState({password: e.target.value});
   }
 
-  goBack = (e) => {
+  continue = (e) => {
     e.preventDefault();
-    this.props.history.push('/');
+    const token = queryString.parse(this.props.location.search).token;
+    console.log(token);
+    this.props.cookies.set('token', token, { path: '/' });
+    this.setState({
+      isLoggedIn: true
+    });
   }
 
   render() {
     const { classes } = this.props;
-    const { email, password, isLoading } = this.state;
+    const { isLoggedIn } = this.state;
+    if (isLoggedIn) return (<Redirect to='/dashboard' />);
     return(
       <main className={classes.main}>
         <Paper className={classes.paper}>
           <Typography component="h1" variant="h5">
-            Sign in with Pierpont Global
+            Grant Access to Pierpont Global
           </Typography>
-          <form className={classes.form}>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="email">Email Address</InputLabel>
-                <Input value={email} onChange={this.handleUserEmail} id="email" name="email" autoComplete="email" autoFocus />
-              </FormControl>
-              <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="password">Password</InputLabel>
-                <Input value={password} onChange={this.handleUserPassword} name="password" type="password" id="password" autoComplete="current-password" />
-              </FormControl>
-              <div style={{ marginTop: '3px', marginBottom: '3px' }}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  onClick={this.signInWithPPG}
-                >
-                  Sign in with Pierpont Global { isLoading ? <CircularProgress style={{ marginLeft: '7px' }} size={20} color="#fff" /> : null }
-                </Button>
-              </div>
-              <div style={{ marginTop: '3px', marginBottom: '3px' }}>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  className={classes.submit}
-                  onClick={this.goBack}
-                >
-                  <ArrowBack /> Go back
-                </Button>
-              </div>
-            </form>
+          <div style={{ pading: '18px', margin: '25px' }}>
+            By clicking "continue" you allow Pierpont global to access your personal information.
+          </div>
+          <div style={{ marginTop: '3px', marginBottom: '3px' }}>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              color="primary"
+              className={classes.submit}
+              onClick={this.continue}
+            >
+              <span style={{ pading: '5px', marginRight: '7px' }}>Continue </span><ArrowForward />
+            </Button>
+          </div>
         </Paper>
       </main>
     );

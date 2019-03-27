@@ -23,7 +23,7 @@ function App(props) {
             <Route path="/dashboard" render={() => (isLoggedIn? <Dashboard cookies={cookies} /> : <Redirect to='/' />) } />
             <Route exact path="/orders" render={() => (isLoggedIn? <OrderList cookies={cookies} /> : <Redirect to='/' />) } />
             <Route exact path="/order/:id" render={() => (isLoggedIn? <OrderDetail cookies={cookies} /> : <Redirect to='/' />) } />
-            <Route exact path="/sign_in_ppg" render={() => <SignInPPG cookies={cookies} /> } />
+            <Route exact path="/oauth/ppg:token?" render={() => <SignInPPG cookies={cookies} /> } />
             <Route component={NotFound} />
           </Switch>
         </div>
