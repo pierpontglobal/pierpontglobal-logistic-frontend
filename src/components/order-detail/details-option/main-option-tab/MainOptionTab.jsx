@@ -22,20 +22,21 @@ const styles = theme => ({
 class MainOptionTab extends Component {
   constructor(props) {
     super(props);
+    const { orderId, detailsInfo } = this.props;
     this.state = {
-      orderNumber: this.props.orderId,
-      serviceType: '',
-      date: '',
-      issuingCompany: '',
-      shipperName: '',
-      shipperAddress: '',
-      consigneeName: '',
-      consigneeAddress: '',
-      agentName: '',
-      agentAddress: '',
-      transportationMode: '',
-      destinationName: '',
-      originName: ''
+      orderNumber: orderId,
+      serviceType: detailsInfo.serviceType,
+      date: detailsInfo.date,
+      issuingCompany: detailsInfo.issuingCompany,
+      shipperName: detailsInfo.shipperName,
+      shipperAddress: detailsInfo.shipperAddress,
+      consigneeName: detailsInfo.consigneeName,
+      consigneeAddress: detailsInfo.consigneeAddress,
+      agentName: detailsInfo.agentName,
+      agentAddress: detailsInfo.agentAddress,
+      transportationMode: detailsInfo.transportationMode,
+      destinationName: detailsInfo.destinationName,
+      originName: detailsInfo.originName,
     }
   }
 
@@ -50,7 +51,8 @@ class MainOptionTab extends Component {
 
   render() {
     const { classes, orderId } = this.props;
-    const { serviceType, date, issuingCompany } = this.state;
+    const { serviceType, date, issuingCompany, shipperName, shipperAddress, consigneeName, consigneeAddress,
+    agentName, agentAddress, transportationMode, destinationName, originName } = this.state;
     return(
       <Paper style={{ padding: '15px' }}>
         <div style={{ width: '100%' }}>
@@ -76,7 +78,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
-              value={serviceType}
+              defaultValue={serviceType}
             />
           </div>
         </div>
@@ -91,7 +93,7 @@ class MainOptionTab extends Component {
                 shrink: true,
               }}
               onChange={this.onInputValueChange}
-              value={date}
+              defaultValue={date}
             />
           </div>
           <div style={{ width: '45%' }}>
@@ -102,7 +104,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
-              value={issuingCompany}
+              defaultValue={issuingCompany}
             />
           </div>
         </div>
@@ -118,6 +120,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
+              defaultValue={shipperName}
             />
           </div>
           <div style={{ width: '45%' }}>
@@ -128,6 +131,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
+              defaultValue={shipperAddress}
             />
           </div>
         </div>
@@ -140,6 +144,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
+              defaultValue={consigneeName}
             />
           </div>
           <div style={{ width: '45%' }}>
@@ -150,6 +155,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
+              defaultValue={consigneeAddress}
             />
           </div>
         </div>
@@ -162,6 +168,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
+              defaultValue={agentName}
             />
           </div>
           <div style={{ width: '45%' }}>
@@ -171,7 +178,8 @@ class MainOptionTab extends Component {
               className={classes.textField}
               margin="normal"
               variant="outlined"
-              onChange={this.agentAddressInput}
+              onChange={this.onInputValueChange}
+              defaultValue={agentAddress}
             />
           </div>
         </div>
@@ -187,6 +195,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
+              defaultValue={transportationMode}
             />
           </div>
           <div style={{ width: '45%' }}>
@@ -197,6 +206,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
+              defaultValue={destinationName}
             />
           </div>
         </div>
@@ -209,6 +219,7 @@ class MainOptionTab extends Component {
               margin="normal"
               variant="outlined"
               onChange={this.onInputValueChange}
+              defaultValue={originName}
             />
           </div>
         </div>

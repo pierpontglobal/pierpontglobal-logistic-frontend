@@ -26,9 +26,49 @@ class OrderDetail extends Component {
     this.state = {
       isLoading: true,
       orderId: -1,
-      detailsInfo: null,
-      commoditiesInfo: null,
-      chargesInfo: null
+      detailsInfo: {
+        agentAddress: 'initial value test',
+        agentName: '',
+        consigneeAddress: '',
+        consigneeName: '',
+        date: '',
+        destinationName: '',
+        issuingCompany: '',
+        orderNumber: '',
+        originName: '',
+        serviceType: 'test initial service type value',
+        shipperAddress: '',
+        shipperName: '',
+        transportationMode: '',
+      },
+      commoditiesInfo: {},
+      chargesInfo: {},
+      orderStates: [
+        {
+          label: 'Step 1',
+          active: false,
+        },
+        {
+          label: 'Step 2',
+          active: false,
+        },
+        {
+          label: 'Step 34',
+          active: false,
+        },
+        {
+          label: 'Step 4',
+          active: false,
+        },
+        {
+          label: 'Step 5',
+          active: false
+        },
+        {
+          label: 'Step 6',
+          active: false
+        }
+      ]
     };
   }
 
@@ -51,8 +91,10 @@ class OrderDetail extends Component {
   }
 
   componentDidMount = () => {
+    const orderId = this.props.match.params.id;
+    // Call the API for shipment information about this order by  "orderId" CALL_API
+    // ....
     setTimeout(() => {
-      const orderId = this.props.match.params.id;
       this.setState({
         isLoading: false,
         orderId: orderId
@@ -60,17 +102,13 @@ class OrderDetail extends Component {
     }, 2000);
   }
 
-  show = () => {
-    console.log(this.state);
-  }
-
   render() {
-    const { isLoading, orderId } = this.state;
+    const { isLoading, orderId, detailsInfo } = this.state;
 
     const tabOptions = [
       {
         label: 'Details',
-        item: <DetailsOption handleChange={this.onDetailsChange} orderId={orderId} />,
+        item: <DetailsOption handleChange={this.onDetailsChange} detailsInfo={detailsInfo} orderId={orderId} />,
       },
       {
         label: 'Commodities',
@@ -89,7 +127,7 @@ class OrderDetail extends Component {
             <>
               <OrderPrincipalInfo orderId={orderId} />
               <div style={{ marginTop: '15px', marginBottom: '15px', width: '100%' }}>
-                <ProgressStep />
+                <ProgressStep steps={this.state.orderStates} />
               </div>
               <div style={{ marginTop: '15px', display: 'flex', flexDirection: 'row' }}>
                 <div style={{ width: '70%', height: 'auto' }}>

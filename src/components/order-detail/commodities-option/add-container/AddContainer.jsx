@@ -113,7 +113,7 @@ class AddContainer extends Component {
                   <em>None</em>
                 </MenuItem>
                 {types.map((item) => (
-                  <MenuItem value={item.id}>{item.label}</MenuItem>
+                  <MenuItem key={item.id} value={item.id}>{item.label}</MenuItem>
                 ))}
               </Select>
             </FormControl>

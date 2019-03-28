@@ -32,37 +32,13 @@ class ProgressStep extends Component {
     this.state = {
       activeColor: '#2ECB57',
       inactiveColor: '#eee',
-      steps: [
-        {
-          label: 'Step 1',
-          active: false,
-        },
-        {
-          label: 'Step 2',
-          active: false,
-        },
-        {
-          label: 'Step 3',
-          active: false,
-        },
-        {
-          label: 'Step 4',
-          active: false,
-        },
-        {
-          label: 'Step 5',
-          active: false
-        },
-        {
-          label: 'Step 6',
-          active: false
-        }
-      ]
+      steps: this.props.steps
     };
   }
 
   updateStatus = (e) => {
     // Considering First status options with index 0
+
     const selectedIndex = parseInt(e.target.id);
     const { steps } = this.state;
     for(let i = 0; i <= selectedIndex; i++) {
@@ -78,7 +54,7 @@ class ProgressStep extends Component {
 
   render() {
 
-    const { steps, activeColor, inactiveColor } = this.state;
+    const { activeColor, inactiveColor, steps } = this.state;
 
     return(
       <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>

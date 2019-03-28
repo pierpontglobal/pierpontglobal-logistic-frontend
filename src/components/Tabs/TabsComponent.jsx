@@ -45,7 +45,7 @@ class TabsComponent extends React.Component {
               onChange={this.handleChange}
               indicatorColor="primary"
               textColor="primary"
-              variant="fullWidth"
+             
             >
               {options.map((tab, index) => (
                   <Tab key={index} label={tab.label} icon={tab.icon ? tab.icon : null} />
@@ -57,10 +57,10 @@ class TabsComponent extends React.Component {
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-            variant="fullWidth"
+           
           >
             {options.map((tab, index) => (
-                <Tab key={index} label={tab.label} icon={tab.icon ? tab.icon : null} />
+                <Tab key={index} disabled={(!!tab.disabled)? tab.disabled : false} label={tab.label} icon={tab.icon ? tab.icon : null} />
             ))}
         </Tabs>
         }

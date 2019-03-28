@@ -45,7 +45,7 @@ class OrderPrinciopalInfo extends Component {
     const { classes, orderId } = this.props;
     const actionItems = [
       {
-        label: 'Create shipment',
+        label: 'Save shipment',
         handler: this.createShipHandler
       }
     ];

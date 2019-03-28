@@ -118,7 +118,7 @@ class ChargesOption extends Component {
         { text: '15.00' }, { text: '1515.00 USD' }, { text: '909.00 USD' }, { text: 'PierPont Global' },
         { text: '' }, { text: '0' }
       ]}],
-      openModalAddVehicle: false,
+      openModalAddCharges: false,
     }, () => {
       // Propagate event to parents
       this.props.handleChange(this.state.rows);
@@ -153,8 +153,8 @@ class ChargesOption extends Component {
         <TableWrapper>
           <PPGTable columns={columns} rows={rows} />
         </TableWrapper>
-        <PPGModal setOpen={openModalAddCharges} handleClose={this.onCloseChargesModal} width='765px' height='400px' >
-          <AddCharges />
+        <PPGModal setOpen={openModalAddCharges} handleClose={this.onCloseChargesModal} width='80%' height='80%' >
+          <AddCharges handleAdd={this.handleAddCharge} />
         </PPGModal>
       </>
     );

@@ -10,6 +10,7 @@ import OrderList from './components/order-list/OrderList';
 import NotFound from './components/not-found/NotFound';
 import { Redirect } from 'react-router-dom';
 import SignInPPG from './components/sign-in-ppg/SignInPPG';
+import SignUp from "./components/sign-up/SignUp";
 
 function App(props) {
   const { cookies } = props;
@@ -24,6 +25,7 @@ function App(props) {
             <Route exact path="/orders" render={() => (isLoggedIn? <OrderList cookies={cookies} /> : <Redirect to='/' />) } />
             <Route exact path="/order/:id" render={() => (isLoggedIn? <OrderDetail cookies={cookies} /> : <Redirect to='/' />) } />
             <Route exact path="/oauth/ppg:token?" render={() => <SignInPPG cookies={cookies} /> } />
+            <Route exact path="/signup" render={() => <SignUp />} />
             <Route component={NotFound} />
           </Switch>
         </div>

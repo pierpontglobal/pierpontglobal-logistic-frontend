@@ -103,6 +103,10 @@ class SignIn extends Component {
           isLoggedIn: true
         });
       }
+    }).catch(err => {
+      this.setState({
+        isLoading: false,
+      });
     });
   }
 
@@ -141,7 +145,6 @@ class SignIn extends Component {
 
     return (
       <main className={classes.main}>
-        <CssBaseline />
         <Paper className={classes.paper}>
           <Avatar className={classes.avatar}>
             <Img

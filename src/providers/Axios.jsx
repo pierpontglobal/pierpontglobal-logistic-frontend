@@ -1,3 +1,4 @@
+import React from 'react';
 import axios from 'axios';
 import { cookies } from 'react-cookie';
 import { ApiServer } from '../Defaults';
@@ -21,4 +22,4 @@ BaseAxios.interceptors.response.use(response => response,
     return Promise.reject(error);
   });
 
-export default BaseAxios;
+export default React.createContext(BaseAxios);
