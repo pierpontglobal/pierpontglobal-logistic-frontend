@@ -3,6 +3,8 @@ import CustomCard from '../card/CustomCard';
 import styled from 'styled-components';
 import BaseComponent from '../base-component/BaseComponent';
 import PPGActivePie from '../charts/ppg-active-pie/PPGActivePie';
+import PPGComposedBar from '../charts/ppg-compose-bar/PPGComposedBar';
+import Paper from '@material-ui/core/Paper';
 
 const CardsWrapper = styled.div`
   display: flex;
@@ -11,6 +13,15 @@ const CardsWrapper = styled.div`
     display: flex;
     flex-direction: column;
   }
+`;
+
+const ChartWrapper = styled.div`
+  margin: 9px;
+  padding: 12px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
 `;
 
 class Dashboard extends Component {
@@ -42,7 +53,14 @@ class Dashboard extends Component {
             <CustomCard title="PCs" labelButton="View details" content="1,112 units" handleClick={this.handleClick} />
             <CustomCard title="Weight" labelButton="View details" content="766,989,897,98 kg" handleClick={this.handleClick} />
           </CardsWrapper>
-          <PPGActivePie data={pieChartData} />
+          <ChartWrapper>
+            <Paper style={{ margin: '5px', width: '30%' }}>
+              <PPGActivePie data={pieChartData} />
+            </Paper>
+            <Paper style={{ margin: '5px', width: '60%' }}>
+              <PPGComposedBar />
+            </Paper>
+          </ChartWrapper>
         </BaseComponent>
       </>
     );

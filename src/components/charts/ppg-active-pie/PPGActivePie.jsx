@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
-import Paper from '@material-ui/core/Paper';
 
 const renderActiveShape = (props) => {
   const RADIAN = Math.PI / 180;
@@ -19,7 +18,7 @@ const renderActiveShape = (props) => {
   const textAnchor = cos >= 0 ? 'start' : 'end';
 
   return (
-    <g>
+    <g style={{ zIndex: '10000' }}>
       <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
       <Sector
         cx={cx}
@@ -65,25 +64,25 @@ class PPGActivePie extends PureComponent {
   render() {
     const { data } = this.props;
     return (
-      <Paper style={{ margin: '9px', padding: '12px', width: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+      <>
         <div style={{ width: '100%', padding: '12px', marginLeft: '5px', marginBottom: '12px' }}>
           <span style={{ fontWeight: '600' }}>Orders categorized in its different statuses</span>
         </div>
-        <PieChart style={{ margin: '0 auto' }} width={550} height={400}>
+        <PieChart style={{ margin: '0 auto' }} width={400} height={300}>
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
             data={data}
-            cx={275}
-            cy={200}
-            innerRadius={100}
-            outerRadius={120}
+            cx={200}
+            cy={125}
+            innerRadius={40}
+            outerRadius={50}
             fill="#000"
             dataKey="value"
             onMouseEnter={this.onPieEnter}
           />
         </PieChart>
-      </Paper>
+      </>
     );
   }
 }
