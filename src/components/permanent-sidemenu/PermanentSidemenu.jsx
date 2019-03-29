@@ -18,7 +18,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import ListAlt from '@material-ui/icons/ListAlt'
+import DirectionsCar from '@material-ui/icons/DirectionsCar'
+import Home from '@material-ui/icons/Home'
+import LocalShipping from '@material-ui/icons/LocalShipping'
 import { Link } from 'react-router-dom';
+import Icon from '@material-ui/core/Icon';
+
 
 const drawerWidth = 240;
 
@@ -117,72 +122,101 @@ class MiniDrawer extends React.Component {
     const { classes, theme } = this.props;
 
     return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={classNames(classes.appBar, {
-            [classes.appBarShift]: this.state.open,
-          })}
-        >
-          <Toolbar disableGutters={!this.state.open}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(classes.menuButton, {
-                [classes.hide]: this.state.open,
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" noWrap>
-              Pierpont Logistics
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          variant="permanent"
-          className={classNames(classes.drawer, {
-            [classes.drawerOpen]: this.state.open,
-            [classes.drawerClose]: !this.state.open,
-          })}
-          classes={{
-            paper: classNames({
+      <>
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppBar
+            position="fixed"
+            className={classNames(classes.appBar, {
+              [classes.appBarShift]: this.state.open,
+            })}
+          >
+            <Toolbar disableGutters={!this.state.open}>
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerOpen}
+                className={classNames(classes.menuButton, {
+                  [classes.hide]: this.state.open,
+                })}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography variant="h6" color="inherit" noWrap>
+                Pierpont Logistics
+              </Typography>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            variant="permanent"
+            className={classNames(classes.drawer, {
               [classes.drawerOpen]: this.state.open,
               [classes.drawerClose]: !this.state.open,
-            }),
-          }}
-          open={this.state.open}
-        >
-          <div className={classes.toolbar}>
-            <IconButton onClick={this.handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-          <List>
-            <Link to="/orders">
-              <ListItem button>
-                <ListItemIcon> <ListAlt /> </ListItemIcon>
-                <ListItemText primary="Order list" />
+            })}
+            classes={{
+              paper: classNames({
+                [classes.drawerOpen]: this.state.open,
+                [classes.drawerClose]: !this.state.open,
+              }),
+            }}
+            open={this.state.open}
+          >
+            <div className={classes.toolbar}>
+              <IconButton onClick={this.handleDrawerClose}>
+                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+              </IconButton>
+            </div>
+            <Divider />
+            <List>
+              <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+                <ListItem button>
+                  <ListItemIcon> <Home /> </ListItemIcon>
+                  <ListItemText primary="Dashboard" />
+                </ListItem>
+              </Link>
+              <Link to="/orders" style={{ textDecoration: 'none' }}>
+                <ListItem button>
+                  <ListItemIcon> <ListAlt /> </ListItemIcon>
+                  <ListItemText primary="Order list" />
+                </ListItem>
+              </Link>
+              <Link to="/shippers" style={{ textDecoration: 'none' }}>
+                <ListItem button>
+                  <ListItemIcon> <LocalShipping /> </ListItemIcon>
+                  <ListItemText primary="Shippers" />
+                </ListItem>
+              </Link>
+              <Link to="/Dealers" style={{ textDecoration: 'none' }}>
+                <ListItem button>
+                  <ListItemIcon> <DirectionsCar /> </ListItemIcon>
+                  <ListItemText primary="Dealers" />
+                </ListItem>
+              </Link>
+              <Link to="/invoices" style={{ textDecoration: 'none' }}>
+                <ListItem button>
+                  <ListItemIcon> <Icon><i class="fas fa-file-invoice"></i></Icon> </ListItemIcon>
+                  <ListItemText primary="Invoices" />
+                </ListItem>
+              </Link>
+            </List>
+            <Divider />
+            <List>
+              <ListItem button onClick={this.handleLogout}>
+                <ListItemIcon> <ExitToApp className={classes.LogoutButtonIcon}  /> </ListItemIcon>
+                <ListItemText primary="Logout" />
               </ListItem>
-            </Link>
-          </List>
-          <Divider />
-          <List>
-            <ListItem button onClick={this.handleLogout}>
-              <ListItemIcon> <ExitToApp className={classes.LogoutButtonIcon}  /> </ListItemIcon>
-              <ListItemText primary="Logout" />
-            </ListItem>
-          </List>
-        </Drawer>
-        <main className={classes.content}>
-          <div style={{ marginTop: '15px' }}>
-            { this.props.children }
-          </div>
-        </main>
-      </div>
+            </List>
+          </Drawer>
+          <main className={classes.content}>
+            <div style={{ marginTop: '15px' }}>
+              { this.props.children }
+            </div>
+            <div style={{ position: 'relative', width: '100%', marginTop: '25px', bottom: '5px', display: 'flex', flexDirection: 'row', padding: '5px' , justifyContent: 'center'}}>
+              Pierpont Logistics. 2019 - All rights reserved.
+            </div>
+          </main>
+        </div>
+      </>
     );
   }
 }

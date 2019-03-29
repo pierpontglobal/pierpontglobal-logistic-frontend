@@ -95,16 +95,15 @@ class SignUp extends React.Component {
     const { email, password, isLoading } = this.state;
     return(
       <>
-        <div style={{ width: '100vh', height: '100vh',  display: 'flex', justifyContent: 'center' }}>
-          <div style={{ width: '350px', height: 'auto' }}>
+        <div style={{ width: '100%',  display: 'flex', justifyContent: 'center' }}>
+          <div style={{ width: '350px', height: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Paper style={{ padding: '15px' }}>
               <div style={{ marginBottom: '25px' }}>
                 <span style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', fontWeight: '600', fontSize: '1.2rem' }}>
                   SignUp in Pierpont Logistics
                 </span>
               </div>
-              <div>
-                <form className={classes.form}>
+              <form className={classes.form}>
                   <FormControl margin="normal" required fullWidth>
                     <InputLabel htmlFor="email">Email Address</InputLabel>
                     <Input value={email} onChange={this.handleInputChange} id="email" name="email" autoComplete="email" autoFocus />
@@ -124,7 +123,6 @@ class SignUp extends React.Component {
                     Sign up! { isLoading ? <CircularProgress style={{ marginLeft: '7px' }} size={20} color="#fff" /> : null }
                   </Button>
                 </form>
-              </div>
             </Paper>
           </div>
         </div>
