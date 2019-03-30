@@ -10,9 +10,9 @@ const styles = theme => ({
     '&:focus': {
       backgroundColor: theme.palette.primary.main,
       '& $primary, & $icon': {
-        color: theme.palette.common.white,
-      },
-    },
+        color: theme.palette.common.white
+      }
+    }
   },
   primary: {},
   icon: {},
@@ -34,12 +34,12 @@ class OrderPrinciopalInfo extends Component {
     super(props);
     this.state = {
       isLoading: false
-    }
+    };
   }
 
   createShipHandler = () => {
     alert('create shippment!');
-  }
+  };
 
   render() {
     const { classes, orderId } = this.props;
@@ -53,18 +53,30 @@ class OrderPrinciopalInfo extends Component {
     return (
       <Paper>
         <MainWrapper>
-          <div style={{ margin: '15px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ padding: '10px', display: 'flex', flexDirection: 'column' }}>
+          <div
+            style={{
+              margin: '15px',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center'
+            }}
+          >
+            <div
+              style={{
+                padding: '10px',
+                display: 'flex',
+                flexDirection: 'column'
+              }}
+            >
               <div>
                 <span style={{ fontWeight: '600' }}>ORDER NUMBER</span>
               </div>
-              <div>
-                { orderId }
-              </div>
+              <div>{orderId}</div>
             </div>
             <div>
               <MenuList className={classes.menuList}>
-                <PPGMenuList items={actionItems} openLabel='Actions'></PPGMenuList>
+                <PPGMenuList items={actionItems} openLabel="Actions" />
               </MenuList>
             </div>
           </div>

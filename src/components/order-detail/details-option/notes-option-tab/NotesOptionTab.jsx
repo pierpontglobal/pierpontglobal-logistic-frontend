@@ -6,11 +6,7 @@ class NotesOptionTab extends Component {
   }
 
   render() {
-    return(
-      <div>
-        Notes option tab...
-      </div>
-    );
+    return <div>Notes option tab...</div>;
   }
 }
 

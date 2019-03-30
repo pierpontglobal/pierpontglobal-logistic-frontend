@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 class PPGMenuList extends React.Component {
   state = {
-    anchorEl: null,
+    anchorEl: null
   };
 
   handleClick = event => {
@@ -27,7 +27,7 @@ class PPGMenuList extends React.Component {
           aria-haspopup="true"
           onClick={this.handleClick}
         >
-          { openLabel }
+          {openLabel}
         </Button>
         <Menu
           id="simple-menu"
@@ -36,7 +36,9 @@ class PPGMenuList extends React.Component {
           onClose={this.handleClose}
         >
           {items.map((item, index) => (
-            <MenuItem key={index} onClick={item.handler}>{ item.label }</MenuItem>
+            <MenuItem key={index} onClick={item.handler}>
+              {item.label}
+            </MenuItem>
           ))}
         </Menu>
       </div>

@@ -17,20 +17,20 @@ import InputLabel from '@material-ui/core/InputLabel';
 const styles = theme => ({
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   input: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '100%',
+    width: '100%'
   },
   formControl: {
     margin: theme.spacing.unit,
-    minWidth: 140,
-  },
+    minWidth: 140
+  }
 });
 
 class AddContainer extends Component {
@@ -44,7 +44,7 @@ class AddContainer extends Component {
           id: 1,
           length: 96.06,
           width: 89.67,
-          height: 67.90,
+          height: 67.9,
           tareWeight: 0,
           nextWeight: 0,
           totalWeight: 0,
@@ -63,41 +63,48 @@ class AddContainer extends Component {
         totalWeight: '',
         volumne: '',
         volWeigth: '',
-        squarePt: '',
+        squarePt: ''
       }
-    }
+    };
   }
 
   handleChange = event => {
     // Get container type info
     const obj = {
-      width: 983.00,
+      width: 983.0,
       height: 680.98,
-      length: 867.90,
-      tareWeight: 57596.90,
+      length: 867.9,
+      tareWeight: 57596.9,
       nextWeight: 95769.676,
-      totalWeight: 587694.890,
-      volumne: 57683.90,
+      totalWeight: 587694.89,
+      volumne: 57683.9,
       volWeigth: 48484.904,
       squarePt: 347348575.576,
       containerType: event.target.value
-    }
-    this.setState({ container: obj, containerFound: true});
+    };
+    this.setState({ container: obj, containerFound: true });
   };
 
   addContainerToShippment = () => {
     this.props.handleAdd(this.state.container);
-  }
+  };
 
   render() {
     const { classes } = this.props;
     const { types, container } = this.state;
-    return(
+    return (
       <>
         <div>
           <span style={{ fontWeight: '600' }}>Add Container</span>
         </div>
-        <div style={{ marginTop: '17px', display: 'flex', flexDirection: 'column', width: '50%' }}>
+        <div
+          style={{
+            marginTop: '17px',
+            display: 'flex',
+            flexDirection: 'column',
+            width: '50%'
+          }}
+        >
           <div style={{ width: '80%' }}>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="age-simple">Container type</InputLabel>
@@ -106,14 +113,16 @@ class AddContainer extends Component {
                 onChange={this.handleChange}
                 inputProps={{
                   name: 'containerType',
-                  id: 'containerType',
+                  id: 'containerType'
                 }}
               >
-                <MenuItem value=''>
+                <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {types.map((item) => (
-                  <MenuItem key={item.id} value={item.id}>{item.label}</MenuItem>
+                {types.map(item => (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.label}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -209,8 +218,21 @@ class AddContainer extends Component {
           </div>
         </div>
         <div width={{ width: '100%' }}>
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-            <Button disabled={!this.state.containerFound} onClick={this.addContainerToShippment} variant="contained" color="primary" className={classes.button}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center'
+            }}
+          >
+            <Button
+              disabled={!this.state.containerFound}
+              onClick={this.addContainerToShippment}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
               Add container
             </Button>
           </div>

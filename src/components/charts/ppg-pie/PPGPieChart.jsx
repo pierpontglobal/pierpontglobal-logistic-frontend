@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import {
-  ResponsiveContainer, PieChart, Pie, Legend,
-} from 'recharts';
+import { ResponsiveContainer, PieChart, Pie, Legend } from 'recharts';
 
 const data = [
-  { name: 'Group A', value: 400 }, { name: 'Group B', value: 300 },
-  { name: 'Group C', value: 300 }, { name: 'Group D', value: 200 },
+  { name: 'Group A', value: 400 },
+  { name: 'Group B', value: 300 },
+  { name: 'Group C', value: 300 },
+  { name: 'Group D', value: 200 }
 ];
 
 class PPGPieChart extends Component {
-
   static jsfiddleUrl = '//jsfiddle.net/alidingling/6okmehja/';
 
   constructor(props) {
@@ -17,7 +16,7 @@ class PPGPieChart extends Component {
   }
 
   render() {
-    return(
+    return (
       <div style={{ width: '100%', height: 300 }}>
         <ResponsiveContainer>
           <PieChart>

@@ -3,9 +3,13 @@ import MainOptionTab from './main-option-tab/MainOptionTab';
 
 function DetailsOption(props) {
   const { orderId, detailsInfo } = props;
-  return(
+  return (
     <>
-      <MainOptionTab handleChange={props.handleChange} detailsInfo={detailsInfo} orderId={orderId} />
+      <MainOptionTab
+        handleChange={props.handleChange}
+        detailsInfo={detailsInfo}
+        orderId={orderId}
+      />
     </>
   );
 }

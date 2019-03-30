@@ -6,18 +6,17 @@ import Paper from '@material-ui/core/Paper';
 const styles = theme => ({
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   input: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '100%',
+    width: '100%'
   }
 });
-
 
 class MainOptionTab extends Component {
   constructor(props) {
@@ -36,29 +35,61 @@ class MainOptionTab extends Component {
       agentAddress: detailsInfo.agentAddress,
       transportationMode: detailsInfo.transportationMode,
       destinationName: detailsInfo.destinationName,
-      originName: detailsInfo.originName,
-    }
+      originName: detailsInfo.originName
+    };
   }
 
-  onInputValueChange = (e) => {
-    this.setState({
-      [e.target.id]: e.target.value,
-    }, () => {
-      // Propagate state to parents
-      this.props.handleChange(this.state);
-    });
-  }
+  onInputValueChange = e => {
+    this.setState(
+      {
+        [e.target.id]: e.target.value
+      },
+      () => {
+        // Propagate state to parents
+        this.props.handleChange(this.state);
+      }
+    );
+  };
 
   render() {
     const { classes, orderId } = this.props;
-    const { serviceType, date, issuingCompany, shipperName, shipperAddress, consigneeName, consigneeAddress,
-    agentName, agentAddress, transportationMode, destinationName, originName } = this.state;
-    return(
+    const {
+      serviceType,
+      date,
+      issuingCompany,
+      shipperName,
+      shipperAddress,
+      consigneeName,
+      consigneeAddress,
+      agentName,
+      agentAddress,
+      transportationMode,
+      destinationName,
+      originName
+    } = this.state;
+    return (
       <Paper style={{ padding: '15px' }}>
         <div style={{ width: '100%' }}>
-          <span style={{ fontWeight: '600', fontSize: '1.25rem', color: 'darkgray' , padding: '10px'}}>Main information </span>
+          <span
+            style={{
+              fontWeight: '600',
+              fontSize: '1.25rem',
+              color: 'darkgray',
+              padding: '10px'
+            }}
+          >
+            Main information{' '}
+          </span>
         </div>
-        <div style={{ padding: '15px', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            padding: '15px',
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between'
+          }}
+        >
           <div style={{ width: '45%' }}>
             <TextField
               disabled
@@ -82,7 +113,15 @@ class MainOptionTab extends Component {
             />
           </div>
         </div>
-        <div style={{ padding: '15px', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            padding: '15px',
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between'
+          }}
+        >
           <div style={{ width: '45%' }}>
             <TextField
               id="date"
@@ -90,7 +129,7 @@ class MainOptionTab extends Component {
               type="date"
               className={classes.textField}
               InputLabelProps={{
-                shrink: true,
+                shrink: true
               }}
               onChange={this.onInputValueChange}
               defaultValue={date}
@@ -109,9 +148,26 @@ class MainOptionTab extends Component {
           </div>
         </div>
         <div style={{ width: '100%' }}>
-          <span style={{ fontWeight: '600', fontSize: '1.25rem', color: 'darkgray' , padding: '10px'}}>Entities </span>
+          <span
+            style={{
+              fontWeight: '600',
+              fontSize: '1.25rem',
+              color: 'darkgray',
+              padding: '10px'
+            }}
+          >
+            Entities{' '}
+          </span>
         </div>
-        <div style={{ padding: '15px', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            padding: '15px',
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between'
+          }}
+        >
           <div style={{ width: '45%' }}>
             <TextField
               id="shipperName"
@@ -135,7 +191,15 @@ class MainOptionTab extends Component {
             />
           </div>
         </div>
-        <div style={{ padding: '15px', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            padding: '15px',
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between'
+          }}
+        >
           <div style={{ width: '45%' }}>
             <TextField
               id="consigneeName"
@@ -159,7 +223,15 @@ class MainOptionTab extends Component {
             />
           </div>
         </div>
-        <div style={{ padding: '15px', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            padding: '15px',
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between'
+          }}
+        >
           <div style={{ width: '45%' }}>
             <TextField
               id="agentName"
@@ -184,9 +256,26 @@ class MainOptionTab extends Component {
           </div>
         </div>
         <div style={{ width: '100%' }}>
-          <span style={{ fontWeight: '600', fontSize: '1.25rem', color: 'darkgray' , padding: '10px'}}>Itenerary </span>
+          <span
+            style={{
+              fontWeight: '600',
+              fontSize: '1.25rem',
+              color: 'darkgray',
+              padding: '10px'
+            }}
+          >
+            Itenerary{' '}
+          </span>
         </div>
-        <div style={{ padding: '15px', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            padding: '15px',
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between'
+          }}
+        >
           <div style={{ width: '45%' }}>
             <TextField
               id="transportationMode"
@@ -210,7 +299,15 @@ class MainOptionTab extends Component {
             />
           </div>
         </div>
-        <div style={{ padding: '15px', display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+        <div
+          style={{
+            padding: '15px',
+            display: 'flex',
+            flexDirection: 'row',
+            width: '100%',
+            justifyContent: 'space-between'
+          }}
+        >
           <div style={{ width: '45%' }}>
             <TextField
               id="originName"

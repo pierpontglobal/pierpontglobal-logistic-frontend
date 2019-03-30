@@ -10,11 +10,11 @@ import Paper from '@material-ui/core/Paper';
 const styles = theme => ({
   root: {
     width: '100%',
-    overflowX: 'scroll',
+    overflowX: 'scroll'
   },
   table: {
-    minWidth: 700,
-  },
+    minWidth: 700
+  }
 });
 
 class PPGTable extends Component {
@@ -25,7 +25,7 @@ class PPGTable extends Component {
       rows: [],
       currentPage: 1,
       pageSizs: 20
-    }
+    };
   }
 
   onRowClickEvent = (e, rowId) => {
@@ -33,34 +33,51 @@ class PPGTable extends Component {
       // Emit this value to the parent component if a handler has been provided.
       this.props.handleOnRowClick(e, rowId);
     }
-  }
+  };
 
   render() {
     const { classes, columns, rows } = this.props;
     console.log(columns);
 
-    return(
+    return (
       <Paper className={classes.root}>
         <Table className={classes.table}>
-          {columns ? <>
-            <TableHead>
-              <TableRow>
+          {columns ? (
+            <>
+              <TableHead>
+                <TableRow>
                   {columns.map((c, index) => {
                     let cWidth = '';
                     if (c.isIcon) cWidth = '10px';
-                    return (<TableCell style={{ width: cWidth }} key={index} component="th" scope="row">
-                      {c.title}
-                    </TableCell>);
+                    return (
+                      <TableCell
+                        style={{ width: cWidth }}
+                        key={index}
+                        component="th"
+                        scope="row"
+                      >
+                        {c.title}
+                      </TableCell>
+                    );
                   })}
                 </TableRow>
-            </TableHead>
-          </> : null}
+              </TableHead>
+            </>
+          ) : null}
           <TableBody>
             {rows.map(row => (
-              <TableRow hover key={row.id} onClick={event => this.onRowClickEvent(event, row.id)}>
+              <TableRow
+                hover
+                key={row.id}
+                onClick={event => this.onRowClickEvent(event, row.id)}
+              >
                 {row.content.map((rowContent, index) => (
                   <TableCell key={index} component="th" scope="row">
-                    {rowContent.text ? rowContent.text : rowContent.icon ? rowContent.icon : ''}
+                    {rowContent.text
+                      ? rowContent.text
+                      : rowContent.icon
+                      ? rowContent.icon
+                      : ''}
                   </TableCell>
                 ))}
               </TableRow>

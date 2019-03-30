@@ -15,7 +15,7 @@ import axios from 'axios';
 import { withRouter, Redirect } from 'react-router-dom';
 import Img from 'react-image';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { ApiServer, PPGServer, APP_SERVER, PPG_SECRET_KEY, PPG_PUBLIC_KEY } from '../../Defaults';
+import { ApiServer, WEB_APP_PLATFORM, PPG_PUBLIC_KEY } from '../../Defaults';
 
 const styles = theme => ({
   main: {
@@ -26,31 +26,32 @@ const styles = theme => ({
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 400,
       marginLeft: 'auto',
-      marginRight: 'auto',
-    },
+      marginRight: 'auto'
+    }
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
+      .spacing.unit * 3}px`
   },
   avatar: {
     margin: theme.spacing.unit,
-    backgroundColor: theme.palette.secondary.main,
+    backgroundColor: theme.palette.secondary.main
   },
   form: {
     width: '100%', // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing.unit
   },
   submit: {
     marginTop: theme.spacing.unit * 3,
     background: 'linear-gradient(45deg, #0F2027 30%, #203A43 90%)'
   },
   logo: {
-    width: '100%',
-  },
+    width: '100%'
+  }
 });
 
 class SignIn extends Component {
@@ -63,85 +64,99 @@ class SignIn extends Component {
       isLoading: false,
       hasErrors: false,
       errors: [],
-      isLoggedIn: false,
-    }
+      isLoggedIn: false
+    };
     this.handleOnSubmit = this.handleOnSubmit.bind(this);
     this.handleUserEmail = this.handleUserEmail.bind(this);
     this.handleUserPassword = this.handleUserPassword.bind(this);
     this.handleUserRemember = this.handleUserRemember.bind(this);
   }
 
-  handleUserRemember = (e) => {
-    this.setState({rememberMe: e.target.value});
-  }
+  handleUserRemember = e => {
+    this.setState({ rememberMe: e.target.value });
+  };
 
-  handleUserEmail = (e) => {
-    this.setState({email: e.target.value});
-  }
+  handleUserEmail = e => {
+    this.setState({ email: e.target.value });
+  };
 
-  handleUserPassword = (e) => {
-    this.setState({password: e.target.value});
-  }
+  handleUserPassword = e => {
+    this.setState({ password: e.target.value });
+  };
 
-  handleOnSubmit = (e) => {
+  handleOnSubmit = e => {
     e.preventDefault();
     const { email, password } = this.state;
     const { cookies } = this.props;
     this.setState({
       isLoading: true
     });
-    axios.post(`${ApiServer}/login`, {user: {email: email, password: password}} )
-    .then(data => {
-      if (!!data) {
-        console.log(data);
-        let tokenReceived = this.getToken(data.headers['authorization']);
-        cookies.set('token', tokenReceived, { path: '/' });
+    axios
+      .post(`${ApiServer}/login`, {
+        user: { email: email, password: password }
+      })
+      .then(data => {
+        if (!!data) {
+          console.log(data);
+          let tokenReceived = this.getToken(data.headers['authorization']);
+          cookies.set('token', tokenReceived, { path: '/' });
+          this.setState({
+            isLoading: false,
+            hasErrors: false,
+            errors: [],
+            isLoggedIn: true
+          });
+        }
+      })
+      .catch(err => {
         this.setState({
-          isLoading: false,
-          hasErrors: false,
-          errors: [],
-          isLoggedIn: true
+          isLoading: false
         });
-      }
-    }).catch(err => {
-      this.setState({
-        isLoading: false,
       });
-    });
-  }
+  };
 
-  getToken = (value) => {
-    if(value.includes('Bearer')) {
-      value = value.split(' ')[1]
+  getToken = value => {
+    if (value.includes('Bearer')) {
+      value = value.split(' ')[1];
     }
     return value;
-  }
+  };
 
   signInWithPPG = () => {
-    window.location.href = `${PPGServer}/static_pages/oauth_login?app_pk=${PPG_PUBLIC_KEY}`;
-  }
+    window.location.href = `${WEB_APP_PLATFORM}/oauth/login?app_pk=${PPG_PUBLIC_KEY}`;
+  };
 
   loadError = () => {
     this.setState({
       hasErrors: true,
       errors: ['username is incorrect']
     });
-  }
+  };
 
   render() {
     const { classes } = this.props;
-    const { email, password, rememberMe, hasErrors, errors, isLoggedIn, isLoading } = this.state;
+    const {
+      email,
+      password,
+      rememberMe,
+      hasErrors,
+      errors,
+      isLoggedIn,
+      isLoading
+    } = this.state;
 
-    let ErrorComponent = <div>
-      <Typography component="h6" variant="body1">
-        Email or password are wrong. Please, try again.
-        {errors.map((item, index) => (
-          <span key={index}>{item}</span>
-        ))}
-      </Typography>
-    </div>
+    let ErrorComponent = (
+      <div>
+        <Typography component="h6" variant="body1">
+          Email or password are wrong. Please, try again.
+          {errors.map((item, index) => (
+            <span key={index}>{item}</span>
+          ))}
+        </Typography>
+      </div>
+    );
 
-    if (isLoggedIn) return <Redirect to='/dashboard' />
+    if (isLoggedIn) return <Redirect to="/dashboard" />;
 
     return (
       <main className={classes.main}>
@@ -150,33 +165,58 @@ class SignIn extends Component {
             <Img
               style={{
                 width: '100%',
-                cursor: 'pointer',
+                cursor: 'pointer'
               }}
               alt="Pierpont Logistics"
               className={classes.logo}
               src={['/logos/Logo5a-Black.png']}
               loader={
-                <div style={{ width: '165px', height: '40px', background: '#dedede' }} />
-                }
+                <div
+                  style={{
+                    width: '165px',
+                    height: '40px',
+                    background: '#dedede'
+                  }}
+                />
+              }
             />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          {
-            hasErrors? ErrorComponent : null
-          }
+          {hasErrors ? ErrorComponent : null}
           <form className={classes.form}>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="email">Email Address</InputLabel>
-              <Input value={email} onChange={this.handleUserEmail} id="email" name="email" autoComplete="email" autoFocus />
+              <Input
+                value={email}
+                onChange={this.handleUserEmail}
+                id="email"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
             </FormControl>
             <FormControl margin="normal" required fullWidth>
               <InputLabel htmlFor="password">Password</InputLabel>
-              <Input value={password} onChange={this.handleUserPassword} name="password" type="password" id="password" autoComplete="current-password" />
+              <Input
+                value={password}
+                onChange={this.handleUserPassword}
+                name="password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
             </FormControl>
             <FormControlLabel
-              control={<Checkbox checked={rememberMe} onChange={this.handleUserRemember} value="remember" color="primary" />}
+              control={
+                <Checkbox
+                  checked={rememberMe}
+                  onChange={this.handleUserRemember}
+                  value="remember"
+                  color="primary"
+                />
+              }
               label="Remember me"
             />
             <Button
@@ -187,7 +227,14 @@ class SignIn extends Component {
               className={classes.submit}
               onClick={this.handleOnSubmit}
             >
-              Sign in { isLoading ? <CircularProgress style={{ marginLeft: '7px' }} size={20} color="#fff" /> : null }
+              Sign in{' '}
+              {isLoading ? (
+                <CircularProgress
+                  style={{ marginLeft: '7px' }}
+                  size={20}
+                  color="#fff"
+                />
+              ) : null}
             </Button>
             <div style={{ marginTop: '3px', marginBottom: '3px' }}>
               <Button
@@ -209,7 +256,7 @@ class SignIn extends Component {
 }
 
 SignIn.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(withRouter(SignIn));

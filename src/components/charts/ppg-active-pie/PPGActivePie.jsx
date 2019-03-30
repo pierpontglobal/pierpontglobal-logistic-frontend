@@ -1,11 +1,20 @@
 import React, { PureComponent } from 'react';
 import { PieChart, Pie, Sector } from 'recharts';
 
-const renderActiveShape = (props) => {
+const renderActiveShape = props => {
   const RADIAN = Math.PI / 180;
   const {
-    cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
-    fill, payload, percent, value,
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    fill,
+    payload,
+    percent,
+    value
   } = props;
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
@@ -19,7 +28,9 @@ const renderActiveShape = (props) => {
 
   return (
     <g style={{ zIndex: '10000' }}>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+        {payload.name}
+      </text>
       <Sector
         cx={cx}
         cy={cy}
@@ -38,26 +49,39 @@ const renderActiveShape = (props) => {
         outerRadius={outerRadius + 10}
         fill={fill}
       />
-      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+      <path
+        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+        stroke={fill}
+        fill="none"
+      />
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`PV ${value}`}</text>
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        textAnchor={textAnchor}
+        fill="#333"
+      >{`PV ${value}`}</text>
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        dy={18}
+        textAnchor={textAnchor}
+        fill="#999"
+      >
         {`(Rate ${(percent * 100).toFixed(2)}%)`}
       </text>
     </g>
   );
 };
 
-
 class PPGActivePie extends PureComponent {
-
   state = {
-    activeIndex: 0,
+    activeIndex: 0
   };
 
   onPieEnter = (data, index) => {
     this.setState({
-      activeIndex: index,
+      activeIndex: index
     });
   };
 
@@ -65,8 +89,17 @@ class PPGActivePie extends PureComponent {
     const { data } = this.props;
     return (
       <>
-        <div style={{ width: '100%', padding: '12px', marginLeft: '5px', marginBottom: '12px' }}>
-          <span style={{ fontWeight: '600' }}>Orders categorized in its different statuses</span>
+        <div
+          style={{
+            width: '100%',
+            padding: '12px',
+            marginLeft: '5px',
+            marginBottom: '12px'
+          }}
+        >
+          <span style={{ fontWeight: '600' }}>
+            Orders categorized in its different statuses
+          </span>
         </div>
         <PieChart style={{ margin: '0 auto' }} width={400} height={300}>
           <Pie

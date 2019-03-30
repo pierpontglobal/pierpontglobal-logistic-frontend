@@ -32,9 +32,9 @@ const styles = theme => ({
     '&:focus': {
       backgroundColor: theme.palette.primary.main,
       '& $primary, & $icon': {
-        color: theme.palette.common.white,
-      },
-    },
+        color: theme.palette.common.white
+      }
+    }
   },
   primary: {},
   icon: {},
@@ -43,11 +43,11 @@ const styles = theme => ({
     flexDirection: 'row'
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   input: {
-    display: 'none',
-  },
+    display: 'none'
+  }
 });
 
 const columns = [
@@ -85,85 +85,138 @@ class CommoditiesOption extends Component {
         {
           id: 1,
           content: [
-            { text: 'Received' }, { text: 'WRI0089' }, { text: '1' }, { text: '45 ft. Standard Container' }, { text: 'NONE' },
-            { text: '0 x 0 x 0 in' }, { text: '0.000 kg' }, { text: '0.000 m3' }
+            { text: 'Received' },
+            { text: 'WRI0089' },
+            { text: '1' },
+            { text: '45 ft. Standard Container' },
+            { text: 'NONE' },
+            { text: '0 x 0 x 0 in' },
+            { text: '0.000 kg' },
+            { text: '0.000 m3' }
           ]
         }
       ],
       openModalAddVehicle: false,
-      openModalAddContainer: false,
-    }
+      openModalAddContainer: false
+    };
   }
 
   addVehicle = () => {
     this.setState({
-      openModalAddVehicle: true,
+      openModalAddVehicle: true
     });
-  }
+  };
 
   onCloseVehicleModal = () => {
     this.setState({
-      openModalAddVehicle: false,
+      openModalAddVehicle: false
     });
-  }
+  };
 
   addContainer = () => {
     this.setState({
-      openModalAddContainer: true,
+      openModalAddContainer: true
     });
-  }
+  };
 
   onCloseContainerMocal = () => {
     this.setState({
-      openModalAddContainer: false,
+      openModalAddContainer: false
     });
-  }
+  };
 
-  handleAddVehicle = (e) => {
+  handleAddVehicle = e => {
     const { rows } = this.state;
-    this.setState({
-      rows: [...rows, {id: 2, content: [
-        { text: 'Pending' }, { text: e.vin }, { text: e.vin }, { text: '40 ft. Standard Container' }, { text: 'NONE' },
-        { text: '0 x 2 x 0 in' }, { text: '0.000 kg' }, { text: '0.000 m3' }
-      ]}],
-      openModalAddVehicle: false,
-    }, () => {
-      // Propagate event to parents
-      this.props.handleChange(this.state.rows);
-    });
-  }
+    this.setState(
+      {
+        rows: [
+          ...rows,
+          {
+            id: 2,
+            content: [
+              { text: 'Pending' },
+              { text: e.vin },
+              { text: e.vin },
+              { text: '40 ft. Standard Container' },
+              { text: 'NONE' },
+              { text: '0 x 2 x 0 in' },
+              { text: '0.000 kg' },
+              { text: '0.000 m3' }
+            ]
+          }
+        ],
+        openModalAddVehicle: false
+      },
+      () => {
+        // Propagate event to parents
+        this.props.handleChange(this.state.rows);
+      }
+    );
+  };
 
-  handleAddContainer = (e) => {
+  handleAddContainer = e => {
     const { rows } = this.state;
-    this.setState({
-      rows: [...rows, {id: 2, content: [
-        { text: 'Pending' }, { text: e.vin }, { text: e.vin }, { text: '40 ft. Standard Container' }, { text: 'NONE' },
-        { text: '0 x 2 x 0 in' }, { text: '0.000 kg' }, { text: '0.000 m3' }
-      ]}],
-      openModalAddContainer: false,
-    }, () => {
-      // Propagate event to parents
-      this.props.handleChange(this.state.rows);
-    });
-  }
+    this.setState(
+      {
+        rows: [
+          ...rows,
+          {
+            id: 2,
+            content: [
+              { text: 'Pending' },
+              { text: e.vin },
+              { text: e.vin },
+              { text: '40 ft. Standard Container' },
+              { text: 'NONE' },
+              { text: '0 x 2 x 0 in' },
+              { text: '0.000 kg' },
+              { text: '0.000 m3' }
+            ]
+          }
+        ],
+        openModalAddContainer: false
+      },
+      () => {
+        // Propagate event to parents
+        this.props.handleChange(this.state.rows);
+      }
+    );
+  };
 
   render() {
     const { classes } = this.props;
     const { rows, openModalAddVehicle, openModalAddContainer } = this.state;
 
-    return(
+    return (
       <>
         <Paper style={{ marginBottom: '8px' }}>
           <TitleWrapper>
             <div style={{ margin: '10px', padding: '5px' }}>
-              <span style={{ fontWeight: '600', fontSize: '1.25rem', color: 'darkgray' , padding: '10px'}}>Commodities </span>
+              <span
+                style={{
+                  fontWeight: '600',
+                  fontSize: '1.25rem',
+                  color: 'darkgray',
+                  padding: '10px'
+                }}
+              >
+                Commodities{' '}
+              </span>
             </div>
             <div>
               <MenuList className={classes.menuList}>
-                <Button variant="outlined" className={classes.button} onClick={this.addVehicle}>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  onClick={this.addVehicle}
+                >
                   + Vehicle
                 </Button>
-                <Button variant="outlined" className={classes.button} onClick={this.addContainer}>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  onClick={this.addContainer}
+                >
                   + Container
                 </Button>
               </MenuList>
@@ -173,11 +226,27 @@ class CommoditiesOption extends Component {
         <TableWrapper>
           <PPGTable columns={columns} rows={rows} />
         </TableWrapper>
-        <PPGModal setOpen={openModalAddVehicle} handleClose={this.onCloseVehicleModal} width='765px' height='400px' >
-          <AddCommodity handleAdd={this.handleAddVehicle} type={TYPES.VEHICLE} />
+        <PPGModal
+          setOpen={openModalAddVehicle}
+          handleClose={this.onCloseVehicleModal}
+          width="765px"
+          height="400px"
+        >
+          <AddCommodity
+            handleAdd={this.handleAddVehicle}
+            type={TYPES.VEHICLE}
+          />
         </PPGModal>
-        <PPGModal setOpen={openModalAddContainer} handleClose={this.onCloseContainerMocal} width='765px' height='400px' >
-          <AddCommodity handleAdd={this.handleAddContainer} type={TYPES.CONTAINER} />
+        <PPGModal
+          setOpen={openModalAddContainer}
+          handleClose={this.onCloseContainerMocal}
+          width="765px"
+          height="400px"
+        >
+          <AddCommodity
+            handleAdd={this.handleAddContainer}
+            type={TYPES.CONTAINER}
+          />
         </PPGModal>
       </>
     );

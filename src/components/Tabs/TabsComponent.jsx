@@ -16,13 +16,13 @@ function TabContainer({ children, dir }) {
 
 const styles = theme => ({
   root: {
-    width: '100%',
-  },
+    width: '100%'
+  }
 });
 
 class TabsComponent extends React.Component {
   state = {
-    value: 0,
+    value: 0
   };
 
   handleChange = (event, value) => {
@@ -38,42 +38,50 @@ class TabsComponent extends React.Component {
 
     return (
       <div className={classes.root}>
-        {withBackground ? 
+        {withBackground ? (
           <AppBar position="static" color="default">
             <Tabs
               value={this.state.value}
               onChange={this.handleChange}
               indicatorColor="primary"
               textColor="primary"
-             
             >
               {options.map((tab, index) => (
-                  <Tab key={index} label={tab.label} icon={tab.icon ? tab.icon : null} />
+                <Tab
+                  key={index}
+                  label={tab.label}
+                  icon={tab.icon ? tab.icon : null}
+                />
               ))}
             </Tabs>
-          </AppBar> :
+          </AppBar>
+        ) : (
           <Tabs
             value={this.state.value}
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
-           
           >
             {options.map((tab, index) => (
-                <Tab key={index} disabled={(!!tab.disabled)? tab.disabled : false} label={tab.label} icon={tab.icon ? tab.icon : null} />
+              <Tab
+                key={index}
+                disabled={!!tab.disabled ? tab.disabled : false}
+                label={tab.label}
+                icon={tab.icon ? tab.icon : null}
+              />
             ))}
-        </Tabs>
-        }
+          </Tabs>
+        )}
         <SwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
         >
-            {options.map((tab, index) => (
-                <TabContainer key={index} dir={theme.direction}>
-                    { tab.item }
-                </TabContainer>
-            ))}
+          {options.map((tab, index) => (
+            <TabContainer key={index} dir={theme.direction}>
+              {tab.item}
+            </TabContainer>
+          ))}
         </SwipeableViews>
       </div>
     );

@@ -14,7 +14,7 @@ const StepWrapper = styled.div`
   margin: 18px;
   border-radius: 50px 0px 0px 50px;
   &:before {
-    content: "";
+    content: '';
     position: absolute;
     right: -20px;
     bottom: 0;
@@ -36,36 +36,44 @@ class ProgressStep extends Component {
     };
   }
 
-  updateStatus = (e) => {
+  updateStatus = e => {
     // Considering First status options with index 0
 
     const selectedIndex = parseInt(e.target.id);
     const { steps } = this.state;
-    for(let i = 0; i <= selectedIndex; i++) {
+    for (let i = 0; i <= selectedIndex; i++) {
       steps[i].active = true;
     }
-    for(let i = selectedIndex + 1; i < steps.length; i++) {
+    for (let i = selectedIndex + 1; i < steps.length; i++) {
       steps[i].active = false;
     }
     this.setState({
       steps: steps
     });
-  }
+  };
 
   render() {
-
     const { activeColor, inactiveColor, steps } = this.state;
 
-    return(
-      <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+    return (
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-around',
+          alignItems: 'center'
+        }}
+      >
         {steps.map((step, index) => (
-          <StepWrapper 
-            key={index} 
-            statusColor={step.active? activeColor : inactiveColor} 
-            textColor={step.active? 'white' : 'black'}
+          <StepWrapper
+            key={index}
+            statusColor={step.active ? activeColor : inactiveColor}
+            textColor={step.active ? 'white' : 'black'}
             id={index}
-            onClick={this.updateStatus}>
-            { step.label }
+            onClick={this.updateStatus}
+          >
+            {step.label}
           </StepWrapper>
         ))}
       </div>

@@ -8,16 +8,20 @@ class AddCommodity extends Component {
     super(props);
   }
 
-  handleAddCommodity = (e) => {
+  handleAddCommodity = e => {
     this.props.handleAdd(e);
-  }
+  };
 
   render() {
     let component = null;
     if (this.props.type === TYPES.VEHICLE) {
-      component = <AddVehicle handleAdd={this.handleAddCommodity} {...this.props} />
+      component = (
+        <AddVehicle handleAdd={this.handleAddCommodity} {...this.props} />
+      );
     } else if (this.props.type === TYPES.CONTAINER) {
-      component = <AddContainer handleAdd={this.handleAddCommodity}  {...this.props} />
+      component = (
+        <AddContainer handleAdd={this.handleAddCommodity} {...this.props} />
+      );
     }
     return component;
   }

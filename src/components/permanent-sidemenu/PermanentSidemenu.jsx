@@ -17,87 +17,86 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ExitToApp from '@material-ui/icons/ExitToApp';
-import ListAlt from '@material-ui/icons/ListAlt'
-import DirectionsCar from '@material-ui/icons/DirectionsCar'
-import Home from '@material-ui/icons/Home'
-import LocalShipping from '@material-ui/icons/LocalShipping'
-import { Link } from 'react-router-dom';
+import ListAlt from '@material-ui/icons/ListAlt';
+import DirectionsCar from '@material-ui/icons/DirectionsCar';
+import Home from '@material-ui/icons/Home';
+import LocalShipping from '@material-ui/icons/LocalShipping';
+import { Link, NavLink } from 'react-router-dom';
 import Icon from '@material-ui/core/Icon';
-
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: 'flex',
+    display: 'flex'
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
+      duration: theme.transitions.duration.leavingScreen
+    })
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   menuButton: {
     marginLeft: 12,
-    marginRight: 36,
+    marginRight: 36
   },
   hide: {
-    display: 'none',
+    display: 'none'
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
+    whiteSpace: 'nowrap'
   },
   drawerOpen: {
     width: drawerWidth,
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+      duration: theme.transitions.duration.enteringScreen
+    })
   },
   drawerClose: {
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
+      duration: theme.transitions.duration.leavingScreen
     }),
     overflowX: 'hidden',
     width: theme.spacing.unit * 7 + 1,
     [theme.breakpoints.up('sm')]: {
-      width: theme.spacing.unit * 9 + 1,
-    },
+      width: theme.spacing.unit * 9 + 1
+    }
   },
   toolbar: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
-    ...theme.mixins.toolbar,
+    ...theme.mixins.toolbar
   },
   content: {
     padding: '0px',
     width: '90%',
-    margin: '0 auto',
+    margin: '0 auto'
   },
   LogoutButtonIcon: {
-    transform: 'rotate(180deg)',
-  },
+    transform: 'rotate(180deg)'
+  }
 });
 
 class MiniDrawer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: false,
+      open: false
     };
   }
 
@@ -110,13 +109,16 @@ class MiniDrawer extends React.Component {
   };
 
   handleLogout = () => {
-    this.setState({
-      open: false
-    }, () => {
-      this.props.cookies.remove('token');
-      window.location.href = '/';
-    });
-  }
+    this.setState(
+      {
+        open: false
+      },
+      () => {
+        this.props.cookies.remove('token');
+        window.location.href = '/';
+      }
+    );
+  };
 
   render() {
     const { classes, theme } = this.props;
@@ -128,7 +130,7 @@ class MiniDrawer extends React.Component {
           <AppBar
             position="fixed"
             className={classNames(classes.appBar, {
-              [classes.appBarShift]: this.state.open,
+              [classes.appBarShift]: this.state.open
             })}
           >
             <Toolbar disableGutters={!this.state.open}>
@@ -137,7 +139,7 @@ class MiniDrawer extends React.Component {
                 aria-label="Open drawer"
                 onClick={this.handleDrawerOpen}
                 className={classNames(classes.menuButton, {
-                  [classes.hide]: this.state.open,
+                  [classes.hide]: this.state.open
                 })}
               >
                 <MenuIcon />
@@ -151,67 +153,135 @@ class MiniDrawer extends React.Component {
             variant="permanent"
             className={classNames(classes.drawer, {
               [classes.drawerOpen]: this.state.open,
-              [classes.drawerClose]: !this.state.open,
+              [classes.drawerClose]: !this.state.open
             })}
             classes={{
               paper: classNames({
                 [classes.drawerOpen]: this.state.open,
-                [classes.drawerClose]: !this.state.open,
-              }),
+                [classes.drawerClose]: !this.state.open
+              })
             }}
             open={this.state.open}
           >
             <div className={classes.toolbar}>
               <IconButton onClick={this.handleDrawerClose}>
-                {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                {theme.direction === 'rtl' ? (
+                  <ChevronRightIcon />
+                ) : (
+                  <ChevronLeftIcon />
+                )}
               </IconButton>
             </div>
             <Divider />
             <List>
-              <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+              <NavLink
+                to="/dashboard"
+                style={{ textDecoration: 'none' }}
+                activeStyle={{
+                  fontWeight: 'bold',
+                  color: 'red'
+                }}
+              >
                 <ListItem button>
-                  <ListItemIcon> <Home /> </ListItemIcon>
+                  <ListItemIcon>
+                    {' '}
+                    <Home />{' '}
+                  </ListItemIcon>
                   <ListItemText primary="Dashboard" />
                 </ListItem>
-              </Link>
-              <Link to="/orders" style={{ textDecoration: 'none' }}>
+              </NavLink>
+              <NavLink
+                to="/orders"
+                style={{ textDecoration: 'none' }}
+                activeStyle={{
+                  fontWeight: 'bold',
+                  color: 'red'
+                }}
+              >
                 <ListItem button>
-                  <ListItemIcon> <ListAlt /> </ListItemIcon>
+                  <ListItemIcon>
+                    {' '}
+                    <ListAlt />{' '}
+                  </ListItemIcon>
                   <ListItemText primary="Order list" />
                 </ListItem>
-              </Link>
-              <Link to="/shippers" style={{ textDecoration: 'none' }}>
+              </NavLink>
+              <NavLink
+                to="/shippers"
+                style={{ textDecoration: 'none' }}
+                activeStyle={{
+                  fontWeight: 'bold',
+                  color: 'red'
+                }}
+              >
                 <ListItem button>
-                  <ListItemIcon> <LocalShipping /> </ListItemIcon>
+                  <ListItemIcon>
+                    {' '}
+                    <LocalShipping />{' '}
+                  </ListItemIcon>
                   <ListItemText primary="Shippers" />
                 </ListItem>
-              </Link>
-              <Link to="/Dealers" style={{ textDecoration: 'none' }}>
+              </NavLink>
+              <NavLink
+                to="/Dealers"
+                style={{ textDecoration: 'none' }}
+                activeStyle={{
+                  fontWeight: 'bold',
+                  color: 'red'
+                }}
+              >
                 <ListItem button>
-                  <ListItemIcon> <DirectionsCar /> </ListItemIcon>
+                  <ListItemIcon>
+                    {' '}
+                    <DirectionsCar />{' '}
+                  </ListItemIcon>
                   <ListItemText primary="Dealers" />
                 </ListItem>
-              </Link>
-              <Link to="/invoices" style={{ textDecoration: 'none' }}>
+              </NavLink>
+              <NavLink
+                to="/invoices"
+                style={{ textDecoration: 'none' }}
+                activeStyle={{
+                  fontWeight: 'bold',
+                  color: 'red'
+                }}
+              >
                 <ListItem button>
-                  <ListItemIcon> <Icon><i class="fas fa-file-invoice"></i></Icon> </ListItemIcon>
+                  <ListItemIcon>
+                    {' '}
+                    <Icon>
+                      <i class="fas fa-file-invoice" />
+                    </Icon>{' '}
+                  </ListItemIcon>
                   <ListItemText primary="Invoices" />
                 </ListItem>
-              </Link>
+              </NavLink>
             </List>
             <Divider />
             <List>
               <ListItem button onClick={this.handleLogout}>
-                <ListItemIcon> <ExitToApp className={classes.LogoutButtonIcon}  /> </ListItemIcon>
+                <ListItemIcon>
+                  {' '}
+                  <ExitToApp className={classes.LogoutButtonIcon} />{' '}
+                </ListItemIcon>
                 <ListItemText primary="Logout" />
               </ListItem>
             </List>
           </Drawer>
           <main className={classes.content}>
-            <div style={{ marginTop: '15px' }}>
-              { this.props.children }
-            </div>
-            <div style={{ position: 'relative', width: '100%', marginTop: '25px', bottom: '5px', display: 'flex', flexDirection: 'row', padding: '5px' , justifyContent: 'center'}}>
+            <div style={{ marginTop: '15px' }}>{this.props.children}</div>
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                marginTop: '25px',
+                bottom: '5px',
+                display: 'flex',
+                flexDirection: 'row',
+                padding: '5px',
+                justifyContent: 'center'
+              }}
+            >
               Pierpont Logistics. 2019 - All rights reserved.
             </div>
           </main>
@@ -223,7 +293,7 @@ class MiniDrawer extends React.Component {
 
 MiniDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired
 };
 
 export default withStyles(styles, { withTheme: true })(MiniDrawer);

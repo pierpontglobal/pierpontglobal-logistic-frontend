@@ -12,21 +12,21 @@ import { Button, IconButton } from '@material-ui/core';
 const styles = theme => ({
   container: {
     display: 'flex',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   input: {
     margin: theme.spacing.unit,
-    height: '5px',
+    height: '5px'
   },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '100%',
+    width: '100%'
   },
   formControl: {
     margin: theme.spacing.unit,
-    minWidth: 140,
-  },
+    minWidth: 140
+  }
 });
 
 class AddCharges extends Component {
@@ -34,7 +34,11 @@ class AddCharges extends Component {
     super(props);
     this.state = {
       serviceTypes: [
-        { id: 1, label: 'Sample service type #1', description: 'Sample service #1 description here....' },
+        {
+          id: 1,
+          label: 'Sample service type #1',
+          description: 'Sample service #1 description here....'
+        }
       ],
       service: {
         serviceTypeId: '',
@@ -44,10 +48,10 @@ class AddCharges extends Component {
       serviceFound: false,
       income: {},
       expense: {}
-    }
+    };
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     const serviceId = e.target.value;
 
     if (!!serviceId) {
@@ -57,24 +61,24 @@ class AddCharges extends Component {
         serviceTypeId: service.id,
         serviceTypeName: service.label,
         serviceTypeDescription: service.description
-      }
+      };
 
       this.setState({
         service: obj,
         serviceFound: true
       });
     }
-  }
+  };
 
-  addChargeToShipment = (e) => {
+  addChargeToShipment = e => {
     this.props.handleAdd(this.state.car);
-  }
+  };
 
-  handleIncomeData = (incomeTabState) => {
+  handleIncomeData = incomeTabState => {
     this.setState({
       income: incomeTabState
     });
-  }
+  };
 
   render() {
     const { classes } = this.props;
@@ -83,36 +87,46 @@ class AddCharges extends Component {
     const tabOptions = [
       {
         label: 'INCOME',
-        item: <IncomeTab hanleData={this.handleIncomeData} />,
+        item: <IncomeTab hanleData={this.handleIncomeData} />
       },
       {
         label: 'EXPENSES',
-        item: 'expenses tab here',
+        item: 'expenses tab here'
       }
     ];
 
-    return(
+    return (
       <>
         <div>
           <span style={{ fontWeight: '600' }}>Add Charge</span>
         </div>
-        <div style={{ width: '100%', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}
+        >
           <div style={{ width: '40%' }}>
-          <FormControl className={classes.formControl}>
+            <FormControl className={classes.formControl}>
               <InputLabel htmlFor="age-simple">Container type</InputLabel>
               <Select
                 value={this.state.service.serviceTypeName}
                 onChange={this.handleChange}
                 inputProps={{
                   name: 'containerType',
-                  id: 'containerType',
+                  id: 'containerType'
                 }}
               >
-                <MenuItem value=''>
+                <MenuItem value="">
                   <em>None</em>
                 </MenuItem>
-                {serviceTypes.map((item) => (
-                  <MenuItem key={item.id} value={item.id}>{item.label}</MenuItem>
+                {serviceTypes.map(item => (
+                  <MenuItem key={item.id} value={item.id}>
+                    {item.label}
+                  </MenuItem>
                 ))}
               </Select>
             </FormControl>
@@ -121,7 +135,7 @@ class AddCharges extends Component {
             <TextField
               disabled
               id="standard-disabled"
-              label='Description'
+              label="Description"
               value={service.serviceTypeDescription}
               className={classes.textField}
               margin="normal"
@@ -132,8 +146,21 @@ class AddCharges extends Component {
           <TabsComponent options={tabOptions} />
         </div>
         <div style={{ width: '100%', marginTop: '18px' }}>
-          <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center'}}>
-            <Button disabled={!serviceFound} onClick={this.addChargeToShipment} variant="contained" color="primary" className={classes.button}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'flex-end',
+              alignItems: 'center'
+            }}
+          >
+            <Button
+              disabled={!serviceFound}
+              onClick={this.addChargeToShipment}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
               Add charge
             </Button>
           </div>

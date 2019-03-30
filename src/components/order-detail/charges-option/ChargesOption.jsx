@@ -31,9 +31,9 @@ const styles = theme => ({
     '&:focus': {
       backgroundColor: theme.palette.primary.main,
       '& $primary, & $icon': {
-        color: theme.palette.common.white,
-      },
-    },
+        color: theme.palette.common.white
+      }
+    }
   },
   primary: {},
   icon: {},
@@ -42,11 +42,11 @@ const styles = theme => ({
     flexDirection: 'row'
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   input: {
-    display: 'none',
-  },
+    display: 'none'
+  }
 });
 
 const columns = [
@@ -93,57 +93,95 @@ class ChargesOption extends Component {
         {
           id: 1,
           content: [
-            { text: 'Pending' }, { text: 'Off' }, { text: 'OCEAN FREIGHT' }, { text: '101' }, { text: 'Each' },
-            { text: '15.00' }, { text: '1515.00 USD' }, { text: '909.00 USD' }, { text: 'PierPont Global' },
-            { text: '' }, { text: '0' }
+            { text: 'Pending' },
+            { text: 'Off' },
+            { text: 'OCEAN FREIGHT' },
+            { text: '101' },
+            { text: 'Each' },
+            { text: '15.00' },
+            { text: '1515.00 USD' },
+            { text: '909.00 USD' },
+            { text: 'PierPont Global' },
+            { text: '' },
+            { text: '0' }
           ]
         }
       ],
-      onCloseChargesModal: false,
-    }
+      onCloseChargesModal: false
+    };
   }
 
   addCharge = () => {
     this.setState({
-      openModalAddCharges: true,
+      openModalAddCharges: true
     });
-  }
+  };
 
-  handleAddCharge = (e) => {
+  handleAddCharge = e => {
     const { rows } = this.state;
     console.log(e);
-    this.setState({
-      rows: [...rows, {id: 2, content: [
-        { text: 'Pending' }, { text: 'Off' }, { text: 'OCEAN FREIGHT' }, { text: '101' }, { text: 'Each' },
-        { text: '15.00' }, { text: '1515.00 USD' }, { text: '909.00 USD' }, { text: 'PierPont Global' },
-        { text: '' }, { text: '0' }
-      ]}],
-      openModalAddCharges: false,
-    }, () => {
-      // Propagate event to parents
-      this.props.handleChange(this.state.rows);
-    });
-  }
+    this.setState(
+      {
+        rows: [
+          ...rows,
+          {
+            id: 2,
+            content: [
+              { text: 'Pending' },
+              { text: 'Off' },
+              { text: 'OCEAN FREIGHT' },
+              { text: '101' },
+              { text: 'Each' },
+              { text: '15.00' },
+              { text: '1515.00 USD' },
+              { text: '909.00 USD' },
+              { text: 'PierPont Global' },
+              { text: '' },
+              { text: '0' }
+            ]
+          }
+        ],
+        openModalAddCharges: false
+      },
+      () => {
+        // Propagate event to parents
+        this.props.handleChange(this.state.rows);
+      }
+    );
+  };
 
   onCloseChargesModal = () => {
     this.setState({
-      openModalAddCharges: false,
+      openModalAddCharges: false
     });
-  }
+  };
 
   render() {
     const { classes } = this.props;
     const { rows, openModalAddCharges } = this.state;
-    return(
+    return (
       <>
         <Paper style={{ marginBottom: '8px' }}>
           <TitleWrapper>
             <div style={{ margin: '10px', padding: '5px' }}>
-              <span style={{ fontWeight: '600', fontSize: '1.25rem', color: 'darkgray' , padding: '10px'}}>Charges </span>
+              <span
+                style={{
+                  fontWeight: '600',
+                  fontSize: '1.25rem',
+                  color: 'darkgray',
+                  padding: '10px'
+                }}
+              >
+                Charges{' '}
+              </span>
             </div>
             <div>
               <MenuList className={classes.menuList}>
-                <Button variant="outlined" className={classes.button} onClick={this.addCharge}>
+                <Button
+                  variant="outlined"
+                  className={classes.button}
+                  onClick={this.addCharge}
+                >
                   + Charge
                 </Button>
               </MenuList>
@@ -153,7 +191,12 @@ class ChargesOption extends Component {
         <TableWrapper>
           <PPGTable columns={columns} rows={rows} />
         </TableWrapper>
-        <PPGModal setOpen={openModalAddCharges} handleClose={this.onCloseChargesModal} width='80%' height='80%' >
+        <PPGModal
+          setOpen={openModalAddCharges}
+          handleClose={this.onCloseChargesModal}
+          width="80%"
+          height="80%"
+        >
           <AddCharges handleAdd={this.handleAddCharge} />
         </PPGModal>
       </>

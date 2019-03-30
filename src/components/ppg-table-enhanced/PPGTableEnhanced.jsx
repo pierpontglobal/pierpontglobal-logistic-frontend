@@ -41,15 +41,27 @@ function stableSort(array, cmp) {
 }
 
 function getSorting(order, orderBy) {
-  return order === 'desc' ? (a, b) => desc(a, b, orderBy) : (a, b) => -desc(a, b, orderBy);
+  return order === 'desc'
+    ? (a, b) => desc(a, b, orderBy)
+    : (a, b) => -desc(a, b, orderBy);
 }
 
 const rows = [
-  { id: 'order-number', numeric: true, disablePadding: true, label: 'Order number' },
+  {
+    id: 'order-number',
+    numeric: true,
+    disablePadding: true,
+    label: 'Order number'
+  },
   { id: 'status', numeric: false, disablePadding: true, label: 'Status' },
-  { id: 'destination', numeric: false, disablePadding: true, label: 'Destination' },
+  {
+    id: 'destination',
+    numeric: false,
+    disablePadding: true,
+    label: 'Destination'
+  },
   { id: 'date', numeric: false, disablePadding: true, label: 'Date' },
-  { id: 'origin', numeric: false, disablePadding: true, label: 'Origin name' },
+  { id: 'origin', numeric: false, disablePadding: true, label: 'Origin name' }
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -58,14 +70,18 @@ class EnhancedTableHead extends React.Component {
   };
 
   render() {
-    const { onSelectAllClick, order, orderBy, numSelected, rowCount } = this.props;
+    const {
+      onSelectAllClick,
+      order,
+      orderBy,
+      numSelected,
+      rowCount
+    } = this.props;
 
     return (
       <TableHead>
         <TableRow>
-          <TableCell padding="checkbox">
-            
-          </TableCell>
+          <TableCell padding="checkbox" />
           {rows.map(
             row => (
               <TableCell
@@ -89,7 +105,7 @@ class EnhancedTableHead extends React.Component {
                 </Tooltip>
               </TableCell>
             ),
-            this,
+            this
           )}
         </TableRow>
       </TableHead>
@@ -103,32 +119,32 @@ EnhancedTableHead.propTypes = {
   onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.string.isRequired,
   orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
+  rowCount: PropTypes.number.isRequired
 };
 
 const toolbarStyles = theme => ({
   root: {
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing.unit
   },
   highlight:
     theme.palette.type === 'light'
       ? {
           color: theme.palette.secondary.main,
-          backgroundColor: lighten(theme.palette.secondary.light, 0.85),
+          backgroundColor: lighten(theme.palette.secondary.light, 0.85)
         }
       : {
           color: theme.palette.text.primary,
-          backgroundColor: theme.palette.secondary.dark,
+          backgroundColor: theme.palette.secondary.dark
         },
   spacer: {
-    flex: '1 1 100%',
+    flex: '1 1 100%'
   },
   actions: {
-    color: theme.palette.text.secondary,
+    color: theme.palette.text.secondary
   },
   title: {
-    flex: '0 0 auto',
-  },
+    flex: '0 0 auto'
+  }
 });
 
 let EnhancedTableToolbar = props => {
@@ -137,7 +153,7 @@ let EnhancedTableToolbar = props => {
   return (
     <Toolbar
       className={classNames(classes.root, {
-        [classes.highlight]: numSelected > 0,
+        [classes.highlight]: numSelected > 0
       })}
     >
       <div className={classes.title}>
@@ -173,7 +189,7 @@ let EnhancedTableToolbar = props => {
 
 EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
+  numSelected: PropTypes.number.isRequired
 };
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
@@ -181,14 +197,14 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 3
   },
   table: {
-    minWidth: 1020,
+    minWidth: 1020
   },
   tableWrapper: {
-    overflowX: 'auto',
-  },
+    overflowX: 'auto'
+  }
 });
 
 class PPGEnhancedTable extends React.Component {
@@ -278,7 +294,7 @@ class PPGEnhancedTable extends React.Component {
         }
       ],
       page: 0,
-      rowsPerPage: 5,
+      rowsPerPage: 5
     };
   }
 
@@ -319,7 +335,8 @@ class PPGEnhancedTable extends React.Component {
   render() {
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+    const emptyRows =
+      rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
       <Paper className={classes.root}>
@@ -344,18 +361,30 @@ class PPGEnhancedTable extends React.Component {
                       onClick={event => this.handleClick(event, n.orderNumber)}
                       tabIndex={-1}
                       key={n.orderNumber}
-
                     >
                       <TableCell padding="checkbox">
                         <RemoveRedEye />
                       </TableCell>
-                      <TableCell padding='none' component="th" scope="row" padding="none">
+                      <TableCell
+                        padding="none"
+                        component="th"
+                        scope="row"
+                        padding="none"
+                      >
                         {n.orderNumber}
                       </TableCell>
-                      <TableCell padding='none'align="left">{n.status}</TableCell>
-                      <TableCell padding='none' align="left">{n.destination}</TableCell>
-                      <TableCell padding='none' align="left">{n.date}</TableCell>
-                      <TableCell padding='none' align="left">{n.originName}</TableCell>
+                      <TableCell padding="none" align="left">
+                        {n.status}
+                      </TableCell>
+                      <TableCell padding="none" align="left">
+                        {n.destination}
+                      </TableCell>
+                      <TableCell padding="none" align="left">
+                        {n.date}
+                      </TableCell>
+                      <TableCell padding="none" align="left">
+                        {n.originName}
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -374,10 +403,10 @@ class PPGEnhancedTable extends React.Component {
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            'aria-label': 'Previous Page',
+            'aria-label': 'Previous Page'
           }}
           nextIconButtonProps={{
-            'aria-label': 'Next Page',
+            'aria-label': 'Next Page'
           }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}
@@ -388,7 +417,7 @@ class PPGEnhancedTable extends React.Component {
 }
 
 PPGEnhancedTable.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(PPGEnhancedTable);

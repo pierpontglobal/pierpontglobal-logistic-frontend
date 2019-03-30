@@ -10,11 +10,11 @@ import { Button, IconButton } from '@material-ui/core';
 
 const styles = theme => ({
   input: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   textField: {
     marginLeft: theme.spacing * 0.8,
-    marginRight: theme.spacing.unit * 0.8,
+    marginRight: theme.spacing.unit * 0.8
   },
   resize: {
     fontSize: '0.5rem'
@@ -50,22 +50,36 @@ class IncomeTab extends Component {
       payment: '',
       billTo: '',
       billToName: '',
-      date: '',
-    }
+      date: ''
+    };
   }
 
-  handleChangeInput = (e) => {
-    this.setState({
-      [e.target.id]: e.target.value
-    }, () => {
-      this.props.hanleData(this.state);
-    });
-  }
+  handleChangeInput = e => {
+    this.setState(
+      {
+        [e.target.id]: e.target.value
+      },
+      () => {
+        this.props.hanleData(this.state);
+      }
+    );
+  };
 
   render() {
     const { classes } = this.props;
-    const { quantity, units, rate, amount, currency, payment, billTo, billToName, date, serviceFound } = this.state;
-    return(
+    const {
+      quantity,
+      units,
+      rate,
+      amount,
+      currency,
+      payment,
+      billTo,
+      billToName,
+      date,
+      serviceFound
+    } = this.state;
+    return (
       <>
         <Grid container spacing={12}>
           <Grid item xs={2}>
@@ -75,7 +89,7 @@ class IncomeTab extends Component {
               className={classes.textField}
               margin="normal"
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
               value={quantity}
             />
           </Grid>
@@ -86,7 +100,7 @@ class IncomeTab extends Component {
               className={classes.textField}
               margin="normal"
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
               value={units}
             />
           </Grid>
@@ -98,7 +112,7 @@ class IncomeTab extends Component {
               margin="normal"
               value={rate}
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
             />
           </Grid>
           <Grid item xs={2}>
@@ -109,7 +123,7 @@ class IncomeTab extends Component {
               margin="normal"
               value={amount}
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
             />
           </Grid>
           <Grid item xs={2}>
@@ -120,7 +134,7 @@ class IncomeTab extends Component {
               margin="normal"
               value={currency}
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
             />
           </Grid>
           <Grid item xs={2}>
@@ -131,13 +145,13 @@ class IncomeTab extends Component {
               margin="normal"
               value={payment}
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
             />
           </Grid>
         </Grid>
         <Grid container spacing={12}>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={2}></Grid>
+          <Grid item xs={2} />
+          <Grid item xs={2} />
           <Grid item xs={2}>
             <TextField
               id="show-rate"
@@ -147,7 +161,7 @@ class IncomeTab extends Component {
               value={rate}
               disabled={true}
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
             />
           </Grid>
           <Grid item xs={2}>
@@ -159,27 +173,27 @@ class IncomeTab extends Component {
               margin="normal"
               value={amount}
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
             />
           </Grid>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={2}></Grid>
+          <Grid item xs={2} />
+          <Grid item xs={2} />
+          <Grid item xs={2} />
         </Grid>
         <Grid container spacing={12} style={{ marginTop: '38px' }}>
           <Grid item xs={5}>
-           <TextField
+            <TextField
               id="billTo"
               label="Bill to"
               className={classes.textField}
               margin="normal"
               value={billTo}
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
               fullWidth
             />
           </Grid>
-          <Grid item xs={1}></Grid>
+          <Grid item xs={1} />
           <Grid item xs={3}>
             <TextField
               id="billToName"
@@ -188,7 +202,7 @@ class IncomeTab extends Component {
               margin="normal"
               value={billToName}
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
             />
           </Grid>
           <Grid item xs={3}>
@@ -200,9 +214,9 @@ class IncomeTab extends Component {
               margin="normal"
               value={date}
               onChange={this.handleChangeInput}
-              variant='outlined'
+              variant="outlined"
               InputLabelProps={{
-                shrink: true,
+                shrink: true
               }}
             />
           </Grid>

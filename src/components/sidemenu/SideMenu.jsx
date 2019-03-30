@@ -9,11 +9,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = {
   list: {
-    width: 250,
+    width: 250
   },
   fullList: {
-    width: 'auto',
-  },
+    width: 'auto'
+  }
 };
 
 class SideMenu extends React.Component {
@@ -21,12 +21,11 @@ class SideMenu extends React.Component {
     super(props);
     this.state = {
       open: false
-    }
+    };
   }
-  
-  handleToggle = (open) => () => { 
 
-      this.setState({open: open})
+  handleToggle = open => () => {
+    this.setState({ open: open });
   };
 
   render() {
@@ -37,28 +36,29 @@ class SideMenu extends React.Component {
       <div className={classes.list}>
         <Divider />
         <List>
-            <ListItem button onClick={this.props.handleLogut}>
-              <ListItemText primary="Logout" />
-            </ListItem>
+          <ListItem button onClick={this.props.handleLogut}>
+            <ListItemText primary="Logout" />
+          </ListItem>
         </List>
       </div>
     );
     return (
-        <Drawer open={open} onClose={this.handleToggle(false)}>
-            <div
-            tabIndex={0}
-            role="button"
-            onClick={this.handleToggle(false)}
-            onKeyDown={this.handleToggle(false)}>
-                {sideList}
-            </div>
+      <Drawer open={open} onClose={this.handleToggle(false)}>
+        <div
+          tabIndex={0}
+          role="button"
+          onClick={this.handleToggle(false)}
+          onKeyDown={this.handleToggle(false)}
+        >
+          {sideList}
+        </div>
       </Drawer>
     );
   }
 }
 
 SideMenu.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(SideMenu);

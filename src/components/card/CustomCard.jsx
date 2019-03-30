@@ -9,38 +9,42 @@ import Typography from '@material-ui/core/Typography';
 const styles = {
   card: {
     maxWidth: 275,
-    margin: '10px',
+    margin: '10px'
   },
   bullet: {
     display: 'inline-block',
     margin: '0 2px',
-    transform: 'scale(0.8)',
+    transform: 'scale(0.8)'
   },
   title: {
-    fontSize: 14,
+    fontSize: 14
   },
   pos: {
-    marginBottom: 12,
-  },
+    marginBottom: 12
+  }
 };
 
 function CustomCard(props) {
-  const {
-    classes, title, content, labelButton,
-  } = props;
+  const { classes, title, content, labelButton } = props;
 
   return (
     <Card className={classes.card}>
       <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          { title }
+        <Typography
+          className={classes.title}
+          color="textSecondary"
+          gutterBottom
+        >
+          {title}
         </Typography>
         <Typography variant="h5" component="h2">
-          { content }
+          {content}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={props.handleClick} size="small">{ labelButton }</Button>
+        <Button onClick={props.handleClick} size="small">
+          {labelButton}
+        </Button>
       </CardActions>
     </Card>
   );

@@ -12,7 +12,6 @@ import OrderSummary from './order-summary/OrderSummary';
 import { withRouter } from 'react-router-dom';
 import RouteDisplay from '../route-display/RouteDisplay';
 
-
 const LoadingWrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -39,26 +38,26 @@ class OrderDetail extends Component {
         serviceType: 'test initial service type value',
         shipperAddress: '',
         shipperName: '',
-        transportationMode: '',
+        transportationMode: ''
       },
       commoditiesInfo: {},
       chargesInfo: {},
       orderStates: [
         {
           label: 'Step 1',
-          active: false,
+          active: false
         },
         {
           label: 'Step 2',
-          active: false,
+          active: false
         },
         {
           label: 'Step 34',
-          active: false,
+          active: false
         },
         {
           label: 'Step 4',
-          active: false,
+          active: false
         },
         {
           label: 'Step 5',
@@ -72,23 +71,23 @@ class OrderDetail extends Component {
     };
   }
 
-  onDetailsChange = (e) => {
+  onDetailsChange = e => {
     this.setState({
       detailsInfo: e
     });
-  }
+  };
 
-  onCommoditiesChange = (e) => {
+  onCommoditiesChange = e => {
     this.setState({
       commoditiesInfo: e
     });
-  }
+  };
 
-  onChargesChange = (e) => {
+  onChargesChange = e => {
     this.setState({
       chargesInfo: e
     });
-  }
+  };
 
   componentDidMount = () => {
     const orderId = this.props.match.params.id;
@@ -100,7 +99,7 @@ class OrderDetail extends Component {
         orderId: orderId
       });
     }, 2000);
-  }
+  };
 
   render() {
     const { isLoading, orderId, detailsInfo } = this.state;
@@ -108,40 +107,70 @@ class OrderDetail extends Component {
     const tabOptions = [
       {
         label: 'Details',
-        item: <DetailsOption handleChange={this.onDetailsChange} detailsInfo={detailsInfo} orderId={orderId} />,
+        item: (
+          <DetailsOption
+            handleChange={this.onDetailsChange}
+            detailsInfo={detailsInfo}
+            orderId={orderId}
+          />
+        )
       },
       {
         label: 'Commodities',
-        item: <CommoditiesOption handleChange={this.onCommoditiesChange} />,
+        item: <CommoditiesOption handleChange={this.onCommoditiesChange} />
       },
       {
         label: 'Charges',
-        item: <ChargesOption handleChange={this.onChargesChange} />,
-      },
+        item: <ChargesOption handleChange={this.onChargesChange} />
+      }
     ];
 
     return (
       <>
         <BaseComponent cookies={this.props.cookies}>
-          { isLoading ? <LoadingWrapper> <CircularProgress /> </LoadingWrapper> : 
+          {isLoading ? (
+            <LoadingWrapper>
+              {' '}
+              <CircularProgress />{' '}
+            </LoadingWrapper>
+          ) : (
             <>
               <OrderPrincipalInfo orderId={orderId} />
-              <div style={{ marginTop: '15px', marginBottom: '15px', width: '100%' }}>
+              <div
+                style={{
+                  marginTop: '15px',
+                  marginBottom: '15px',
+                  width: '100%'
+                }}
+              >
                 <ProgressStep steps={this.state.orderStates} />
               </div>
-              <div style={{ marginTop: '15px', display: 'flex', flexDirection: 'row' }}>
+              <div
+                style={{
+                  marginTop: '15px',
+                  display: 'flex',
+                  flexDirection: 'row'
+                }}
+              >
                 <div style={{ width: '70%', height: 'auto' }}>
                   <TabsComponent options={tabOptions} />
                 </div>
                 <div style={{ width: '30%', margin: '15px' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
                     <OrderSummary />
                     <RouteDisplay />
                   </div>
                 </div>
               </div>
             </>
-          }
+          )}
         </BaseComponent>
       </>
     );

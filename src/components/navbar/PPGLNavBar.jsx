@@ -17,24 +17,24 @@ import SideMenu from '../sidemenu/SideMenu';
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: '100%'
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20,
+    marginRight: 20
   },
   title: {
     display: 'none',
     [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
+      display: 'block'
+    }
   },
   inputRoot: {
     color: 'inherit',
-    width: '100%',
+    width: '100%'
   },
   inputInput: {
     paddingTop: theme.spacing.unit,
@@ -44,30 +44,29 @@ const styles = theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: 200,
-    },
+      width: 200
+    }
   },
   sectionDesktop: {
     display: 'none',
     [theme.breakpoints.up('md')]: {
-      display: 'flex',
-    },
+      display: 'flex'
+    }
   },
   sectionMobile: {
     display: 'flex',
     [theme.breakpoints.up('md')]: {
-      display: 'none',
-    },
-  },
+      display: 'none'
+    }
+  }
 });
 
 class PPGLNavBar extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
       anchorEl: null,
-      mobileMoreAnchorEl: null,
+      mobileMoreAnchorEl: null
     };
     this.handleLogout = this.handleLogout.bind(this);
     this.sideMenuRef = React.createRef();
@@ -76,13 +75,13 @@ class PPGLNavBar extends React.Component {
   handleLogout = () => {
     this.props.cookies.remove('token');
     this.props.history.push('/login');
-  }
+  };
 
   openSideMenu = () => {
     if (this.sideMenuRef) {
       this.sideMenuRef.handleToggle(true)();
     }
-  }
+  };
 
   handleProfileMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget });
@@ -157,10 +156,20 @@ class PPGLNavBar extends React.Component {
       <div className={classes.root}>
         <AppBar position="fixed">
           <Toolbar>
-            <IconButton onClick={this.openSideMenu} className={classes.menuButton} color="inherit" aria-label="Open drawer">
-              <MenuIcon/>
+            <IconButton
+              onClick={this.openSideMenu}
+              className={classes.menuButton}
+              color="inherit"
+              aria-label="Open drawer"
+            >
+              <MenuIcon />
             </IconButton>
-            <Typography className={classes.title} variant="h6" color="inherit" noWrap>
+            <Typography
+              className={classes.title}
+              variant="h6"
+              color="inherit"
+              noWrap
+            >
               Pierpont Logistics
             </Typography>
             <div className={classes.grow} />
@@ -185,12 +194,19 @@ class PPGLNavBar extends React.Component {
               </IconButton>
             </div>
             <div className={classes.sectionMobile}>
-              <IconButton aria-haspopup="true" onClick={this.handleMobileMenuOpen} color="inherit">
+              <IconButton
+                aria-haspopup="true"
+                onClick={this.handleMobileMenuOpen}
+                color="inherit"
+              >
                 <MoreIcon />
               </IconButton>
             </div>
           </Toolbar>
-          <SideMenu handleLogut={this.handleLogout} innerRef={ref => this.sideMenuRef = ref} />
+          <SideMenu
+            handleLogut={this.handleLogout}
+            innerRef={ref => (this.sideMenuRef = ref)}
+          />
         </AppBar>
         {renderMenu}
         {renderMobileMenu}
@@ -200,7 +216,7 @@ class PPGLNavBar extends React.Component {
 }
 
 PPGLNavBar.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired
 };
 
 export default withStyles(styles)(PPGLNavBar);

@@ -13,29 +13,36 @@ const styles = theme => ({
     padding: theme.spacing.unit * 4,
     outline: 'none',
     minHeight: '180px',
-    minWidth: '220px',
-  },
+    minWidth: '220px'
+  }
 });
 
 function PPGModal(props) {
   const { setOpen, classes, width, height } = props;
 
-  return(
+  return (
     <>
       <Modal
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         open={setOpen}
         onClose={props.handleClose}
-        style={{display: 'flex', alignItems:'center',justifyContent:'center'}}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
+        }}
       >
-        <div style={{ margin: 'auto', width: width, height: height}} className={classes.paper}>
+        <div
+          style={{ margin: 'auto', width: width, height: height }}
+          className={classes.paper}
+        >
           <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
             <IconButton onClick={props.handleClose}>
               <Close />
             </IconButton>
           </div>
-          { props.children }
+          {props.children}
         </div>
       </Modal>
     </>

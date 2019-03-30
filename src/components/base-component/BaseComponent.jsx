@@ -3,11 +3,11 @@ import PPGLNavBar from '../navbar/PPGLNavBar';
 import PermanentSidemenu from '../permanent-sidemenu/PermanentSidemenu';
 
 function BaseComponent(props) {
-  return(
+  return (
     <>
       <PermanentSidemenu cookies={props.cookies}>
         <PPGLNavBar />
-        { props.children }
+        {props.children}
       </PermanentSidemenu>
     </>
   );

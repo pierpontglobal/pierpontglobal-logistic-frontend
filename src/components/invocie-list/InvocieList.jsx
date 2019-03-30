@@ -7,7 +7,7 @@ class InvoiceList extends Component {
   }
 
   render() {
-    return(
+    return (
       <>
         <BaseComponent cookies={this.props.cookies}>
           Invoice CRUD operations here...

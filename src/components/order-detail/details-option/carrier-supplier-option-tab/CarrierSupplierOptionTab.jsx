@@ -6,11 +6,7 @@ class CarrierSupplierOptionTab extends Component {
   }
 
   render() {
-    return(
-      <div>
-        Carrier and supplier options tab
-      </div>
-    );
+    return <div>Carrier and supplier options tab</div>;
   }
 }
 

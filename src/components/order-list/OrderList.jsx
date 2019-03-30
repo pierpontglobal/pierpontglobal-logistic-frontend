@@ -22,35 +22,44 @@ class OrderList extends Component {
       columns: [
         {
           title: '',
-          isIcon: true,
+          isIcon: true
         },
         {
-          title: 'ID',
+          title: 'ID'
         },
         {
-          title: 'NAME',
+          title: 'NAME'
         },
         {
-          title: 'NUMBER',
+          title: 'NUMBER'
         }
       ],
       rows: [
         {
           id: 998,
           content: [
-            { icon: <RemoveRedEye /> }, { text: '998' }, { text: 'JUlian order' }, { text: '987' }
+            { icon: <RemoveRedEye /> },
+            { text: '998' },
+            { text: 'JUlian order' },
+            { text: '987' }
           ]
         },
         {
           id: 1001,
           content: [
-            { icon: <RemoveRedEye /> }, { text: '1001' }, { text: 'Toyota Camrry' }, { text: '9899' }
+            { icon: <RemoveRedEye /> },
+            { text: '1001' },
+            { text: 'Toyota Camrry' },
+            { text: '9899' }
           ]
         },
         {
           id: 1003,
           content: [
-            { icon: <RemoveRedEye /> }, { text: '1003' }, { text: 'Toyota Ford Runner' }, { text: '675' }
+            { icon: <RemoveRedEye /> },
+            { text: '1003' },
+            { text: 'Toyota Ford Runner' },
+            { text: '675' }
           ]
         }
       ]
@@ -62,13 +71,13 @@ class OrderList extends Component {
       this.setState({
         isLoading: false
       });
-    }, 2000)
-  }
+    }, 2000);
+  };
 
   onRowClick = (e, rowId) => {
     // Got to detail page of selected order
-    this.props.history.push(`order/${rowId}`)
-  }
+    this.props.history.push(`order/${rowId}`);
+  };
 
   render() {
     const { isLoading, columns, rows } = this.state;
@@ -76,15 +85,35 @@ class OrderList extends Component {
     return (
       <>
         <BaseComponent cookies={this.props.cookies}>
-          { isLoading ? <LoadingWrapper> <CircularProgress /> </LoadingWrapper> :
-           <>
-            <div style={{ width: '100%', marginTop: '15px', marginBottom: '15px' }}>
-              <span style={{ fontWeight: '600', fontSize: '1.45rem', color: 'black' , padding: '10px'}}>Order List </span>
-            </div>
-            {/*<PPGTable handleOnRowClick={this.onRowClick} columns={columns} rows={rows} />*/}
-            <PPGTableEnhanced handleOnRowClick={this.onRowClick} />
-           </>
-          }
+          {isLoading ? (
+            <LoadingWrapper>
+              {' '}
+              <CircularProgress />{' '}
+            </LoadingWrapper>
+          ) : (
+            <>
+              <div
+                style={{
+                  width: '100%',
+                  marginTop: '15px',
+                  marginBottom: '15px'
+                }}
+              >
+                <span
+                  style={{
+                    fontWeight: '600',
+                    fontSize: '1.45rem',
+                    color: 'black',
+                    padding: '10px'
+                  }}
+                >
+                  Order List{' '}
+                </span>
+              </div>
+              {/*<PPGTable handleOnRowClick={this.onRowClick} columns={columns} rows={rows} />*/}
+              <PPGTableEnhanced handleOnRowClick={this.onRowClick} />
+            </>
+          )}
         </BaseComponent>
       </>
     );
