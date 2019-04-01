@@ -114,7 +114,7 @@ class MiniDrawer extends React.Component {
         open: false
       },
       () => {
-        this.props.cookies.remove('token');
+        this.props.cookies.remove('token', { path: '/' });
         window.location.href = '/';
       }
     );
