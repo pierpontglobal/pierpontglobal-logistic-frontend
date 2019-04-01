@@ -20,7 +20,7 @@ class GooglePlaceSearch extends Component {
     };
   }
 
-  handleScriptLoad = () => {
+  componentDidMount = () => {
     var options = { types: [`establishment`, `geocode`] };
 
     // Initialize Google Autocomplete
@@ -74,10 +74,6 @@ class GooglePlaceSearch extends Component {
   render() {
     return (
       <>
-        <Script
-          url={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`}
-          onLoad={this.handleScriptLoad}
-        />
         <input
           id="autocomplete"
           placeholder=""

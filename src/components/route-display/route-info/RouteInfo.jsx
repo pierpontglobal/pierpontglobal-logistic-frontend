@@ -40,17 +40,20 @@ class RouteInfo extends Component {
   constructor(props) {
     super(props);
     this.directionsPanelRef = React.createRef();
+  }
+
+  componentDidMount() {
+    /* global google */
     this.directionsDisplay = new google.maps.DirectionsRenderer();
     this.directionsService = new google.maps.DirectionsService();
+
+    this.directionsDisplay.setPanel(this.directionsPanelRef.current);
+
     this.request = {
       origin: '',
       destination: '',
       travelMode: google.maps.TravelMode.DRIVING
     };
-  }
-
-  componentDidMount() {
-    this.directionsDisplay.setPanel(this.directionsPanelRef.current);
   }
 
   calcRoute(changedAddress) {

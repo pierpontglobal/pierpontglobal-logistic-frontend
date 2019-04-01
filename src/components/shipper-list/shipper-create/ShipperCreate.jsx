@@ -61,14 +61,16 @@ class ShipperCreate extends Component {
           place.geometry.location.lat() + ',' + place.geometry.location.lng();
         axios
           .post(`${ApiServer}/api/v1/shipper`, {
-            name: place.name,
-            location: placeLocation,
-            address: place.query,
-            website: place.website,
-            vicinity: place.vicinity,
-            custom_name: customPlaceName,
-            city: place.city,
-            place_id: place.placeId
+            shipper: {
+              name: place.name,
+              location: placeLocation,
+              address: place.query,
+              website: place.website,
+              vicinity: place.vicinity,
+              custom_name: customPlaceName,
+              city: place.city,
+              place_id: place.placeId
+            }
           })
           .then(data => {
             this.setState(

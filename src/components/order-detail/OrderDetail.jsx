@@ -11,6 +11,9 @@ import ProgressStep from '../progress-step/ProgressStep';
 import OrderSummary from './order-summary/OrderSummary';
 import { withRouter } from 'react-router-dom';
 import RouteDisplay from '../route-display/RouteDisplay';
+import GoogleRouteDraw from '../google-route-draw/GoogleRouteDraw';
+import Script from 'react-load-script';
+import { GOOGLE_API_KEY } from '../../Defaults';
 
 const LoadingWrapper = styled.div`
   width: 100%;
@@ -122,11 +125,24 @@ class OrderDetail extends Component {
       {
         label: 'Charges',
         item: <ChargesOption handleChange={this.onChargesChange} />
+      },
+      {
+        label: 'Road path',
+        item: (
+          <GoogleRouteDraw
+            from="Chicago, IL"
+            to="Los Angeles, CA"
+            wayPoints={[]}
+          />
+        )
       }
     ];
 
     return (
       <>
+        <Script
+          url={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`}
+        />
         <BaseComponent cookies={this.props.cookies}>
           {isLoading ? (
             <LoadingWrapper>
