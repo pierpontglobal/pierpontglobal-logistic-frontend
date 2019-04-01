@@ -18,7 +18,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { lighten } from '@material-ui/core/styles/colorManipulator';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -46,24 +45,6 @@ function getSorting(order, orderBy) {
     : (a, b) => -desc(a, b, orderBy);
 }
 
-const rows = [
-  {
-    id: 'order-number',
-    numeric: true,
-    disablePadding: true,
-    label: 'Order number'
-  },
-  { id: 'status', numeric: false, disablePadding: true, label: 'Status' },
-  {
-    id: 'destination',
-    numeric: false,
-    disablePadding: true,
-    label: 'Destination'
-  },
-  { id: 'date', numeric: false, disablePadding: true, label: 'Date' },
-  { id: 'origin', numeric: false, disablePadding: true, label: 'Origin name' }
-];
-
 class EnhancedTableHead extends React.Component {
   createSortHandler = property => event => {
     this.props.onRequestSort(event, property);
@@ -75,32 +56,36 @@ class EnhancedTableHead extends React.Component {
       order,
       orderBy,
       numSelected,
-      rowCount
+      rowCount,
+      columns
     } = this.props;
 
     return (
       <TableHead>
         <TableRow>
           <TableCell padding="checkbox" />
-          {rows.map(
-            row => (
+          {columns.map(
+            (column, index) => (
               <TableCell
-                key={row.id}
+                key={index}
                 align={'left'}
-                padding={row.disablePadding ? 'none' : 'default'}
-                sortDirection={orderBy === row.id ? order : false}
+                padding={column.disablePadding ? 'none' : 'default'}
+                sortDirection={order}
               >
                 <Tooltip
                   title="Sort"
-                  placement={row.numeric ? 'bottom-end' : 'bottom-start'}
+                  placement={column.numeric ? 'bottom-end' : 'bottom-start'}
                   enterDelay={300}
                 >
                   <TableSortLabel
-                    active={orderBy === row.id}
+                    active={orderBy === index}
                     direction={order}
-                    onClick={this.createSortHandler(row.id)}
+                    onClick={this.createSortHandler({
+                      title: column.title,
+                      index: index
+                    })}
                   >
-                    {row.label}
+                    {column.title}
                   </TableSortLabel>
                 </Tooltip>
               </TableCell>
@@ -112,15 +97,6 @@ class EnhancedTableHead extends React.Component {
     );
   }
 }
-
-EnhancedTableHead.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.string.isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired
-};
 
 const toolbarStyles = theme => ({
   root: {
@@ -187,11 +163,6 @@ let EnhancedTableToolbar = props => {
   );
 };
 
-EnhancedTableToolbar.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired
-};
-
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 const styles = theme => ({
@@ -212,89 +183,13 @@ class PPGEnhancedTable extends React.Component {
     super(props);
     this.state = {
       order: 'asc',
-      orderBy: 'calories',
+      orderBy: 'status',
       selected: [],
-      data: [
-        {
-          orderNumber: 8787,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 999,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 993,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 585,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 73658,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 948,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 90,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 2838,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 4592,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 3409,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        },
-        {
-          orderNumber: 1298,
-          status: 'new',
-          destination: 'Dominican Republic Port',
-          date: new Date().toDateString('m-d-Y h:i:s'),
-          originName: 'Dealer Barauto'
-        }
-      ],
+      data: this.props.rows,
+      rows: this.props.rows,
       page: 0,
-      rowsPerPage: 5
+      rowsPerPage: 5,
+      columns: this.props.columns
     };
   }
 
@@ -334,7 +229,16 @@ class PPGEnhancedTable extends React.Component {
 
   render() {
     const { classes } = this.props;
-    const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
+    const {
+      data,
+      order,
+      orderBy,
+      selected,
+      rowsPerPage,
+      page,
+      rows,
+      columns
+    } = this.state;
     const emptyRows =
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
@@ -350,44 +254,33 @@ class PPGEnhancedTable extends React.Component {
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
               rowCount={data.length}
+              columns={columns}
             />
             <TableBody>
-              {stableSort(data, getSorting(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map(n => {
-                  return (
-                    <TableRow
-                      hover
-                      onClick={event => this.handleClick(event, n.orderNumber)}
-                      tabIndex={-1}
-                      key={n.orderNumber}
-                    >
-                      <TableCell padding="checkbox">
-                        <RemoveRedEye />
-                      </TableCell>
-                      <TableCell
-                        padding="none"
-                        component="th"
-                        scope="row"
-                        padding="none"
+              {rows.map(row =>
+                stableSort(data, getSorting(order, orderBy))
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map(n => {
+                    return (
+                      <TableRow
+                        hover
+                        onClick={event => this.handleClick(event, row.id)}
+                        tabIndex={-1}
+                        key={row.id}
                       >
-                        {n.orderNumber}
-                      </TableCell>
-                      <TableCell padding="none" align="left">
-                        {n.status}
-                      </TableCell>
-                      <TableCell padding="none" align="left">
-                        {n.destination}
-                      </TableCell>
-                      <TableCell padding="none" align="left">
-                        {n.date}
-                      </TableCell>
-                      <TableCell padding="none" align="left">
-                        {n.originName}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                        {row.content.map((rowContent, index) => (
+                          <TableCell key={index} component="th" scope="row">
+                            {rowContent.text
+                              ? rowContent.text
+                              : rowContent.icon
+                              ? rowContent.icon
+                              : ''}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    );
+                  })
+              )}
               {emptyRows > 0 && (
                 <TableRow style={{ height: 49 * emptyRows }}>
                   <TableCell colSpan={6} />

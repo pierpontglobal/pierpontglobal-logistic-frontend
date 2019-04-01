@@ -90,10 +90,15 @@ class ShipperList extends Component {
             style={{
               width: '100%',
               display: 'flex',
-              alignItems: 'flex-end',
-              justifyContent: 'flex-end'
+              alignItems: 'space-between',
+              justifyContent: 'space-between'
             }}
           >
+            <div style={{ marginTop: '15px', marginBottom: '10px' }}>
+              <span style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+                Available Shippers
+              </span>
+            </div>
             <Button
               variant="contained"
               color="primary"
