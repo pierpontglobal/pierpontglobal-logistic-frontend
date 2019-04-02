@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
+import PPGSimpleSelect from '../../../ppg-simple-select/PPGSimpleSelect';
+import axios from 'axios';
+import { ApiServer } from '../../../../Defaults';
+import { withCookies } from 'react-cookie';
 
 const styles = theme => ({
   container: {
@@ -35,9 +39,24 @@ class MainOptionTab extends Component {
       agentAddress: detailsInfo.agentAddress,
       transportationMode: detailsInfo.transportationMode,
       destinationName: detailsInfo.destinationName,
-      originName: detailsInfo.originName
+      originName: detailsInfo.originName,
+      agentId: -1,
+      consigneeId: -1,
+      issuingCompanyId: -1,
+      shipperId: -1,
+      transportationModeId: -1,
+      isFetchingShipper: false,
+      isFetchingIssuingComp: false,
+      isFetchingConsignee: false,
+      isFetchingAgent: false
     };
   }
+
+  componentDidMount = () => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+  };
 
   onInputValueChange = e => {
     this.setState(
@@ -51,8 +70,99 @@ class MainOptionTab extends Component {
     );
   };
 
+  onSelectShipperChange = e => {
+    let id = e.value;
+    this.setState(
+      {
+        isFetchingShipper: true
+      },
+      () => {
+        axios.get(`${ApiServer}/api/v1/shipper/${id}`).then(data => {
+          let shipp = data.data;
+          this.setState({
+            isFetchingShipper: false,
+            shipperId: shipp.id,
+            shipperName: shipp.name,
+            shipperAddress: shipp.address
+          });
+        });
+      }
+    );
+  };
+
+  onSelectConsigneeChange = e => {
+    let id = e.value;
+    this.setState(
+      {
+        isFetchingConsignee: true
+      },
+      () => {
+        axios.get(`${ApiServer}/api/v1/consignee/${id}`).then(data => {
+          let consig = data.data;
+          this.setState({
+            isFetchingConsignee: false,
+            consigneeId: consig.id,
+            consigneeName: consig.name,
+            consigneeAddress: consig.address
+          });
+        });
+      }
+    );
+  };
+
+  onSelectAgentChange = e => {
+    let id = e.value;
+    this.setState(
+      {
+        isFetchingAgent: true
+      },
+      () => {
+        axios.get(`${ApiServer}/api/v1/agent/${id}`).then(data => {
+          let agent = data.data;
+          this.setState({
+            isFetchingAgent: false,
+            agentId: agent.id,
+            agentName: agent.name,
+            agentAddress: agent.address
+          });
+        });
+      }
+    );
+  };
+
+  onSelectIssuingCompanyChange = e => {
+    let id = e.value;
+    this.setState(
+      {
+        isFetchingIssuingComp: true
+      },
+      () => {
+        axios.get(`${ApiServer}/api/v1/issuing_company/${id}`).then(data => {
+          let issuComp = data.data;
+          this.setState({
+            isFetchingIssuingComp: false,
+            issuingCompanyId: issuComp.id,
+            issuingCompany: issuComp.name
+          });
+        });
+      }
+    );
+  };
+
+  onSelectTransportChange = e => {
+    console.log(e);
+  };
+
   render() {
-    const { classes, orderId } = this.props;
+    const {
+      classes,
+      orderId,
+      issuingCompanies,
+      shippers,
+      agents,
+      consignees,
+      transports
+    } = this.props;
     const {
       serviceType,
       date,
@@ -65,7 +175,13 @@ class MainOptionTab extends Component {
       agentAddress,
       transportationMode,
       destinationName,
-      originName
+      originName,
+      issuingCompanyId,
+      shipperId,
+      isFetchingShipper,
+      isFetchingIssuingComp,
+      isFetchingConsignee,
+      isFetchingAgent
     } = this.state;
     return (
       <Paper style={{ padding: '15px' }}>
@@ -136,14 +252,12 @@ class MainOptionTab extends Component {
             />
           </div>
           <div style={{ width: '45%' }}>
-            <TextField
-              id="issuingCompany"
-              label="Issuing company name"
-              className={classes.textField}
-              margin="normal"
-              variant="outlined"
-              onChange={this.onInputValueChange}
-              defaultValue={issuingCompany}
+            <label>Issuing company</label>
+            <PPGSimpleSelect
+              isLoading={isFetchingIssuingComp}
+              handleChange={this.onSelectIssuingCompanyChange}
+              defaultValue={{ label: issuingCompany, value: issuingCompanyId }}
+              options={issuingCompanies}
             />
           </div>
         </div>
@@ -169,14 +283,12 @@ class MainOptionTab extends Component {
           }}
         >
           <div style={{ width: '45%' }}>
-            <TextField
-              id="shipperName"
-              label="Shipper name"
-              className={classes.textField}
-              margin="normal"
-              variant="outlined"
-              onChange={this.onInputValueChange}
-              defaultValue={shipperName}
+            <label>Shipper</label>
+            <PPGSimpleSelect
+              isLoading={isFetchingShipper}
+              handleChange={this.onSelectShipperChange}
+              defaultValue={{ label: shipperName, value: shipperId }}
+              options={shippers}
             />
           </div>
           <div style={{ width: '45%' }}>
@@ -186,8 +298,8 @@ class MainOptionTab extends Component {
               className={classes.textField}
               margin="normal"
               variant="outlined"
-              onChange={this.onInputValueChange}
-              defaultValue={shipperAddress}
+              disabled={true}
+              value={shipperAddress}
             />
           </div>
         </div>
@@ -201,14 +313,12 @@ class MainOptionTab extends Component {
           }}
         >
           <div style={{ width: '45%' }}>
-            <TextField
-              id="consigneeName"
-              label="Consignee name"
-              className={classes.textField}
-              margin="normal"
-              variant="outlined"
-              onChange={this.onInputValueChange}
-              defaultValue={consigneeName}
+            <label>Consignee</label>
+            <PPGSimpleSelect
+              isLoading={isFetchingConsignee}
+              handleChange={this.onSelectConsigneeChange}
+              defaultValue={{ label: consigneeName, value: consigneeAddress }}
+              options={consignees}
             />
           </div>
           <div style={{ width: '45%' }}>
@@ -218,8 +328,8 @@ class MainOptionTab extends Component {
               className={classes.textField}
               margin="normal"
               variant="outlined"
-              onChange={this.onInputValueChange}
-              defaultValue={consigneeAddress}
+              disabled={true}
+              value={consigneeAddress}
             />
           </div>
         </div>
@@ -233,14 +343,12 @@ class MainOptionTab extends Component {
           }}
         >
           <div style={{ width: '45%' }}>
-            <TextField
-              id="agentName"
-              label="Agent name"
-              className={classes.textField}
-              margin="normal"
-              variant="outlined"
-              onChange={this.onInputValueChange}
-              defaultValue={agentName}
+            <label>Agent</label>
+            <PPGSimpleSelect
+              isLoading={isFetchingAgent}
+              handleChange={this.onSelectAgentChange}
+              defaultValue={{ label: agentName, value: agentAddress }}
+              options={agents}
             />
           </div>
           <div style={{ width: '45%' }}>
@@ -250,8 +358,8 @@ class MainOptionTab extends Component {
               className={classes.textField}
               margin="normal"
               variant="outlined"
-              onChange={this.onInputValueChange}
-              defaultValue={agentAddress}
+              disabled={true}
+              value={agentAddress}
             />
           </div>
         </div>
@@ -277,14 +385,15 @@ class MainOptionTab extends Component {
           }}
         >
           <div style={{ width: '45%' }}>
-            <TextField
-              id="transportationMode"
-              label="Mode of transportation name"
-              className={classes.textField}
-              margin="normal"
-              variant="outlined"
-              onChange={this.onInputValueChange}
-              defaultValue={transportationMode}
+            <label>Mode of transportation</label>
+            <PPGSimpleSelect
+              isMulti={true}
+              handleChange={this.onSelectTransportChange}
+              defaultValue={[
+                { label: 'air', value: 1 },
+                { label: 'land', value: 2 }
+              ]}
+              options={transports}
             />
           </div>
           <div style={{ width: '45%' }}>
@@ -325,4 +434,4 @@ class MainOptionTab extends Component {
   }
 }
 
-export default withStyles(styles)(MainOptionTab);
+export default withStyles(styles)(withCookies(MainOptionTab));

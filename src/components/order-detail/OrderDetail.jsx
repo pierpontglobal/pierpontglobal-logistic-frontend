@@ -14,6 +14,8 @@ import RouteDisplay from '../route-display/RouteDisplay';
 import GoogleRouteDraw from '../google-route-draw/GoogleRouteDraw';
 import Script from 'react-load-script';
 import { GOOGLE_API_KEY } from '../../Defaults';
+import axios from 'axios';
+import { ApiServer } from '../../Defaults';
 
 const LoadingWrapper = styled.div`
   width: 100%;
@@ -26,10 +28,11 @@ class OrderDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      scriptisLoaded: false,
       isLoading: true,
       orderId: -1,
       detailsInfo: {
-        agentAddress: 'initial value test',
+        agentAddress: '',
         agentName: '',
         consigneeAddress: '',
         consigneeName: '',
@@ -38,10 +41,15 @@ class OrderDetail extends Component {
         issuingCompany: '',
         orderNumber: '',
         originName: '',
-        serviceType: 'test initial service type value',
+        serviceType: 't',
         shipperAddress: '',
         shipperName: '',
-        transportationMode: ''
+        transportationMode: '',
+        agentId: -1,
+        consigneeId: -1,
+        issuingCompanyId: -1,
+        shipperId: -1,
+        transportationModeId: -1
       },
       commoditiesInfo: {},
       chargesInfo: {},
@@ -70,7 +78,12 @@ class OrderDetail extends Component {
           label: 'Step 6',
           active: false
         }
-      ]
+      ],
+      issuingCompanies: [],
+      shippers: [],
+      agents: [],
+      consignees: [],
+      transports: []
     };
   }
 
@@ -94,18 +107,89 @@ class OrderDetail extends Component {
 
   componentDidMount = () => {
     const orderId = this.props.match.params.id;
-    // Call the API for shipment information about this order by  "orderId" CALL_API
-    // ....
-    setTimeout(() => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+
+    axios.get(`${ApiServer}/api/v1/shippment/${orderId}`).then(data => {
+      console.log('Fetching...');
+      console.log(data);
+
+      let shippment = data.data;
+      let detailsInfo = {
+        agentAddress: shippment.agent_address,
+        agentName: shippment.agent_name,
+        consigneeAddress: shippment.consignee_address,
+        consigneeName: shippment.consignee_name,
+        date: shippment.created_at,
+        destinationName: shippment.destination_name,
+        issuingCompany: shippment.issuing_company_name,
+        orderNumber: shippment.order_number,
+        originName: shippment.origin_name,
+        serviceType: shippment.service_type,
+        shipperAddress: shippment.shipper_address,
+        shipperName: shippment.shipper_name,
+        transportationMode: shippment.mode_of_transportation_name,
+        agentId: shippment.agent_id,
+        consigneeId: shippment.consignee_id,
+        issuingCompanyId: shippment.issuing_company_id,
+        shipperId: shippment.shipper_id,
+        transportationModeId: shippment.transportation_mode_id
+      };
+
+      // Get options for Details Main Tab
+      axios.get(`${ApiServer}/api/v1/order/options`).then(data => {
+        let options = data.data;
+        this.setState({
+          issuingCompanies: options.issuing_companies.map(item => ({
+            value: item.id,
+            label: item.company_name
+          })),
+          shippers: options.shippers.map(item => ({
+            value: item.id,
+            label: item.name
+          })),
+          agents: options.agents.map(item => ({
+            value: item.id,
+            label: item.name
+          })),
+          consignees: options.consignees.map(item => ({
+            value: item.id,
+            label: item.name
+          })),
+          transports: options.transports.map(item => ({
+            value: item.id,
+            label: item.name
+          }))
+        });
+      });
+
       this.setState({
         isLoading: false,
-        orderId: orderId
+        orderId: data.data.order_number,
+        detailsInfo: detailsInfo
       });
-    }, 2000);
+    });
+  };
+
+  handleOnLoad = () => {
+    this.setState({
+      scriptisLoaded: true
+    });
   };
 
   render() {
-    const { isLoading, orderId, detailsInfo } = this.state;
+    const {
+      isLoading,
+      orderId,
+      detailsInfo,
+      scriptisLoaded,
+      issuingCompanies,
+      shippers,
+      consignees,
+      agents,
+      transports
+    } = this.state;
 
     const tabOptions = [
       {
@@ -115,6 +199,11 @@ class OrderDetail extends Component {
             handleChange={this.onDetailsChange}
             detailsInfo={detailsInfo}
             orderId={orderId}
+            issuingCompanies={issuingCompanies}
+            shippers={shippers}
+            consignees={consignees}
+            agents={agents}
+            transports={transports}
           />
         )
       },
@@ -142,52 +231,55 @@ class OrderDetail extends Component {
       <>
         <Script
           url={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`}
+          onLoad={this.handleOnLoad}
         />
-        <BaseComponent cookies={this.props.cookies}>
-          {isLoading ? (
-            <LoadingWrapper>
-              {' '}
-              <CircularProgress />{' '}
-            </LoadingWrapper>
-          ) : (
-            <>
-              <OrderPrincipalInfo orderId={orderId} />
-              <div
-                style={{
-                  marginTop: '15px',
-                  marginBottom: '15px',
-                  width: '100%'
-                }}
-              >
-                <ProgressStep steps={this.state.orderStates} />
-              </div>
-              <div
-                style={{
-                  marginTop: '15px',
-                  display: 'flex',
-                  flexDirection: 'row'
-                }}
-              >
-                <div style={{ width: '70%', height: 'auto' }}>
-                  <TabsComponent options={tabOptions} />
+        {scriptisLoaded ? (
+          <BaseComponent cookies={this.props.cookies}>
+            {isLoading ? (
+              <LoadingWrapper>
+                {' '}
+                <CircularProgress />{' '}
+              </LoadingWrapper>
+            ) : (
+              <>
+                <OrderPrincipalInfo orderId={orderId} />
+                <div
+                  style={{
+                    marginTop: '15px',
+                    marginBottom: '15px',
+                    width: '100%'
+                  }}
+                >
+                  <ProgressStep steps={this.state.orderStates} />
                 </div>
-                <div style={{ width: '30%', margin: '15px' }}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <OrderSummary />
-                    <RouteDisplay />
+                <div
+                  style={{
+                    marginTop: '15px',
+                    display: 'flex',
+                    flexDirection: 'row'
+                  }}
+                >
+                  <div style={{ width: '70%', height: 'auto' }}>
+                    <TabsComponent options={tabOptions} />
+                  </div>
+                  <div style={{ width: '30%', margin: '15px' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                      }}
+                    >
+                      <OrderSummary />
+                      <RouteDisplay />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </>
-          )}
-        </BaseComponent>
+              </>
+            )}
+          </BaseComponent>
+        ) : null}
       </>
     );
   }

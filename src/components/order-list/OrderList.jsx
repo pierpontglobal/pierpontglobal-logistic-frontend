@@ -25,22 +25,13 @@ const columns = [
     title: 'Number'
   },
   {
-    title: 'Amount'
+    title: 'Origin'
   },
   {
-    title: 'Created at'
+    title: 'Destination'
   },
   {
-    title: 'Status'
-  },
-  {
-    title: 'Submitted'
-  },
-  {
-    title: 'Created by'
-  },
-  {
-    title: 'Has shippment?'
+    title: 'Service type'
   }
 ];
 
@@ -70,22 +61,19 @@ class OrderList extends Component {
         has_shippment: 'YES'
       }
     ];
-    axios.get(`${ApiServer}/api/v1/shipper`).then(data => {
+    axios.get(`${ApiServer}/api/v1/order`).then(data => {
       console.log('Fetching...');
       console.log(data);
-      const rowData = examples; // omitting retrieved data, since the backend for this is not created yet, putting examples though.
+      const rowData = data.data; // omitting retrieved data, since the backend for this is not created yet, putting examples though.
       let mappedData = rowData.map(row => {
         let rowObj = {
-          id: row.id,
+          id: row.order_number,
           content: [
             { isIcon: true, icon: <RemoveRedEye /> },
-            { text: row.id },
-            { text: row.amount },
-            { text: row.created_at },
-            { text: row.status },
-            { text: row.submitted },
-            { text: row.user_name },
-            { text: row.has_shippment }
+            { text: row.order_number },
+            { text: row.origin_name },
+            { text: row.destination_name },
+            { text: row.service_type }
           ]
         };
         return rowObj;
