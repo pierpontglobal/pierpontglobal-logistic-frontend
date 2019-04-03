@@ -147,7 +147,7 @@ b {
 
 .bg-overlay {
     background: linear-gradient(to right, #512DA8, #711e72);
-    opacity: 0.9;
+    opacity: 0.63;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -158,7 +158,7 @@ b {
 }
 
 .bg-overlay-light {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
 }
 
 .section {
