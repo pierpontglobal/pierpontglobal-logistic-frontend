@@ -20,9 +20,9 @@ const TitleWrapper = styled.div`
 const TableWrapper = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 15px;
 `;
 
@@ -49,12 +49,42 @@ const styles = theme => ({
   }
 });
 
-const columns = [
+const incomeColumns = [
   {
-    title: 'Status'
+    title: 'Service'
   },
   {
-    title: 'Code'
+    title: 'Description'
+  },
+  {
+    title: 'QTY'
+  },
+  {
+    title: 'Unit'
+  },
+  {
+    title: 'Rate'
+  },
+  {
+    title: 'Amount'
+  },
+  {
+    title: 'Currency'
+  },
+  {
+    title: 'Payment'
+  },
+  {
+    title: 'Profit'
+  },
+  {
+    title: 'Bill to'
+  }
+];
+
+const expensesColumns = [
+  {
+    title: 'Service'
   },
   {
     title: 'Description'
@@ -75,13 +105,7 @@ const columns = [
     title: 'Profit'
   },
   {
-    title: 'Bill to'
-  },
-  {
-    title: 'Invoice'
-  },
-  {
-    title: 'QTY Expense'
+    title: 'Vendor'
   }
 ];
 
@@ -89,24 +113,8 @@ class ChargesOption extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: [
-        {
-          id: 1,
-          content: [
-            { text: 'Pending' },
-            { text: 'Off' },
-            { text: 'OCEAN FREIGHT' },
-            { text: '101' },
-            { text: 'Each' },
-            { text: '15.00' },
-            { text: '1515.00 USD' },
-            { text: '909.00 USD' },
-            { text: 'PierPont Global' },
-            { text: '' },
-            { text: '0' }
-          ]
-        }
-      ],
+      incomeRows: [],
+      expensesRows: [],
       onCloseChargesModal: false
     };
   }
@@ -117,35 +125,61 @@ class ChargesOption extends Component {
     });
   };
 
-  handleAddCharge = e => {
-    const { rows } = this.state;
-    console.log(e);
+  handleAddCharge = charge => {
+    const { incomeRows, expensesRows } = this.state;
+    console.log(charge);
+
+    let service = charge.service;
+    let income = charge.income;
+    let expense = charge.expense;
+
+    let rowId = `${Math.floor(Math.random() * 31) + 1}`;
+
+    if (!!income.amount && !!income.payment) {
+      incomeRows.push({
+        id: `i-${rowId}`,
+        content: [
+          { text: service.serviceTypeName },
+          { text: service.serviceTypeDescription },
+          { text: income.quantity },
+          { text: income.units },
+          { text: income.rate },
+          { text: income.amount },
+          { text: income.currency },
+          { text: income.payment },
+          { text: income.profit },
+          { text: income.billTo }
+        ]
+      });
+    }
+
+    if (!!expense.amount && !!expense.payment) {
+      expensesRows.push({
+        id: `e-${rowId}`,
+        content: [
+          { text: service.serviceTypeName },
+          { text: service.serviceTypeDescription },
+          { text: expense.quantity },
+          { text: expense.units },
+          { text: expense.rate },
+          { text: expense.amount },
+          { text: expense.currency },
+          { text: expense.payment },
+          { text: expense.profit },
+          { text: expense.vendor }
+        ]
+      });
+    }
+
     this.setState(
       {
-        rows: [
-          ...rows,
-          {
-            id: 2,
-            content: [
-              { text: 'Pending' },
-              { text: 'Off' },
-              { text: 'OCEAN FREIGHT' },
-              { text: '101' },
-              { text: 'Each' },
-              { text: '15.00' },
-              { text: '1515.00 USD' },
-              { text: '909.00 USD' },
-              { text: 'PierPont Global' },
-              { text: '' },
-              { text: '0' }
-            ]
-          }
-        ],
+        incomeRows: incomeRows,
+        expensesRows: expensesRows,
         openModalAddCharges: false
       },
       () => {
         // Propagate event to parents
-        this.props.handleChange(this.state.rows);
+        this.props.handleChange(this.state);
       }
     );
   };
@@ -158,7 +192,7 @@ class ChargesOption extends Component {
 
   render() {
     const { classes } = this.props;
-    const { rows, openModalAddCharges } = this.state;
+    const { openModalAddCharges, expensesRows, incomeRows } = this.state;
     return (
       <>
         <Paper style={{ marginBottom: '8px' }}>
@@ -189,7 +223,10 @@ class ChargesOption extends Component {
           </TitleWrapper>
         </Paper>
         <TableWrapper>
-          <PPGTable columns={columns} rows={rows} />
+          <PPGTable columns={incomeColumns} rows={incomeRows} />
+        </TableWrapper>
+        <TableWrapper>
+          <PPGTable columns={expensesColumns} rows={expensesRows} />
         </TableWrapper>
         <PPGModal
           setOpen={openModalAddCharges}

@@ -37,7 +37,7 @@ const CustomInput = styled.input`
   background-color: white;
 `;
 
-class IncomeTab extends Component {
+class ExpenseTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -47,8 +47,7 @@ class IncomeTab extends Component {
       amount: '',
       currency: '',
       payment: '',
-      billTo: '',
-      billToName: '',
+      vendor: '',
       date: ''
     };
   }
@@ -59,7 +58,7 @@ class IncomeTab extends Component {
         [e.target.id]: e.target.value
       },
       () => {
-        this.props.hanleData(this.state);
+        this.props.handleData(this.state);
       }
     );
   };
@@ -182,26 +181,14 @@ class IncomeTab extends Component {
         <Grid container spacing={12} style={{ marginTop: '38px' }}>
           <Grid item xs={5}>
             <TextField
-              id="billTo"
-              label="Bill to"
+              id="vendor"
+              label="Vendor"
               className={classes.textField}
               margin="normal"
               value={billTo}
               onChange={this.handleChangeInput}
               variant="outlined"
               fullWidth
-            />
-          </Grid>
-          <Grid item xs={1} />
-          <Grid item xs={3}>
-            <TextField
-              id="billToName"
-              label="Bill to name"
-              className={classes.textField}
-              margin="normal"
-              value={billToName}
-              onChange={this.handleChangeInput}
-              variant="outlined"
             />
           </Grid>
           <Grid item xs={3}>
@@ -225,4 +212,4 @@ class IncomeTab extends Component {
   }
 }
 
-export default withStyles(styles)(IncomeTab);
+export default withStyles(styles)(ExpenseTab);
