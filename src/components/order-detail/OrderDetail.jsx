@@ -209,11 +209,21 @@ class OrderDetail extends Component {
       },
       {
         label: 'Commodities',
-        item: <CommoditiesOption handleChange={this.onCommoditiesChange} />
+        item: (
+          <CommoditiesOption
+            cookies={this.props.cookies}
+            handleChange={this.onCommoditiesChange}
+          />
+        )
       },
       {
         label: 'Charges',
-        item: <ChargesOption handleChange={this.onChargesChange} />
+        item: (
+          <ChargesOption
+            cookies={this.props.cookies}
+            handleChange={this.onChargesChange}
+          />
+        )
       },
       {
         label: 'Road path',

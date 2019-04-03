@@ -19,10 +19,13 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ExitToApp from '@material-ui/icons/ExitToApp';
 import ListAlt from '@material-ui/icons/ListAlt';
 import DirectionsCar from '@material-ui/icons/DirectionsCar';
+import People from '@material-ui/icons/People';
+import DirectionsTransit from '@material-ui/icons/DirectionsTransit';
 import Home from '@material-ui/icons/Home';
 import LocalShipping from '@material-ui/icons/LocalShipping';
 import { Link, NavLink } from 'react-router-dom';
 import Icon from '@material-ui/core/Icon';
+import { withCookies } from 'react-cookie';
 
 const drawerWidth = 240;
 
@@ -239,7 +242,7 @@ class MiniDrawer extends React.Component {
                 </ListItem>
               </NavLink>
               <NavLink
-                to="/invoices"
+                to="/agents"
                 style={{ textDecoration: 'none' }}
                 activeStyle={{
                   fontWeight: 'bold',
@@ -249,11 +252,25 @@ class MiniDrawer extends React.Component {
                 <ListItem button>
                   <ListItemIcon>
                     {' '}
-                    <Icon>
-                      <i class="fas fa-file-invoice" />
-                    </Icon>{' '}
+                    <People />{' '}
                   </ListItemIcon>
-                  <ListItemText primary="Invoices" />
+                  <ListItemText primary="Agents" />
+                </ListItem>
+              </NavLink>
+              <NavLink
+                to="/mode_of_transportations"
+                style={{ textDecoration: 'none' }}
+                activeStyle={{
+                  fontWeight: 'bold',
+                  color: 'red'
+                }}
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    {' '}
+                    <DirectionsTransit />{' '}
+                  </ListItemIcon>
+                  <ListItemText primary="Mode of transports" />
                 </ListItem>
               </NavLink>
             </List>

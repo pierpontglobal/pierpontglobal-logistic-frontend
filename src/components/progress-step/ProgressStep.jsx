@@ -1,12 +1,27 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const StepWrapper = styled.div`
   width: 200px;
   height: 40px;
   position: relative;
-  background: ${props => props.statusColor};
   color: ${props => props.textColor};
+  ${props =>
+    !props.isActive &&
+    css`
+      background: linear-gradient(
+        ${props.gradientStyle},
+        ${props.startColor},
+        ${props.endColor}
+      );
+      color: white;
+    `};
+  ${props =>
+    props.isActive &&
+    css`
+      background: ${props => props.statusColor};
+      color: black;
+    `};
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -20,11 +35,45 @@ const StepWrapper = styled.div`
     bottom: 0;
     width: 0;
     height: 0;
-    border-left: 20px solid ${props => props.statusColor};
+    border-left: 20px solid
+      ${props => (!props.isActive ? props.endColor : props.statusColor)};
     border-top: 20px solid transparent;
     border-bottom: 20px solid transparent;
   }
 `;
+
+const ColorsInOrder = [
+  {
+    start: '#0b740b',
+    end: '#0f9b0f',
+    background: `background: linear-gradient(to right, #0b740b, #0f9b0f);`
+  },
+  {
+    start: '#0f9b0f',
+    end: '#10a210',
+    background: `background: linear-gradient(to right, #0f9b0f, #10a210);`
+  },
+  {
+    start: '#10a210',
+    end: '#12ba12',
+    background: `background: linear-gradient(to right, #10a210, #12ba12);`
+  },
+  {
+    start: '#12ba12',
+    end: '#15d115',
+    background: `background: linear-gradient(to right, #12ba12, #15d115);`
+  },
+  {
+    start: '#15d115',
+    end: '#17e817',
+    background: `background: linear-gradient(to right, #15d115, #17e817);`
+  },
+  {
+    start: '#17e817',
+    end: '#2eea2e',
+    background: `background: linear-gradient(to right, #17e817, #2eea2e);`
+  }
+];
 
 class ProgressStep extends Component {
   constructor(props) {
@@ -72,6 +121,11 @@ class ProgressStep extends Component {
             textColor={step.active ? 'white' : 'black'}
             id={index}
             onClick={this.updateStatus}
+            isActive={!step.active}
+            backgroundGradient={ColorsInOrder[index].background}
+            startColor={ColorsInOrder[index].start}
+            endColor={ColorsInOrder[index].end}
+            gradientStyle={'to right'}
           >
             {step.label}
           </StepWrapper>

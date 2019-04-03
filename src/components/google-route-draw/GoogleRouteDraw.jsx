@@ -37,7 +37,12 @@ class GoogleRouteDraw extends Component {
     this.directionsService = null;
     this.directionsDisplay = null;
 
-    this.speedFactor = 500; // 10x faster animated drive
+    // Speed of the animated marker. This will determine the quantity of points grabbed between
+    // Origin and destination. The minor it is, the more points it gets, but slower it's
+    this.speedFactor = 300;
+
+    // This value is the animation framer for the marker
+    this.markerDelay = 65;
 
     this.marker = null;
 
@@ -190,7 +195,7 @@ class GoogleRouteDraw extends Component {
       this.setState({
         autoDriveSteps: [...autoDriveSteps]
       });
-    }, 75);
+    }, this.markerDelay);
   };
 
   render() {

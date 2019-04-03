@@ -3,6 +3,8 @@ import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import { Button, IconButton } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import axios from 'axios';
+import { ApiServer } from '../../../../Defaults';
 
 const styles = theme => ({
   container: {
@@ -30,21 +32,45 @@ class AddVehicle extends Component {
     };
   }
 
+  componentDidMount = () => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+  };
+
   findCarByVin = () => {
     const { vin } = this.state;
     if (!!vin) {
-      this.setState({
-        findingCar: true
-      });
-      setTimeout(() => {
-        this.setState({
-          findingCar: false,
-          car: {
-            vin: this.state.vin
-          },
-          carFound: true
-        });
-      }, 3000);
+      this.setState(
+        {
+          findingCar: true
+        },
+        () => {
+          axios.get(`${ApiServer}/api/v1/car/${vin}`).then(
+            data => {
+              console.log(data);
+              let carFound = false;
+              let carData = null;
+              if (data.data.status !== 500) {
+                carFound = true;
+                carData = data.data.car_information;
+              }
+              this.setState({
+                findingCar: false,
+                car: carData,
+                carFound: carFound
+              });
+            },
+            err => {
+              this.setState({
+                findingCar: false,
+                car: null,
+                carFound: false
+              });
+            }
+          );
+        }
+      );
     }
   };
 
@@ -107,11 +133,73 @@ class AddVehicle extends Component {
           </div>
           {this.state.car ? (
             <>
-              <div style={{ width: '100%' }}>
-                <div>
-                  <span style={{ fontWeight: '600' }}>Car information</span>
+              <div>
+                <div
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    display: 'flex',
+                    flexDirection: 'column'
+                  }}
+                >
+                  <div style={{ marginBottom: '12px' }}>
+                    <span style={{ fontWeight: '600' }}>Car information</span>
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <div style={{ width: '30%', margin: '7px' }}>
+                      <div>VIN: {this.state.car.vin}</div>
+                    </div>
+                    <div style={{ width: '30%', margin: '7px' }}>
+                      <div>Year: {this.state.car.year}</div>
+                    </div>
+                    <div style={{ width: '30%', margin: '7px' }}>
+                      <div>Model: {this.state.car.car_model}</div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <div style={{ width: '30%', margin: '7px' }}>
+                      <div>Maker: {this.state.car.car_maker}</div>
+                    </div>
+                    <div style={{ width: '30%', margin: '7px' }}>
+                      <div>Engine: {this.state.car.engine}</div>
+                    </div>
+                    <div style={{ width: '30%', margin: '7px' }}>
+                      <div>Trim: {this.state.car.trim}</div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <div style={{ width: '30%', margin: '7px' }}>
+                      <div>Fuel: {this.state.car.car_fuel}</div>
+                    </div>
+                    <div style={{ width: '30%', margin: '7px' }}>
+                      <div>Body style: {this.state.car.car_body_style}</div>
+                    </div>
+                    <div style={{ width: '30%', margin: '7px' }}>
+                      <div>Type code: {this.state.car.car_type_code}</div>
+                    </div>
+                  </div>
                 </div>
-                <div>VIN: {this.state.car.vin}</div>
               </div>
             </>
           ) : null}

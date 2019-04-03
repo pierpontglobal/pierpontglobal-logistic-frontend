@@ -15,6 +15,8 @@ import ShipperList from './components/shipper-list/ShipperList';
 import DealerList from './components/dealer-list/DealerList';
 import InvoiceList from './components/invocie-list/InvocieList';
 import ShipperCreate from './components/shipper-list/shipper-create/ShipperCreate';
+import AgentList from './components/agent-list/AgentList';
+import ModeOfTransportationList from './components/mode-of-transportation-list/ModeOfTransportationList';
 
 function App(props) {
   const { cookies } = props;
@@ -92,10 +94,21 @@ function App(props) {
             />
             <Route
               exact
-              path="/invoices"
+              path="/agents"
               render={() =>
                 isLoggedIn ? (
-                  <InvoiceList cookies={cookies} />
+                  <AgentList cookies={cookies} />
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/mode_of_transportations"
+              render={() =>
+                isLoggedIn ? (
+                  <ModeOfTransportationList cookies={cookies} />
                 ) : (
                   <Redirect to="/" />
                 )

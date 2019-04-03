@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button';
 import PPGModal from '../../ppg-modal/PPGModal';
 import TYPES from '../../../constants/CommodityTypes';
 import AddCommodity from './add-commodity/AddCommodity';
+import axios from 'axios';
+import { ApiServer } from '../../../Defaults';
 
 const TitleWrapper = styled.div`
   width: 100%;
@@ -21,10 +23,11 @@ const TitleWrapper = styled.div`
 const TableWrapper = styled.div`
   width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 15px;
+  margin-top: 18px;
 `;
 
 const styles = theme => ({
@@ -50,30 +53,75 @@ const styles = theme => ({
   }
 });
 
-const columns = [
-  {
-    title: 'Status'
-  },
+const containerColumns = [
   {
     title: 'Reference'
-  },
-  {
-    title: 'Pieces'
-  },
-  {
-    title: 'Package'
   },
   {
     title: 'Description'
   },
   {
-    title: 'Dimension'
+    title: 'Pieces'
   },
   {
-    title: 'Weight'
+    title: 'Length'
   },
   {
-    title: 'Volumne'
+    title: 'Width'
+  },
+  {
+    title: 'Height'
+  },
+  {
+    title: 'Tare weight'
+  },
+  {
+    title: 'Next weight'
+  },
+  {
+    title: 'Total weigth'
+  },
+  {
+    title: 'Volume'
+  },
+  {
+    title: 'Vol weight'
+  },
+  {
+    title: 'Square Pt'
+  }
+];
+
+const carColumns = [
+  {
+    title: 'Vin'
+  },
+  {
+    title: 'Pieces'
+  },
+  {
+    title: 'Year'
+  },
+  {
+    title: 'Model'
+  },
+  {
+    title: 'Maker'
+  },
+  {
+    title: 'Engine'
+  },
+  {
+    title: 'Trim'
+  },
+  {
+    title: 'Fuel'
+  },
+  {
+    title: 'Body'
+  },
+  {
+    title: 'Type code'
   }
 ];
 
@@ -81,21 +129,8 @@ class CommoditiesOption extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      rows: [
-        {
-          id: 1,
-          content: [
-            { text: 'Received' },
-            { text: 'WRI0089' },
-            { text: '1' },
-            { text: '45 ft. Standard Container' },
-            { text: 'NONE' },
-            { text: '0 x 0 x 0 in' },
-            { text: '0.000 kg' },
-            { text: '0.000 m3' }
-          ]
-        }
-      ],
+      containerRows: [],
+      carRows: [],
       openModalAddVehicle: false,
       openModalAddContainer: false
     };
@@ -126,22 +161,24 @@ class CommoditiesOption extends Component {
   };
 
   handleAddVehicle = e => {
-    const { rows } = this.state;
+    const { carRows } = this.state;
     this.setState(
       {
-        rows: [
-          ...rows,
+        carRows: [
+          ...carRows,
           {
             id: 2,
             content: [
-              { text: 'Pending' },
               { text: e.vin },
-              { text: e.vin },
-              { text: '40 ft. Standard Container' },
-              { text: 'NONE' },
-              { text: '0 x 2 x 0 in' },
-              { text: '0.000 kg' },
-              { text: '0.000 m3' }
+              { text: 1 },
+              { text: e.year },
+              { text: e.car_model },
+              { text: e.car_maker },
+              { text: e.engine },
+              { text: e.trim },
+              { text: e.car_fuel },
+              { text: e.car_body_style },
+              { text: e.car_type_code }
             ]
           }
         ],
@@ -149,28 +186,32 @@ class CommoditiesOption extends Component {
       },
       () => {
         // Propagate event to parents
-        this.props.handleChange(this.state.rows);
+        this.props.handleChange(this.state.carRows);
       }
     );
   };
 
-  handleAddContainer = e => {
-    const { rows } = this.state;
+  handleAddContainer = container => {
+    const { containerRows } = this.state;
     this.setState(
       {
-        rows: [
-          ...rows,
+        containerRows: [
+          ...containerRows,
           {
-            id: 2,
+            id: container.id,
             content: [
-              { text: 'Pending' },
-              { text: e.vin },
-              { text: e.vin },
-              { text: '40 ft. Standard Container' },
-              { text: 'NONE' },
-              { text: '0 x 2 x 0 in' },
-              { text: '0.000 kg' },
-              { text: '0.000 m3' }
+              { text: container.id },
+              { text: container.containerType },
+              { text: 1 },
+              { text: container.length },
+              { text: container.width },
+              { text: container.height },
+              { text: container.tareWeight },
+              { text: container.nextWeight },
+              { text: container.totalWeight },
+              { text: container.volumne },
+              { text: container.volWeigth },
+              { text: container.squarePt }
             ]
           }
         ],
@@ -178,14 +219,19 @@ class CommoditiesOption extends Component {
       },
       () => {
         // Propagate event to parents
-        this.props.handleChange(this.state.rows);
+        this.props.handleChange(this.state.containerRows);
       }
     );
   };
 
   render() {
     const { classes } = this.props;
-    const { rows, openModalAddVehicle, openModalAddContainer } = this.state;
+    const {
+      carRows,
+      containerRows,
+      openModalAddVehicle,
+      openModalAddContainer
+    } = this.state;
 
     return (
       <>
@@ -223,9 +269,43 @@ class CommoditiesOption extends Component {
             </div>
           </TitleWrapper>
         </Paper>
-        <TableWrapper>
-          <PPGTable columns={columns} rows={rows} />
-        </TableWrapper>
+        {carRows.length > 0 ? (
+          <TableWrapper>
+            <div>
+              <span
+                style={{
+                  fontWeight: '600',
+                  fontSize: '1.05rem',
+                  color: 'darkgray',
+                  padding: '10px'
+                }}
+              >
+                Vehicles{' '}
+              </span>
+            </div>
+            <PPGTable columns={carColumns} rows={carRows} />
+          </TableWrapper>
+        ) : null}
+        {containerRows.length > 0 ? (
+          <TableWrapper>
+            <div>
+              <span
+                style={{
+                  fontWeight: '600',
+                  fontSize: '1.05rem',
+                  color: 'darkgray',
+                  padding: '10px'
+                }}
+              >
+                Containers{' '}
+              </span>
+            </div>
+            <PPGTable columns={containerColumns} rows={containerRows} />
+          </TableWrapper>
+        ) : null}
+        {carRows.length === 0 && containerRows.length === 0
+          ? 'No commodities has been added'
+          : null}
         <PPGModal
           setOpen={openModalAddVehicle}
           handleClose={this.onCloseVehicleModal}
@@ -235,6 +315,7 @@ class CommoditiesOption extends Component {
           <AddCommodity
             handleAdd={this.handleAddVehicle}
             type={TYPES.VEHICLE}
+            {...this.props}
           />
         </PPGModal>
         <PPGModal
@@ -246,6 +327,7 @@ class CommoditiesOption extends Component {
           <AddCommodity
             handleAdd={this.handleAddContainer}
             type={TYPES.CONTAINER}
+            {...this.props}
           />
         </PPGModal>
       </>
