@@ -103,6 +103,20 @@ class OrderList extends Component {
             </LoadingWrapper>
           ) : (
             <>
+              <div
+                style={{
+                  width: '100%',
+                  display: 'flex',
+                  alignItems: 'space-between',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <div style={{ marginTop: '15px', marginBottom: '10px' }}>
+                  <span style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+                    Orders
+                  </span>
+                </div>
+              </div>
               {/*<PPGTable handleOnRowClick={this.onRowClick} columns={columns} rows={rows} />*/}
               <PPGTable
                 columns={columns}

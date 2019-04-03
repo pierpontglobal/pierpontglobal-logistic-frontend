@@ -13,6 +13,8 @@ import Input from '@material-ui/core/Input';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import FilledInput from '@material-ui/core/FilledInput';
 import InputLabel from '@material-ui/core/InputLabel';
+import axios from 'axios';
+import { ApiServer } from '../../../../Defaults';
 
 const styles = theme => ({
   container: {
@@ -38,21 +40,8 @@ class AddContainer extends Component {
     super(props);
     this.state = {
       containerFound: false,
-      types: [
-        {
-          label: 'LD-8 PALLET (LATA TYPE 6D)',
-          id: 1,
-          length: 96.06,
-          width: 89.67,
-          height: 67.9,
-          tareWeight: 0,
-          nextWeight: 0,
-          totalWeight: 0,
-          volumne: 371329.063,
-          volWeigth: 3876859.867,
-          squarePt: 5787.894
-        }
-      ],
+      types: [],
+      isLoading: false,
       container: {
         containerType: '',
         length: '',
@@ -68,21 +57,73 @@ class AddContainer extends Component {
     };
   }
 
+  componentDidMount = () => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+    axios.get(`${ApiServer}/api/v1/container`).then(data => {
+      let containers = data.data;
+      this.setState({
+        types: containers.map(item => {
+          return {
+            label: item.description,
+            id: item.id,
+            length: item.length,
+            width: item.width,
+            height: item.height,
+            tareWeight: item.tare_weight,
+            nextWeight: item.next_weight,
+            totalWeight: item.total_weight,
+            volumne: item.volume,
+            volWeigth: item.vol_weight,
+            squarePt: item.square_pt
+          };
+        })
+      });
+    });
+  };
+
   handleChange = event => {
     // Get container type info
-    const obj = {
-      width: 983.0,
-      height: 680.98,
-      length: 867.9,
-      tareWeight: 57596.9,
-      nextWeight: 95769.676,
-      totalWeight: 587694.89,
-      volumne: 57683.9,
-      volWeigth: 48484.904,
-      squarePt: 347348575.576,
-      containerType: event.target.value
-    };
-    this.setState({ container: obj, containerFound: true });
+    console.log(event);
+    let containerId = event.target.value;
+    this.setState(
+      {
+        isLoading: true
+      },
+      () => {
+        axios.get(`${ApiServer}/api/v1/container/${containerId}`).then(
+          data => {
+            let container = data.data;
+            console.log(data.data);
+            const obj = {
+              id: containerId,
+              width: container.width,
+              height: container.height,
+              length: container.length,
+              tareWeight: container.tare_weight,
+              nextWeight: container.next_weight,
+              totalWeight: container.total_weight,
+              volumne: container.volume,
+              volWeigth: container.vol_weight,
+              squarePt: container.square_pt,
+              containerType: container.description
+            };
+            this.setState({
+              isLoading: false,
+              container: obj,
+              containerFound: true
+            });
+          },
+          err => {
+            this.setState({
+              isLoading: false,
+              containerFound: false
+            });
+          }
+        );
+      }
+    );
   };
 
   addContainerToShippment = () => {

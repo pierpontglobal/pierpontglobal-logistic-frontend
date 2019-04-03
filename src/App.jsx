@@ -15,6 +15,9 @@ import ShipperList from './components/shipper-list/ShipperList';
 import DealerList from './components/dealer-list/DealerList';
 import InvoiceList from './components/invocie-list/InvocieList';
 import ShipperCreate from './components/shipper-list/shipper-create/ShipperCreate';
+import LandingPage from './components/landing-page/LandingPage';
+import AgentList from './components/agent-list/AgentList';
+import ModeOfTransportationList from './components/mode-of-transportation-list/ModeOfTransportationList';
 
 function App(props) {
   const { cookies } = props;
@@ -24,14 +27,19 @@ function App(props) {
       <Router>
         <div>
           <Switch>
-            <Route exact path="/" render={() => <SignIn cookies={cookies} />} />
+            <Route exact path="/" render={() => <LandingPage />} />
+            <Route
+              exact
+              path="/sign-in"
+              render={() => <SignIn cookies={cookies} />}
+            />
             <Route
               path="/dashboard"
               render={() =>
                 isLoggedIn ? (
                   <Dashboard cookies={cookies} />
                 ) : (
-                  <Redirect to="/" />
+                  <Redirect to="/sign-in" />
                 )
               }
             />
@@ -42,7 +50,7 @@ function App(props) {
                 isLoggedIn ? (
                   <OrderList cookies={cookies} />
                 ) : (
-                  <Redirect to="/" />
+                  <Redirect to="/sign-in" />
                 )
               }
             />
@@ -53,7 +61,7 @@ function App(props) {
                 isLoggedIn ? (
                   <OrderDetail cookies={cookies} />
                 ) : (
-                  <Redirect to="/" />
+                  <Redirect to="/sign-in" />
                 )
               }
             />
@@ -64,7 +72,7 @@ function App(props) {
                 isLoggedIn ? (
                   <ShipperList cookies={cookies} />
                 ) : (
-                  <Redirect to="/" />
+                  <Redirect to="/sign-in" />
                 )
               }
             />
@@ -75,7 +83,7 @@ function App(props) {
                 isLoggedIn ? (
                   <ShipperCreate cookies={cookies} />
                 ) : (
-                  <Redirect to="/" />
+                  <Redirect to="/sign-in" />
                 )
               }
             />
@@ -86,18 +94,29 @@ function App(props) {
                 isLoggedIn ? (
                   <DealerList cookies={cookies} />
                 ) : (
+                  <Redirect to="/sign-in" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/agents"
+              render={() =>
+                isLoggedIn ? (
+                  <AgentList cookies={cookies} />
+                ) : (
                   <Redirect to="/" />
                 )
               }
             />
             <Route
               exact
-              path="/invoices"
+              path="/mode_of_transportations"
               render={() =>
                 isLoggedIn ? (
-                  <InvoiceList cookies={cookies} />
+                  <ModeOfTransportationList cookies={cookies} />
                 ) : (
-                  <Redirect to="/" />
+                  <Redirect to="/sign-in" />
                 )
               }
             />

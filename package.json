@@ -7,6 +7,17 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@bit/hectorandac.landingpage.blog": "^1.0.0",
+    "@bit/hectorandac.landingpage.contact": "^1.0.0",
+    "@bit/hectorandac.landingpage.descriptions": "^1.0.0",
+    "@bit/hectorandac.landingpage.features": "^1.0.0",
+    "@bit/hectorandac.landingpage.navbar": "^1.0.0",
+    "@bit/hectorandac.landingpage.pricing": "^1.0.0",
+    "@bit/hectorandac.landingpage.process": "^1.0.0",
+    "@bit/hectorandac.landingpage.services": "^1.0.0",
+    "@bit/hectorandac.landingpage.started": "^1.0.0",
+    "@bit/hectorandac.landingpage.team": "^1.0.0",
+    "@bit/hectorandac.landingpage.testi": "^1.0.0",
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
@@ -28,7 +39,6 @@
     "react-swipeable-views": "^0.13.1",
     "react-virtualized": "^9.21.0",
     "recharts": "^1.5.0",
-    "reset.css": "^2.0.2",
     "styled-components": "^4.1.3"
   },
   "devDependencies": {
