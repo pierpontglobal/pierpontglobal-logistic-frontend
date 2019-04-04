@@ -16,11 +16,12 @@ import FooterLinks from './components/FooterLinks';
 import Switcher from './components/Switcher';
 import { Link } from 'react-router-dom';
 import Aux from './hoc/Aux_';
+import BackImage from '../../assets/images/landing_background.jpeg';
 
 class HomeSeven extends React.Component {
   render() {
     var bkg1 = {
-      backgroundImage: 'url(images/img-1.jpg)',
+      backgroundImage: `url(${BackImage})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center'
     };

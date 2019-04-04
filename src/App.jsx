@@ -21,7 +21,7 @@ import ModeOfTransportationList from './components/mode-of-transportation-list/M
 
 function App(props) {
   const { cookies } = props;
-  const isLoggedIn = !!cookies.get('token');
+  const isLoggedIn = !!cookies.get('token', { path: '/' });
   return (
     <MuiThemeProvider theme={DefaultTheme}>
       <Router>

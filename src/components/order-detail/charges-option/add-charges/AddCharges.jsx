@@ -7,7 +7,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import TabsComponent from '../../../Tabs/TabsComponent';
 import IncomeTab from './income-tab/IncomeTab';
+import ExpenseTab from './expense-tab/ExpenseTab';
 import { Button, IconButton } from '@material-ui/core';
+import PPGSimpleSelect from '../../../ppg-simple-select/PPGSimpleSelect';
 
 const styles = theme => ({
   container: {
@@ -21,7 +23,7 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '100%'
+    width: '90%'
   },
   formControl: {
     margin: theme.spacing.unit,
@@ -38,6 +40,11 @@ class AddCharges extends Component {
           id: 1,
           label: 'Sample service type #1',
           description: 'Sample service #1 description here....'
+        },
+        {
+          id: 2,
+          label: 'Sample service #2',
+          description: 'Hola daniel k ases'
         }
       ],
       service: {
@@ -47,12 +54,16 @@ class AddCharges extends Component {
       },
       serviceFound: false,
       income: {},
-      expense: {}
+      expense: {},
+      isFetchingService: false
     };
   }
 
-  handleChange = e => {
-    const serviceId = e.target.value;
+  componentDidMount = () => {};
+
+  handleChange = srv => {
+    console.log(srv);
+    const serviceId = srv.id;
 
     if (!!serviceId) {
       const service = this.state.serviceTypes.find(x => x.id === serviceId);
@@ -71,7 +82,7 @@ class AddCharges extends Component {
   };
 
   addChargeToShipment = e => {
-    this.props.handleAdd(this.state.car);
+    this.props.handleAdd(this.state);
   };
 
   handleIncomeData = incomeTabState => {
@@ -80,9 +91,20 @@ class AddCharges extends Component {
     });
   };
 
+  handleExpenseData = expenseTabState => {
+    this.setState({
+      expense: expenseTabState
+    });
+  };
+
   render() {
     const { classes } = this.props;
-    const { service, serviceTypes, serviceFound } = this.state;
+    const {
+      service,
+      serviceTypes,
+      serviceFound,
+      isFetchingService
+    } = this.state;
 
     const tabOptions = [
       {
@@ -91,7 +113,7 @@ class AddCharges extends Component {
       },
       {
         label: 'EXPENSES',
-        item: 'expenses tab here'
+        item: <ExpenseTab handleData={this.handleExpenseData} />
       }
     ];
 
@@ -110,8 +132,13 @@ class AddCharges extends Component {
           }}
         >
           <div style={{ width: '40%' }}>
-            <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-simple">Container type</InputLabel>
+            <PPGSimpleSelect
+              isLoading={isFetchingService}
+              handleChange={this.handleChange}
+              options={serviceTypes}
+            />
+            {/* <FormControl className={classes.formControl}>
+              <InputLabel htmlFor="age-simple">Service type</InputLabel>
               <Select
                 value={this.state.service.serviceTypeName}
                 onChange={this.handleChange}
@@ -129,9 +156,9 @@ class AddCharges extends Component {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
+            </FormControl> */}
           </div>
-          <div style={{ width: '60%' }}>
+          <div style={{ width: '50%' }}>
             <TextField
               disabled
               id="standard-disabled"
