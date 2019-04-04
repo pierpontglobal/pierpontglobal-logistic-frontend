@@ -42,8 +42,7 @@ class HomeSeven extends React.Component {
                 <div className="row">
                   <div className="col-lg-8 offset-lg-2 text-white text-center">
                     <h1 className="home-title text-rotate">
-                      Professional Landing Page Template,We help startups launch
-                      their products,Perfect solution for small businesses
+                      The future of logistics
                     </h1>
                     <p className="padding-t-15 home-desc">
                       Etiam sed.Interdum consequat proin vestibulum className at
