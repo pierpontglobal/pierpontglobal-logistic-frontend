@@ -72,12 +72,6 @@ class HomeSeven extends React.Component {
         {/* Features Component*/}
         <Features />
 
-        {/* Descriptions Component*/}
-        <Descriptions />
-
-        {/* Pricing Component*/}
-        <Pricing />
-
         {/* Team Component*/}
         <Team />
 
@@ -86,12 +80,6 @@ class HomeSeven extends React.Component {
 
         {/* Testi Component*/}
         <Testi />
-
-        {/* Started Component*/}
-        <Started />
-
-        {/* Blog Component*/}
-        <Blog />
 
         {/* Contact Component*/}
         <Contact />
@@ -104,9 +92,6 @@ class HomeSeven extends React.Component {
 
         {/* FooterLinks Component*/}
         <FooterLinks />
-
-        {/* Switcher Component*/}
-        <Switcher />
       </Aux>
     );
   }

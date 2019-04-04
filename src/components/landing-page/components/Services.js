@@ -16,43 +16,12 @@ class Services extends React.Component {
               </p>
             </div>
           </div>
+
           <div className="row margin-t-30">
             <div className="col-lg-4 margin-t-20">
               <div className="services-box text-center hover-effect">
-                <i className="pe-7s-diamond text-custom" />
-                <h4 className="padding-t-15">Digital Design</h4>
-                <p className="padding-t-15 text-muted">
-                  Some quick example text to build on the card title and make up
-                  the bulk of the card's content. Moltin gives you the platform.
-                </p>
-              </div>
-            </div>
-            <div className="col-lg-4 margin-t-20">
-              <div className="services-box text-center hover-effect">
-                <i className="pe-7s-display2 text-custom" />
-                <h4 className="padding-t-15">Unlimited Colors</h4>
-                <p className="padding-t-15 text-muted">
-                  Credibly brand standards compliant users without extensible
-                  services. Anibh euismod tincidunt ut laoreet.
-                </p>
-              </div>
-            </div>
-            <div className="col-lg-4 margin-t-20">
-              <div className="services-box text-center hover-effect">
-                <i className="pe-7s-piggy text-custom" />
-                <h4 className="padding-t-15">Strategy Solutions</h4>
-                <p className="padding-t-15 text-muted">
-                  Separated they live in Bookmarksgrove right at the coast of
-                  the Semantics, a large language ocean necessary regelialia.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="row margin-t-30">
-            <div className="col-lg-4 margin-t-20">
-              <div className="services-box text-center hover-effect">
-                <i className="pe-7s-science text-custom" />
-                <h4 className="padding-t-15">Awesome Support</h4>
+                <i className="pe-7s-helm text-custom" />
+                <h4 className="padding-t-15">See transport</h4>
                 <p className="padding-t-15 text-muted">
                   It is a paradisematic country, in which roasted parts of
                   sentences fly into your mouth leave for the far World.
@@ -61,8 +30,8 @@ class Services extends React.Component {
             </div>
             <div className="col-lg-4 margin-t-20">
               <div className="services-box text-center hover-effect">
-                <i className="pe-7s-news-paper text-custom" />
-                <h4 className="padding-t-15">Truly Multipurpose</h4>
+                <i className="pe-7s-car text-custom" />
+                <h4 className="padding-t-15">Land transport</h4>
                 <p className="padding-t-15 text-muted">
                   Even the all-powerful Pointing has no control about the blind
                   texts it is an almost unorthographic.
@@ -72,7 +41,7 @@ class Services extends React.Component {
             <div className="col-lg-4 margin-t-20">
               <div className="services-box text-center hover-effect">
                 <i className="pe-7s-plane text-custom" />
-                <h4 className="padding-t-15">Easy to customize</h4>
+                <h4 className="padding-t-15">Air transport</h4>
                 <p className="padding-t-15 text-muted">
                   Question Marks and devious Semikoli, but the Little Blind Text
                   didn’t listen. She packed her seven versalia.
