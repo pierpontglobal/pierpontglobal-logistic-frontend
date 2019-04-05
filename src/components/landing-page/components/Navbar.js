@@ -6,7 +6,7 @@ class Navbar extends React.Component {
       <nav className="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-dark">
         <div className="container">
           <a className="navbar-brand logo text-uppercase" href="/home-one">
-            Dorsin
+            <img width={250} src="/images/ppl_logo.png" />
           </a>
           <button
             className="navbar-toggler"
@@ -64,7 +64,7 @@ class Navbar extends React.Component {
                     type="button"
                     className="btn btn-custom navbar-btn btn-rounded waves-effect waves-light"
                   >
-                    Try it Free
+                    Subscribe
                   </button>
                 </li>
               </ul>

@@ -17,6 +17,7 @@ import Switcher from './components/Switcher';
 import { Link } from 'react-router-dom';
 import Aux from './hoc/Aux_';
 import BackImage from '../../assets/images/landing_background.jpeg';
+import ButtonsSelect from './components/ButtonsSelect';
 
 class HomeSeven extends React.Component {
   render() {
@@ -43,23 +44,16 @@ class HomeSeven extends React.Component {
                 <div className="row">
                   <div className="col-lg-8 offset-lg-2 text-white text-center">
                     <h1 className="home-title text-rotate">
-                      Professional Landing Page Template,We help startups launch
-                      their products,Perfect solution for small businesses
+                      The future of logistics
                     </h1>
                     <p className="padding-t-15 home-desc">
                       Etiam sed.Interdum consequat proin vestibulum className at
                       a euismod mus luctus quam.Lorem ipsum dolor sit amet,
                       consectetur adipisicing eli.
                     </p>
-                    <p className="play-shadow margin-t-30 margin-l-r-auto">
-                      {' '}
-                      <Link
-                        to="http://vimeo.com/99025203"
-                        className="play-btn video-play-icon"
-                      >
-                        <i className="mdi mdi-play text-center" />
-                      </Link>
-                    </p>
+                    <div className="margin-t-30 margin-l-r-auto">
+                      <ButtonsSelect />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -73,26 +67,11 @@ class HomeSeven extends React.Component {
         {/* Features Component*/}
         <Features />
 
-        {/* Descriptions Component*/}
-        <Descriptions />
-
-        {/* Pricing Component*/}
-        <Pricing />
-
-        {/* Team Component*/}
-        <Team />
-
         {/* Process Component*/}
         <Process />
 
         {/* Testi Component*/}
         <Testi />
-
-        {/* Started Component*/}
-        <Started />
-
-        {/* Blog Component*/}
-        <Blog />
 
         {/* Contact Component*/}
         <Contact />
@@ -105,9 +84,6 @@ class HomeSeven extends React.Component {
 
         {/* FooterLinks Component*/}
         <FooterLinks />
-
-        {/* Switcher Component*/}
-        <Switcher />
       </Aux>
     );
   }

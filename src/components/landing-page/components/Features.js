@@ -40,9 +40,12 @@ class Features extends React.Component {
             <div className="col-lg-7">
               <div className="features-img features-right text-right">
                 <img
-                  src="images/online-world.svg"
+                  style={{
+                    maxWidth: 'auto',
+                    width: '150%'
+                  }}
+                  src="images/online-world.png"
                   alt="macbook image"
-                  className="img-fluid"
                 />
               </div>
             </div>
