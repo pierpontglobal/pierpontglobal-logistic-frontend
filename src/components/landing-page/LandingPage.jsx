@@ -17,6 +17,7 @@ import Switcher from './components/Switcher';
 import { Link } from 'react-router-dom';
 import Aux from './hoc/Aux_';
 import BackImage from '../../assets/images/landing_background.jpeg';
+import ButtonsSelect from './components/ButtonsSelect';
 
 class HomeSeven extends React.Component {
   render() {
@@ -50,15 +51,9 @@ class HomeSeven extends React.Component {
                       a euismod mus luctus quam.Lorem ipsum dolor sit amet,
                       consectetur adipisicing eli.
                     </p>
-                    <p className="play-shadow margin-t-30 margin-l-r-auto">
-                      {' '}
-                      <Link
-                        to="http://vimeo.com/99025203"
-                        className="play-btn video-play-icon"
-                      >
-                        <i className="mdi mdi-play text-center" />
-                      </Link>
-                    </p>
+                    <div className="margin-t-30 margin-l-r-auto">
+                      <ButtonsSelect />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -71,9 +66,6 @@ class HomeSeven extends React.Component {
 
         {/* Features Component*/}
         <Features />
-
-        {/* Team Component*/}
-        <Team />
 
         {/* Process Component*/}
         <Process />

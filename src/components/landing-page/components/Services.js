@@ -21,7 +21,7 @@ class Services extends React.Component {
             <div className="col-lg-4 margin-t-20">
               <div className="services-box text-center hover-effect">
                 <i className="pe-7s-helm text-custom" />
-                <h4 className="padding-t-15">See transport</h4>
+                <h4 className="padding-t-15">Sea</h4>
                 <p className="padding-t-15 text-muted">
                   It is a paradisematic country, in which roasted parts of
                   sentences fly into your mouth leave for the far World.
@@ -31,7 +31,7 @@ class Services extends React.Component {
             <div className="col-lg-4 margin-t-20">
               <div className="services-box text-center hover-effect">
                 <i className="pe-7s-car text-custom" />
-                <h4 className="padding-t-15">Land transport</h4>
+                <h4 className="padding-t-15">Land</h4>
                 <p className="padding-t-15 text-muted">
                   Even the all-powerful Pointing has no control about the blind
                   texts it is an almost unorthographic.
@@ -41,7 +41,7 @@ class Services extends React.Component {
             <div className="col-lg-4 margin-t-20">
               <div className="services-box text-center hover-effect">
                 <i className="pe-7s-plane text-custom" />
-                <h4 className="padding-t-15">Air transport</h4>
+                <h4 className="padding-t-15">Air</h4>
                 <p className="padding-t-15 text-muted">
                   Question Marks and devious Semikoli, but the Little Blind Text
                   didn’t listen. She packed her seven versalia.

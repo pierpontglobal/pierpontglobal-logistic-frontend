@@ -6,7 +6,7 @@ class Navbar extends React.Component {
       <nav className="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-dark">
         <div className="container">
           <a className="navbar-brand logo text-uppercase" href="/home-one">
-            Pierpont Logistics
+            <img width={250} src="/images/ppl_logo.png" />
           </a>
           <button
             className="navbar-toggler"
