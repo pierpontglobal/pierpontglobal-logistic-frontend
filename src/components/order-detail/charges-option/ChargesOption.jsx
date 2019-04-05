@@ -115,7 +115,9 @@ class ChargesOption extends Component {
     this.state = {
       incomeRows: [],
       expensesRows: [],
-      onCloseChargesModal: false
+      onCloseChargesModal: false,
+      incomes: [],
+      expenses: []
     };
   }
 
@@ -126,12 +128,15 @@ class ChargesOption extends Component {
   };
 
   handleAddCharge = charge => {
-    const { incomeRows, expensesRows } = this.state;
+    const { incomeRows, expensesRows, incomes, expenses } = this.state;
     console.log(charge);
 
     let service = charge.service;
     let income = charge.income;
     let expense = charge.expense;
+
+    if (!!income) incomes.push(income);
+    if (!!expense) expenses.push(expense);
 
     let rowId = `${Math.floor(Math.random() * 31) + 1}`;
 
@@ -175,7 +180,9 @@ class ChargesOption extends Component {
       {
         incomeRows: incomeRows,
         expensesRows: expensesRows,
-        openModalAddCharges: false
+        openModalAddCharges: false,
+        incomes: incomes,
+        expenses: expenses
       },
       () => {
         // Propagate event to parents

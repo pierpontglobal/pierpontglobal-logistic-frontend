@@ -40,11 +40,11 @@ class MainOptionTab extends Component {
       transportationMode: detailsInfo.transportationMode,
       destinationName: detailsInfo.destinationName,
       originName: detailsInfo.originName,
-      agentId: -1,
-      consigneeId: -1,
-      issuingCompanyId: -1,
-      shipperId: -1,
-      transportationModeId: -1,
+      agentId: detailsInfo.agentId,
+      consigneeId: detailsInfo.consigneeId,
+      issuingCompanyId: detailsInfo.issuingCompanyId,
+      shipperId: detailsInfo.shipperId,
+      transportationModeId: detailsInfo.transportationModeId,
       isFetchingShipper: false,
       isFetchingIssuingComp: false,
       isFetchingConsignee: false,
@@ -79,12 +79,17 @@ class MainOptionTab extends Component {
       () => {
         axios.get(`${ApiServer}/api/v1/shipper/${id}`).then(data => {
           let shipp = data.data;
-          this.setState({
-            isFetchingShipper: false,
-            shipperId: shipp.id,
-            shipperName: shipp.name,
-            shipperAddress: shipp.address
-          });
+          this.setState(
+            {
+              isFetchingShipper: false,
+              shipperId: shipp.id,
+              shipperName: shipp.name,
+              shipperAddress: shipp.address
+            },
+            () => {
+              this.props.handleShipperChange(shipp);
+            }
+          );
         });
       }
     );
@@ -99,12 +104,17 @@ class MainOptionTab extends Component {
       () => {
         axios.get(`${ApiServer}/api/v1/consignee/${id}`).then(data => {
           let consig = data.data;
-          this.setState({
-            isFetchingConsignee: false,
-            consigneeId: consig.id,
-            consigneeName: consig.name,
-            consigneeAddress: consig.address
-          });
+          this.setState(
+            {
+              isFetchingConsignee: false,
+              consigneeId: consig.id,
+              consigneeName: consig.name,
+              consigneeAddress: consig.address
+            },
+            () => {
+              this.props.handleConsigneeChange(consig);
+            }
+          );
         });
       }
     );
@@ -119,12 +129,17 @@ class MainOptionTab extends Component {
       () => {
         axios.get(`${ApiServer}/api/v1/agent/${id}`).then(data => {
           let agent = data.data;
-          this.setState({
-            isFetchingAgent: false,
-            agentId: agent.id,
-            agentName: agent.name,
-            agentAddress: agent.address
-          });
+          this.setState(
+            {
+              isFetchingAgent: false,
+              agentId: agent.id,
+              agentName: agent.name,
+              agentAddress: agent.address
+            },
+            () => {
+              this.props.handleAgentChange(agent);
+            }
+          );
         });
       }
     );
@@ -139,18 +154,45 @@ class MainOptionTab extends Component {
       () => {
         axios.get(`${ApiServer}/api/v1/issuing_company/${id}`).then(data => {
           let issuComp = data.data;
-          this.setState({
-            isFetchingIssuingComp: false,
-            issuingCompanyId: issuComp.id,
-            issuingCompany: issuComp.name
-          });
+          this.setState(
+            {
+              isFetchingIssuingComp: false,
+              issuingCompanyId: issuComp.id,
+              issuingCompany: issuComp.name
+            },
+            () => {
+              this.props.handleIssuingCompanyChange(issuComp);
+            }
+          );
         });
       }
     );
   };
 
   onSelectTransportChange = e => {
-    console.log(e);
+    let id = e.value;
+    this.setState(
+      {
+        isFetchingConsignee: true
+      },
+      () => {
+        axios
+          .get(`${ApiServer}/api/v1/mode_of_transportation/${id}`)
+          .then(data => {
+            let mode = data.data;
+            this.setState(
+              {
+                isFetchingConsignee: false,
+                transportationMode: mode.name,
+                transportationModeId: mode.id
+              },
+              () => {
+                this.props.handleTransportChange(mode);
+              }
+            );
+          });
+      }
+    );
   };
 
   render() {
@@ -181,7 +223,8 @@ class MainOptionTab extends Component {
       isFetchingShipper,
       isFetchingIssuingComp,
       isFetchingConsignee,
-      isFetchingAgent
+      isFetchingAgent,
+      transportationModeId
     } = this.state;
     return (
       <Paper style={{ padding: '15px' }}>
@@ -387,12 +430,11 @@ class MainOptionTab extends Component {
           <div style={{ width: '45%' }}>
             <label>Mode of transportation</label>
             <PPGSimpleSelect
-              isMulti={true}
               handleChange={this.onSelectTransportChange}
-              defaultValue={[
-                { label: 'air', value: 1 },
-                { label: 'land', value: 2 }
-              ]}
+              defaultValue={{
+                label: transportationMode,
+                value: transportationModeId
+              }}
               options={transports}
             />
           </div>

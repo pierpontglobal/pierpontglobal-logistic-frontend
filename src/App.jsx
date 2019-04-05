@@ -18,120 +18,143 @@ import ShipperCreate from './components/shipper-list/shipper-create/ShipperCreat
 import LandingPage from './components/landing-page/LandingPage';
 import AgentList from './components/agent-list/AgentList';
 import ModeOfTransportationList from './components/mode-of-transportation-list/ModeOfTransportationList';
+import Script from 'react-load-script';
+import { GOOGLE_API_KEY } from './Defaults';
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      scriptisLoaded: false
+    };
+  }
 
-function App(props) {
-  const { cookies } = props;
-  const isLoggedIn = !!cookies.get('token', { path: '/' });
-  return (
-    <MuiThemeProvider theme={DefaultTheme}>
-      <Router>
-        <div>
-          <Switch>
-            <Route exact path="/" render={() => <LandingPage />} />
-            <Route
-              exact
-              path="/sign-in"
-              render={() => <SignIn cookies={cookies} />}
-            />
-            <Route
-              path="/dashboard"
-              render={() =>
-                isLoggedIn ? (
-                  <Dashboard cookies={cookies} />
-                ) : (
-                  <Redirect to="/sign-in" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/orders"
-              render={() =>
-                isLoggedIn ? (
-                  <OrderList cookies={cookies} />
-                ) : (
-                  <Redirect to="/sign-in" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/order/:id"
-              render={() =>
-                isLoggedIn ? (
-                  <OrderDetail cookies={cookies} />
-                ) : (
-                  <Redirect to="/sign-in" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/shippers"
-              render={() =>
-                isLoggedIn ? (
-                  <ShipperList cookies={cookies} />
-                ) : (
-                  <Redirect to="/sign-in" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/shippers/create"
-              render={() =>
-                isLoggedIn ? (
-                  <ShipperCreate cookies={cookies} />
-                ) : (
-                  <Redirect to="/sign-in" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/dealers"
-              render={() =>
-                isLoggedIn ? (
-                  <DealerList cookies={cookies} />
-                ) : (
-                  <Redirect to="/sign-in" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/agents"
-              render={() =>
-                isLoggedIn ? (
-                  <AgentList cookies={cookies} />
-                ) : (
-                  <Redirect to="/" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/mode_of_transportations"
-              render={() =>
-                isLoggedIn ? (
-                  <ModeOfTransportationList cookies={cookies} />
-                ) : (
-                  <Redirect to="/sign-in" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/oauth/ppg:token?"
-              render={() => <SignInPPG cookies={cookies} />}
-            />
-            <Route exact path="/signup" render={() => <SignUp />} />
-            <Route component={NotFound} />
-          </Switch>
-        </div>
-      </Router>
-    </MuiThemeProvider>
-  );
+  handleOnLoad = () => {
+    this.setState({
+      scriptisLoaded: true
+    });
+  };
+
+  render() {
+    const { cookies } = this.props;
+    const { scriptisLoaded } = this.state;
+    const isLoggedIn = !!cookies.get('token', { path: '/' });
+    return (
+      <MuiThemeProvider theme={DefaultTheme}>
+        <Script
+          url={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`}
+          onLoad={this.handleOnLoad}
+        />
+        {scriptisLoaded ? (
+          <Router>
+            <div>
+              <Switch>
+                <Route exact path="/" render={() => <LandingPage />} />
+                <Route
+                  exact
+                  path="/sign-in"
+                  render={() => <SignIn cookies={cookies} />}
+                />
+                <Route
+                  path="/dashboard"
+                  render={() =>
+                    isLoggedIn ? (
+                      <Dashboard cookies={cookies} />
+                    ) : (
+                      <Redirect to="/sign-in" />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/orders"
+                  render={() =>
+                    isLoggedIn ? (
+                      <OrderList cookies={cookies} />
+                    ) : (
+                      <Redirect to="/sign-in" />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/order/:id"
+                  render={() =>
+                    isLoggedIn ? (
+                      <OrderDetail cookies={cookies} />
+                    ) : (
+                      <Redirect to="/sign-in" />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/shippers"
+                  render={() =>
+                    isLoggedIn ? (
+                      <ShipperList cookies={cookies} />
+                    ) : (
+                      <Redirect to="/sign-in" />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/shippers/create"
+                  render={() =>
+                    isLoggedIn ? (
+                      <ShipperCreate cookies={cookies} />
+                    ) : (
+                      <Redirect to="/sign-in" />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/dealers"
+                  render={() =>
+                    isLoggedIn ? (
+                      <DealerList cookies={cookies} />
+                    ) : (
+                      <Redirect to="/sign-in" />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/agents"
+                  render={() =>
+                    isLoggedIn ? (
+                      <AgentList cookies={cookies} />
+                    ) : (
+                      <Redirect to="/" />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/mode_of_transportations"
+                  render={() =>
+                    isLoggedIn ? (
+                      <ModeOfTransportationList cookies={cookies} />
+                    ) : (
+                      <Redirect to="/sign-in" />
+                    )
+                  }
+                />
+                <Route
+                  exact
+                  path="/oauth/ppg:token?"
+                  render={() => <SignInPPG cookies={cookies} />}
+                />
+                <Route exact path="/signup" render={() => <SignUp />} />
+                <Route component={NotFound} />
+              </Switch>
+            </div>
+          </Router>
+        ) : null}
+      </MuiThemeProvider>
+    );
+  }
 }
 
 export default withCookies(App);

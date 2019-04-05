@@ -54,6 +54,7 @@ class AddVehicle extends Component {
               if (data.data.status !== 500) {
                 carFound = true;
                 carData = data.data.car_information;
+                carData.pieces = 1; // default pieces
               }
               this.setState({
                 findingCar: false,
@@ -84,8 +85,20 @@ class AddVehicle extends Component {
     this.props.handleAdd(this.state.car);
   };
 
+  handleOnchange = e => {
+    let value = e.target.value;
+    const { car } = this.state;
+    if (!!car) {
+      car.pieces = value;
+      this.setState({
+        car: car
+      });
+    }
+  };
+
   render() {
     const { classes } = this.props;
+    const { pieces, car } = this.state;
     return (
       <>
         <div>
@@ -198,6 +211,27 @@ class AddVehicle extends Component {
                     <div style={{ width: '30%', margin: '7px' }}>
                       <div>Type code: {this.state.car.car_type_code}</div>
                     </div>
+                  </div>
+                  <div
+                    style={{
+                      width: '100px',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginTop: '12px'
+                    }}
+                  >
+                    <TextField
+                      id="pieces"
+                      label="Pieces"
+                      className={classes.textField}
+                      margin="normal"
+                      variant="outlined"
+                      onChange={this.handleOnchange}
+                      value={car.pieces}
+                      defaultValue={car.pieces}
+                      type="number"
+                    />
                   </div>
                 </div>
               </div>

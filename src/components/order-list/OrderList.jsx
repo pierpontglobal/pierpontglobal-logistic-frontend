@@ -49,22 +49,12 @@ class OrderList extends Component {
       'Authorization'
     ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
 
-    // DEALERS FROM PierPont Global already registered should be retrieved here.
-    const examples = [
-      {
-        id: 1,
-        amount: 26990,
-        created_at: 'May, 27 2019',
-        status: 'NEW',
-        submitted: 'YES',
-        user_name: 'Daniel Pena',
-        has_shippment: 'YES'
-      }
-    ];
     axios.get(`${ApiServer}/api/v1/order`).then(data => {
       console.log('Fetching...');
       console.log(data);
-      const rowData = data.data; // omitting retrieved data, since the backend for this is not created yet, putting examples though.
+      const obj = data.data;
+
+      const rowData = obj.orders_with_shipp.concat(obj.orders_without_shipp);
       let mappedData = rowData.map(row => {
         let rowObj = {
           id: row.order_number,
