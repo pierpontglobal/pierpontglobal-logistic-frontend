@@ -35,6 +35,12 @@ class PPGTable extends Component {
     }
   };
 
+  onRowDoubleClickEvent = (e, rowId) => {
+    if (!!this.props.handleOnRowDoubleClick) {
+      this.props.handleOnRowDoubleClick(e, rowId);
+    }
+  };
+
   render() {
     const { classes, columns, rows } = this.props;
     console.log(columns);
@@ -70,6 +76,9 @@ class PPGTable extends Component {
                 hover
                 key={row.id}
                 onClick={event => this.onRowClickEvent(event, row.id)}
+                onDoubleClick={event =>
+                  this.onRowDoubleClickEvent(event, row.id)
+                }
               >
                 {row.content.map((rowContent, index) => (
                   <TableCell key={index} component="th" scope="row">

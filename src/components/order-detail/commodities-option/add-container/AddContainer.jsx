@@ -52,7 +52,8 @@ class AddContainer extends Component {
         totalWeight: '',
         volumne: '',
         volWeigth: '',
-        squarePt: ''
+        squarePt: '',
+        pieces: 1
       }
     };
   }
@@ -130,9 +131,17 @@ class AddContainer extends Component {
     this.props.handleAdd(this.state.container);
   };
 
+  handleChangePieces = e => {
+    const { container } = this.state;
+    container.pieces = e.target.value;
+    this.setState({
+      container: container
+    });
+  };
+
   render() {
     const { classes } = this.props;
-    const { types, container } = this.state;
+    const { types, container, containerFound } = this.state;
     return (
       <>
         <div>
@@ -197,8 +206,6 @@ class AddContainer extends Component {
                 value={container.height}
                 style={{ width: '100px' }}
               />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
               <TextField
                 disabled={true}
                 id="tareWeight"
@@ -208,6 +215,8 @@ class AddContainer extends Component {
                 value={container.tareWeight}
                 style={{ width: '100px' }}
               />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
               <TextField
                 disabled={true}
                 id="nextWeight"
@@ -226,8 +235,6 @@ class AddContainer extends Component {
                 value={container.totalWeight}
                 style={{ width: '100px' }}
               />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
               <TextField
                 disabled={true}
                 id="volumne"
@@ -246,6 +253,8 @@ class AddContainer extends Component {
                 value={container.volWeigth}
                 style={{ width: '100px' }}
               />
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
               <TextField
                 disabled={true}
                 id="squarePt"
@@ -253,6 +262,18 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.squarePt}
+                style={{ width: '100px' }}
+              />
+              <TextField
+                disabled={!containerFound}
+                id="pieces"
+                label="Pieces"
+                className={classes.textField}
+                margin="normal"
+                type="number"
+                value={container.pieces}
+                defaultValue={container.pieces}
+                onChange={this.handleChangePieces}
                 style={{ width: '100px' }}
               />
             </div>

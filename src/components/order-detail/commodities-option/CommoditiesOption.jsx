@@ -10,6 +10,12 @@ import TYPES from '../../../constants/CommodityTypes';
 import AddCommodity from './add-commodity/AddCommodity';
 import axios from 'axios';
 import { ApiServer } from '../../../Defaults';
+import createReactContext from 'create-react-context';
+
+const NOTIFICATION_TYPES = {
+  ERROR: 'danger',
+  SUCCESS: 'success'
+};
 
 const TitleWrapper = styled.div`
   width: 100%;
@@ -132,9 +138,21 @@ class CommoditiesOption extends Component {
       containerRows: [],
       carRows: [],
       openModalAddVehicle: false,
-      openModalAddContainer: false
+      openModalAddContainer: false,
+      openToDeleteCarConfirmation: false,
+      commodities: this.props.commodities,
+      shippId: this.props.shippId
     };
   }
+
+  componentDidMount = () => {
+    // Setup axios
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+
+    this.updateCommoditiesTables();
+  };
 
   addVehicle = () => {
     this.setState({
@@ -160,68 +178,253 @@ class CommoditiesOption extends Component {
     });
   };
 
+  onCloseConfirmationModal = () => {
+    this.setState({
+      openToDeleteCarConfirmation: false
+    });
+  };
+
   handleAddVehicle = e => {
     const { carRows } = this.state;
-    this.setState(
-      {
-        carRows: [
-          ...carRows,
-          {
-            id: 2,
-            content: [
-              { text: e.vin },
-              { text: 1 },
-              { text: e.year },
-              { text: e.car_model },
-              { text: e.car_maker },
-              { text: e.engine },
-              { text: e.trim },
-              { text: e.car_fuel },
-              { text: e.car_body_style },
-              { text: e.car_type_code }
-            ]
-          }
-        ],
-        openModalAddVehicle: false
-      },
-      () => {
-        // Propagate event to parents
-        this.props.handleChange(this.state.carRows);
-      }
-    );
+    const { orderId } = this.props;
+
+    axios
+      .post(`${ApiServer}/api/v1/commodity?order_number=${orderId}`, {
+        commodity: {
+          reference: e.vin,
+          pieces: e.pieces,
+          type: 1
+        }
+      })
+      .then(
+        data => {
+          console.log(data);
+          let artifact = data.data.artifact;
+          let commodity = data.data.commodity;
+          let e = artifact.car_information;
+          this.setState(
+            {
+              carRows: [
+                ...carRows,
+                {
+                  id: commodity.id, // Commodity ID
+                  content: [
+                    { text: e.vin }, // Commodty artifact ID
+                    { text: commodity.pieces },
+                    { text: e.year },
+                    { text: e.car_model },
+                    { text: e.car_maker },
+                    { text: e.engine },
+                    { text: e.trim },
+                    { text: e.car_fuel },
+                    { text: e.car_body_style },
+                    { text: e.car_type_code }
+                  ]
+                }
+              ],
+              openModalAddVehicle: false
+            },
+            () => {
+              this.props.addNotification(
+                'Process completed',
+                'Commodity added successfully!',
+                2000,
+                NOTIFICATION_TYPES.SUCCESS
+              );
+            }
+          );
+        },
+        err => {
+          this.props.addNotification(
+            'Process interrupted',
+            "Couldn't add commodity",
+            2000,
+            NOTIFICATION_TYPES.ERROR
+          );
+        }
+      );
   };
 
   handleAddContainer = container => {
     const { containerRows } = this.state;
-    this.setState(
-      {
-        containerRows: [
-          ...containerRows,
-          {
-            id: container.id,
-            content: [
-              { text: container.id },
-              { text: container.containerType },
-              { text: 1 },
-              { text: container.length },
-              { text: container.width },
-              { text: container.height },
-              { text: container.tareWeight },
-              { text: container.nextWeight },
-              { text: container.totalWeight },
-              { text: container.volumne },
-              { text: container.volWeigth },
-              { text: container.squarePt }
-            ]
-          }
-        ],
-        openModalAddContainer: false
-      },
-      () => {
-        // Propagate event to parents
-        this.props.handleChange(this.state.containerRows);
+    const { orderId } = this.props;
+
+    axios
+      .post(`${ApiServer}/api/v1/commodity?order_number=${orderId}`, {
+        commodity: {
+          reference: container.id,
+          pieces: container.pieces,
+          type: 2
+        }
+      })
+      .then(
+        data => {
+          let added_container = data.data.artifact;
+          let commodity = data.data.commodity;
+          this.setState(
+            {
+              containerRows: [
+                ...containerRows,
+                {
+                  id: commodity.id, /// Commodity ID
+                  content: [
+                    { text: added_container.id }, // Commodty artifact ID
+                    { text: added_container.description },
+                    { text: commodity.pieces },
+                    { text: added_container.length },
+                    { text: added_container.width },
+                    { text: added_container.height },
+                    { text: added_container.tare_weight },
+                    { text: added_container.next_weight },
+                    { text: added_container.total_weight },
+                    { text: added_container.volume },
+                    { text: added_container.vol_weigth },
+                    { text: added_container.square_pt }
+                  ]
+                }
+              ],
+              openModalAddContainer: false
+            },
+            () => {
+              this.props.addNotification(
+                'Process completed',
+                'Commodity added successfully!',
+                2000,
+                NOTIFICATION_TYPES.SUCCESS
+              );
+            }
+          );
+        },
+        err => {
+          this.props.addNotification(
+            'Process interrupted',
+            "Couldn't add commodity",
+            2000,
+            NOTIFICATION_TYPES.ERROR
+          );
+        }
+      );
+  };
+
+  onDeleteCommodity = (e, rowId) => {
+    this.setState({
+      openToDeleteCarConfirmation: true,
+      toDeleteCommodityId: rowId
+    });
+  };
+
+  confirmedRemoveCommodity = () => {
+    console.log('will enter remove commodity');
+    const {
+      toDeleteCommodityId,
+      commodities,
+      carRows,
+      containerRows,
+      shippId
+    } = this.state;
+    console.log(this.state);
+    let state_commodities = [...commodities];
+
+    if (!!toDeleteCommodityId) {
+      let commodity = commodities.find(
+        x => x.commodity.id === toDeleteCommodityId
+      );
+      console.log(commodity);
+      if (!!commodity) {
+        axios
+          .delete(
+            `${ApiServer}/api/v1/commodity?reference=${toDeleteCommodityId}&shipp_id=${shippId}`
+          )
+          .then(
+            data => {
+              state_commodities = commodities.filter(
+                c => c.commodity.id !== toDeleteCommodityId
+              );
+              this.setState(
+                {
+                  commodities: state_commodities,
+                  openToDeleteCarConfirmation: false
+                },
+                () => {
+                  this.updateCommoditiesTables();
+                  this.props.addNotification(
+                    'Process completed',
+                    'Commodity removed successfully!',
+                    2000,
+                    NOTIFICATION_TYPES.SUCCESS
+                  );
+                }
+              );
+            },
+            err => {
+              this.props.addNotification(
+                'Process interrupted',
+                "Couldn't remove associated commodity",
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          );
       }
-    );
+    }
+  };
+
+  updateCommoditiesTables = () => {
+    const { commodities } = this.state;
+    let carRows = [];
+    let containerRows = [];
+    if (!!commodities) {
+      let vehicleCommodities = commodities.filter(
+        c => c.commodity.commodity_type_id === 1
+      );
+      let containerCommodities = commodities.filter(
+        c => c.commodity.commodity_type_id === 2
+      );
+
+      carRows = vehicleCommodities.map(cdty => {
+        let vehicle = cdty.artifact.car_information;
+        return {
+          id: cdty.commodity.id,
+          content: [
+            { text: vehicle.vin },
+            { text: cdty.commodity.pieces },
+            { text: vehicle.year },
+            { text: vehicle.car_model },
+            { text: vehicle.car_maker },
+            { text: vehicle.engine },
+            { text: vehicle.trim },
+            { text: vehicle.car_fuel },
+            { text: vehicle.car_body_style },
+            { text: vehicle.car_type_code }
+          ]
+        };
+      });
+
+      containerRows = containerCommodities.map(cdty => {
+        let container = cdty.artifact;
+        return {
+          id: cdty.commodity.id,
+          content: [
+            { text: container.id },
+            { text: container.description },
+            { text: cdty.commodity.pieces },
+            { text: container.length },
+            { text: container.width },
+            { text: container.height },
+            { text: container.tare_weight },
+            { text: container.next_weight },
+            { text: container.total_weight },
+            { text: container.volume },
+            { text: container.vol_weight },
+            { text: container.square_pt }
+          ]
+        };
+      });
+      this.setState({
+        carRows: carRows,
+        containerRows: containerRows
+      });
+    }
   };
 
   render() {
@@ -230,7 +433,10 @@ class CommoditiesOption extends Component {
       carRows,
       containerRows,
       openModalAddVehicle,
-      openModalAddContainer
+      openModalAddContainer,
+      containerCommodity,
+      vehicleCommodity,
+      openToDeleteCarConfirmation
     } = this.state;
 
     return (
@@ -281,9 +487,16 @@ class CommoditiesOption extends Component {
                 }}
               >
                 Vehicles{' '}
+                <span style={{ fontStyle: 'italic' }}>
+                  (Double click to remove.)
+                </span>
               </span>
             </div>
-            <PPGTable columns={carColumns} rows={carRows} />
+            <PPGTable
+              columns={carColumns}
+              rows={carRows}
+              handleOnRowDoubleClick={this.onDeleteCommodity}
+            />
           </TableWrapper>
         ) : null}
         {containerRows.length > 0 ? (
@@ -298,9 +511,16 @@ class CommoditiesOption extends Component {
                 }}
               >
                 Containers{' '}
+                <span style={{ fontStyle: 'italic' }}>
+                  (Double click to remove.)
+                </span>
               </span>
             </div>
-            <PPGTable columns={containerColumns} rows={containerRows} />
+            <PPGTable
+              columns={containerColumns}
+              rows={containerRows}
+              handleOnRowDoubleClick={this.onDeleteCommodity}
+            />
           </TableWrapper>
         ) : null}
         {carRows.length === 0 && containerRows.length === 0
@@ -329,6 +549,43 @@ class CommoditiesOption extends Component {
             type={TYPES.CONTAINER}
             {...this.props}
           />
+        </PPGModal>
+        <PPGModal
+          setOpen={openToDeleteCarConfirmation}
+          handleClose={this.onCloseConfirmationModal}
+          width="240px"
+          height="80px"
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '30px'
+            }}
+          >
+            <div>
+              <span style={{ fontWeight: '600', color: 'darkgray' }}>
+                Are you sure you want to remove this commodity?
+              </span>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <div>
+                <Button onClick={this.onCloseConfirmationModal}>Cancel</Button>
+              </div>
+              <div>
+                <Button onClick={this.confirmedRemoveCommodity}>Remove</Button>
+              </div>
+            </div>
+          </div>
         </PPGModal>
       </>
     );

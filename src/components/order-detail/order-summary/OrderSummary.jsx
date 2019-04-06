@@ -7,19 +7,8 @@ const SummaryWrapper = styled.div`
   padding: 8px;
   display: flex;
   flex-direction: column;
-  height: 250px;
+  height: 280px;
   overflow-y: scroll;
-  background: #ece9e6; /* fallback for old browsers */
-  background: -webkit-linear-gradient(
-    to right,
-    #ffffff,
-    #ece9e6
-  ); /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(
-    to right,
-    #ffffff,
-    #ece9e6
-  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   -webkit-box-shadow: 6px -6px 12px -12px rgba(0, 0, 0, 0.73);
   -moz-box-shadow: 6px -6px 12px -12px rgba(0, 0, 0, 0.73);
   box-shadow: 6px -6px 12px -12px rgba(0, 0, 0, 0.73);

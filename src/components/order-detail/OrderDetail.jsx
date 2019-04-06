@@ -12,10 +12,15 @@ import OrderSummary from './order-summary/OrderSummary';
 import { withRouter } from 'react-router-dom';
 import RouteDisplay from '../route-display/RouteDisplay';
 import GoogleRouteDraw from '../google-route-draw/GoogleRouteDraw';
-import Script from 'react-load-script';
-import { GOOGLE_API_KEY } from '../../Defaults';
 import axios from 'axios';
 import { ApiServer } from '../../Defaults';
+import ReactNotification from 'react-notifications-component';
+import 'react-notifications-component/dist/theme.css';
+
+const NOTIFICATION_TYPES = {
+  ERROR: 'danger',
+  SUCCESS: 'success'
+};
 
 const LoadingWrapper = styled.div`
   width: 100%;
@@ -31,6 +36,7 @@ class OrderDetail extends Component {
       scriptisLoaded: false,
       isLoading: true,
       orderId: -1,
+      shippId: -1,
       detailsInfo: {
         agentAddress: '',
         agentName: '',
@@ -41,7 +47,7 @@ class OrderDetail extends Component {
         issuingCompany: '',
         orderNumber: '',
         originName: '',
-        serviceType: 't',
+        serviceType: '',
         shipperAddress: '',
         shipperName: '',
         transportationMode: '',
@@ -51,31 +57,26 @@ class OrderDetail extends Component {
         shipperId: -1,
         transportationModeId: -1
       },
-      commoditiesInfo: {},
       chargesInfo: {},
       orderStates: [
         {
-          label: 'Step 1',
+          label: 'NEW',
           active: false
         },
         {
-          label: 'Step 2',
+          label: 'PRINCIPAL INFO',
           active: false
         },
         {
-          label: 'Step 34',
+          label: 'COMMODITIES',
           active: false
         },
         {
-          label: 'Step 4',
+          label: 'CHARGES',
           active: false
         },
         {
-          label: 'Step 5',
-          active: false
-        },
-        {
-          label: 'Step 6',
+          label: 'DISPATCHED',
           active: false
         }
       ],
@@ -83,19 +84,40 @@ class OrderDetail extends Component {
       shippers: [],
       agents: [],
       consignees: [],
-      transports: []
+      transports: [],
+      isSavingShipment: false,
+      commodities: [],
+      charges: []
     };
+
+    this.notificationDOMRef_info = React.createRef();
+    this.notificationDOMRef_sucess = React.createRef();
+    this.notificationDOMRef_error = React.createRef();
   }
+
+  addNotification = (title, message, duration, type) => {
+    let obj = this.notificationDOMRef_info;
+    if (type === NOTIFICATION_TYPES.SUCCESS)
+      obj = this.notificationDOMRef_sucess;
+    else if (type === NOTIFICATION_TYPES.ERROR)
+      obj = this.notificationDOMRef_error;
+
+    obj.current.addNotification({
+      title: title,
+      message: message,
+      type: type,
+      insert: 'top',
+      container: 'top-right',
+      animationIn: ['animated', 'fadeIn'],
+      animationOut: ['animated', 'fadeOut'],
+      dismiss: { duration: duration },
+      dismissable: { click: true }
+    });
+  };
 
   onDetailsChange = e => {
     this.setState({
       detailsInfo: e
-    });
-  };
-
-  onCommoditiesChange = e => {
-    this.setState({
-      commoditiesInfo: e
     });
   };
 
@@ -107,6 +129,7 @@ class OrderDetail extends Component {
 
   componentDidMount = () => {
     const orderId = this.props.match.params.id;
+
     axios.defaults.headers.common[
       'Authorization'
     ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
@@ -115,27 +138,41 @@ class OrderDetail extends Component {
       console.log('Fetching...');
       console.log(data);
 
-      let shippment = data.data;
-      let detailsInfo = {
-        agentAddress: shippment.agent_address,
-        agentName: shippment.agent_name,
-        consigneeAddress: shippment.consignee_address,
-        consigneeName: shippment.consignee_name,
-        date: shippment.created_at,
-        destinationName: shippment.destination_name,
-        issuingCompany: shippment.issuing_company_name,
-        orderNumber: shippment.order_number,
-        originName: shippment.origin_name,
-        serviceType: shippment.service_type,
-        shipperAddress: shippment.shipper_address,
-        shipperName: shippment.shipper_name,
-        transportationMode: shippment.mode_of_transportation_name,
-        agentId: shippment.agent_id,
-        consigneeId: shippment.consignee_id,
-        issuingCompanyId: shippment.issuing_company_id,
-        shipperId: shippment.shipper_id,
-        transportationModeId: shippment.transportation_mode_id
-      };
+      if (!!data && !!data.data) {
+        let shippment = data.data.shippment_detail;
+        let commodities = data.data.commodities;
+        let charges = data.data.charges;
+
+        if (!!shippment) {
+          let detailsInfo = {
+            agent_address: shippment.agent_address,
+            agentName: shippment.agent_name,
+            consigneeAddress: shippment.consignee_address,
+            consigneeName: shippment.consignee_name,
+            date: shippment.created_at,
+            destinationName: shippment.destination_name,
+            issuingCompany: shippment.issuing_company_name,
+            orderNumber: shippment.order_number,
+            originName: shippment.origin_name,
+            serviceType: shippment.service_type,
+            shipperAddress: shippment.shipper_address,
+            shipperName: shippment.shipper_name,
+            transportationMode: shippment.mode_of_transportation_name,
+            agentId: shippment.agent_id,
+            consigneeId: shippment.consignee_id,
+            issuingCompanyId: shippment.issuing_company_id,
+            shipperId: shippment.shipper_id,
+            transportationModeId: shippment.mode_of_transportation_id
+          };
+
+          this.setState({
+            detailsInfo: detailsInfo,
+            commodities: commodities,
+            charges: charges,
+            shippId: !!shippment ? shippment.id : -1
+          });
+        }
+      }
 
       // Get options for Details Main Tab
       axios.get(`${ApiServer}/api/v1/order/options`).then(data => {
@@ -166,15 +203,116 @@ class OrderDetail extends Component {
 
       this.setState({
         isLoading: false,
-        orderId: data.data.order_number,
-        detailsInfo: detailsInfo
+        orderId: orderId
       });
     });
   };
 
-  handleOnLoad = () => {
+  handleSaveShippment = () => {
+    console.log(this.state);
+    const { detailsInfo, commodities, orderId } = this.state;
+
+    // this.addNotification('Process has started', 'We\'ll notify you when it\'s completed.', 1500, 'info');
+    this.setState(
+      {
+        isSavingShipment: true
+      },
+      () => {
+        let detailsInfoDto = {
+          agent_id: detailsInfo.agentId,
+          consignee_id: detailsInfo.consigneeId,
+          issuing_company_id: detailsInfo.issuingCompanyId,
+          shipper_id: detailsInfo.shipperId,
+          mode_of_transportation_id: detailsInfo.transportationModeId,
+          service_type: detailsInfo.serviceType,
+          destination_name: detailsInfo.destinationName,
+          origin_name: detailsInfo.originName,
+          order_number: parseInt(orderId)
+        };
+
+        let orderShippmentDto = {
+          order_detail: detailsInfoDto,
+          order_number: orderId // WARNING, this should always be sent!!
+        };
+        console.log('DTO:   ::');
+        console.log(orderShippmentDto);
+        axios
+          .post(`${ApiServer}/api/v1/order/create_shippment`, orderShippmentDto)
+          .then(
+            data => {
+              console.log(data);
+              this.addNotification(
+                'Process has completed',
+                'Shipment was saved sucessfully.',
+                2000,
+                NOTIFICATION_TYPES.SUCCESS
+              );
+              this.setState({
+                isSavingShipment: false
+              });
+            },
+            err => {
+              this.addNotification(
+                'Process has completed',
+                "There was an error in the process, coudln't saved the shipment",
+                2500,
+                NOTIFICATION_TYPES.ERROR
+              );
+              this.setState({
+                isSavingShipment: false
+              });
+            }
+          );
+      }
+    );
+  };
+
+  shipperChange = e => {
+    const { detailsInfo } = this.state;
+    detailsInfo.shipperAddress = e.address;
+    detailsInfo.shipperName = e.name;
+    detailsInfo.shipperId = e.id;
     this.setState({
-      scriptisLoaded: true
+      detailsInfo: detailsInfo
+    });
+  };
+
+  consigneeChange = e => {
+    const { detailsInfo } = this.state;
+    detailsInfo.consigneeAddress = e.address;
+    detailsInfo.consigneeName = e.name;
+    detailsInfo.consigneeId = e.id;
+    this.setState({
+      detailsInfo: detailsInfo
+    });
+  };
+
+  agentChange = e => {
+    const { detailsInfo } = this.state;
+    detailsInfo.agentAddress = e.address;
+    detailsInfo.agentName = e.name;
+    detailsInfo.agentId = e.id;
+    this.setState({
+      detailsInfo: detailsInfo
+    });
+  };
+
+  transportChange = e => {
+    console.log(e);
+    const { detailsInfo } = this.state;
+    detailsInfo.transportationMode = e.name;
+    detailsInfo.transportationModeId = e.id;
+    this.setState({
+      detailsInfo: detailsInfo
+    });
+  };
+
+  issuingCompanyChange = e => {
+    const { detailsInfo } = this.state;
+    detailsInfo.issuingCompany = e.company_name;
+    detailsInfo.issuingCompanyId = e.id;
+    this.setState({
+      detailsInfo: detailsInfo
     });
   };
 
@@ -188,7 +326,12 @@ class OrderDetail extends Component {
       shippers,
       consignees,
       agents,
-      transports
+      transports,
+      containerCommodity,
+      vehicleCommodity,
+      commodities,
+      shippId,
+      charges
     } = this.state;
 
     const tabOptions = [
@@ -197,6 +340,11 @@ class OrderDetail extends Component {
         item: (
           <DetailsOption
             handleChange={this.onDetailsChange}
+            shipperChange={this.shipperChange}
+            consigneeChange={this.consigneeChange}
+            agentChange={this.agentChange}
+            transportChange={this.transportChange}
+            issuingCompanyChange={this.issuingCompanyChange}
             detailsInfo={detailsInfo}
             orderId={orderId}
             issuingCompanies={issuingCompanies}
@@ -212,7 +360,10 @@ class OrderDetail extends Component {
         item: (
           <CommoditiesOption
             cookies={this.props.cookies}
-            handleChange={this.onCommoditiesChange}
+            commodities={commodities}
+            orderId={orderId}
+            shippId={shippId}
+            addNotification={this.addNotification}
           />
         )
       },
@@ -222,6 +373,10 @@ class OrderDetail extends Component {
           <ChargesOption
             cookies={this.props.cookies}
             handleChange={this.onChargesChange}
+            charges={charges}
+            orderId={orderId}
+            shippId={shippId}
+            addNotification={this.addNotification}
           />
         )
       },
@@ -239,57 +394,57 @@ class OrderDetail extends Component {
 
     return (
       <>
-        <Script
-          url={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`}
-          onLoad={this.handleOnLoad}
-        />
-        {scriptisLoaded ? (
-          <BaseComponent cookies={this.props.cookies}>
-            {isLoading ? (
-              <LoadingWrapper>
-                {' '}
-                <CircularProgress />{' '}
-              </LoadingWrapper>
-            ) : (
-              <>
-                <OrderPrincipalInfo orderId={orderId} />
-                <div
-                  style={{
-                    marginTop: '15px',
-                    marginBottom: '15px',
-                    width: '100%'
-                  }}
-                >
-                  <ProgressStep steps={this.state.orderStates} />
+        <BaseComponent cookies={this.props.cookies}>
+          {isLoading ? (
+            <LoadingWrapper>
+              {' '}
+              <CircularProgress />{' '}
+            </LoadingWrapper>
+          ) : (
+            <>
+              <ReactNotification ref={this.notificationDOMRef_info} />
+              <ReactNotification ref={this.notificationDOMRef_error} />
+              <ReactNotification ref={this.notificationDOMRef_sucess} />
+              <OrderPrincipalInfo
+                handleSaveShippment={this.handleSaveShippment}
+                orderId={orderId}
+              />
+              <div
+                style={{
+                  marginTop: '15px',
+                  marginBottom: '15px',
+                  width: '100%'
+                }}
+              >
+                <ProgressStep steps={this.state.orderStates} />
+              </div>
+              <div
+                style={{
+                  marginTop: '15px',
+                  display: 'flex',
+                  flexDirection: 'row'
+                }}
+              >
+                <div style={{ width: '70%', height: 'auto' }}>
+                  <TabsComponent options={tabOptions} />
                 </div>
-                <div
-                  style={{
-                    marginTop: '15px',
-                    display: 'flex',
-                    flexDirection: 'row'
-                  }}
-                >
-                  <div style={{ width: '70%', height: 'auto' }}>
-                    <TabsComponent options={tabOptions} />
-                  </div>
-                  <div style={{ width: '30%', margin: '15px' }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <OrderSummary />
-                      <RouteDisplay />
-                    </div>
+                <div style={{ width: '30%', margin: '15px' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center'
+                    }}
+                  >
+                    <OrderSummary />
+                    <RouteDisplay />
                   </div>
                 </div>
-              </>
-            )}
-          </BaseComponent>
-        ) : null}
+              </div>
+            </>
+          )}
+        </BaseComponent>
       </>
     );
   }

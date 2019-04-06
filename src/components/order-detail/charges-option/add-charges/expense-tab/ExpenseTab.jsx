@@ -41,7 +41,7 @@ class ExpenseTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      quantity: 0,
+      quantity: '',
       units: '',
       rate: '',
       amount: '',
@@ -178,7 +178,15 @@ class ExpenseTab extends Component {
           <Grid item xs={2} />
           <Grid item xs={2} />
         </Grid>
-        <Grid container spacing={12} style={{ marginTop: '38px' }}>
+        <Grid
+          container
+          spacing={12}
+          style={{
+            marginTop: '38px',
+            display: 'flex',
+            justifyContent: 'space-between'
+          }}
+        >
           <Grid item xs={5}>
             <TextField
               id="vendor"

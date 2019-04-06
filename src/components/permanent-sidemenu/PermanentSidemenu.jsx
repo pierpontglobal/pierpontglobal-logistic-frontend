@@ -38,7 +38,9 @@ const styles = theme => ({
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
-    })
+    }),
+    backgroundColor: 'white',
+    color: 'black'
   },
   appBarShift: {
     marginLeft: drawerWidth,
@@ -58,7 +60,8 @@ const styles = theme => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap'
+    whiteSpace: 'nowrap',
+    backgroundColor: '#2d034c'
   },
   drawerOpen: {
     width: drawerWidth,
@@ -83,12 +86,14 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'flex-end',
     padding: '0 8px',
+    backgroundColor: 'white',
     ...theme.mixins.toolbar
   },
   content: {
     padding: '0px',
     width: '90%',
-    margin: '0 auto'
+    margin: '0 auto',
+    marginTop: '75px'
   },
   LogoutButtonIcon: {
     transform: 'rotate(180deg)'
@@ -164,10 +169,14 @@ class MiniDrawer extends React.Component {
                 [classes.drawerClose]: !this.state.open
               })
             }}
+            style={{ backgroundColor: '#2d034c' }}
             open={this.state.open}
           >
             <div className={classes.toolbar}>
-              <IconButton onClick={this.handleDrawerClose}>
+              <IconButton
+                style={{ color: '#2d034c' }}
+                onClick={this.handleDrawerClose}
+              >
                 {theme.direction === 'rtl' ? (
                   <ChevronRightIcon />
                 ) : (
@@ -179,7 +188,7 @@ class MiniDrawer extends React.Component {
             <List>
               <NavLink
                 to="/dashboard"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: 'none', color: 'white' }}
                 activeStyle={{
                   fontWeight: 'bold',
                   color: 'red'

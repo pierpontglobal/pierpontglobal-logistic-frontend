@@ -16,6 +16,17 @@ class PPGMenuList extends React.Component {
     this.setState({ anchorEl: null });
   };
 
+  callHandler = item => {
+    this.setState(
+      {
+        anchorEl: null
+      },
+      () => {
+        item.handler();
+      }
+    );
+  };
+
   render() {
     const { anchorEl } = this.state;
     const { items, openLabel } = this.props;
@@ -36,7 +47,7 @@ class PPGMenuList extends React.Component {
           onClose={this.handleClose}
         >
           {items.map((item, index) => (
-            <MenuItem key={index} onClick={item.handler}>
+            <MenuItem key={index} onClick={() => this.callHandler(item)}>
               {item.label}
             </MenuItem>
           ))}

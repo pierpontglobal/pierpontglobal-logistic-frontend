@@ -15,6 +15,11 @@ function DetailsOption(props) {
     <>
       <MainOptionTab
         handleChange={props.handleChange}
+        handleShipperChange={props.shipperChange}
+        handleConsigneeChange={props.consigneeChange}
+        handleAgentChange={props.agentChange}
+        handleTransportChange={props.transportChange}
+        handleIssuingCompanyChange={props.issuingCompanyChange}
         detailsInfo={detailsInfo}
         orderId={orderId}
         issuingCompanies={issuingCompanies}

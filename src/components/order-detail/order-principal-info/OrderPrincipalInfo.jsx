@@ -38,7 +38,7 @@ class OrderPrinciopalInfo extends Component {
   }
 
   createShipHandler = () => {
-    alert('create shippment!');
+    this.props.handleSaveShippment();
   };
 
   render() {

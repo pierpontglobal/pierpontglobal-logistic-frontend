@@ -34,7 +34,12 @@ function PPGModal(props) {
         }}
       >
         <div
-          style={{ margin: 'auto', width: width, height: height }}
+          style={{
+            margin: 'auto',
+            width: width,
+            height: height,
+            overflowY: 'scroll'
+          }}
           className={classes.paper}
         >
           <div style={{ position: 'absolute', top: '5px', right: '5px' }}>
