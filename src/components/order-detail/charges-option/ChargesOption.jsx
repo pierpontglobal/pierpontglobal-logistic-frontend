@@ -7,6 +7,13 @@ import MenuList from '@material-ui/core/MenuList';
 import Button from '@material-ui/core/Button';
 import PPGModal from '../../ppg-modal/PPGModal';
 import AddCharges from './add-charges/AddCharges';
+import axios from 'axios';
+import { ApiServer } from '../../../Defaults';
+
+const NOTIFICATION_TYPES = {
+  ERROR: 'danger',
+  SUCCESS: 'success'
+};
 
 const TitleWrapper = styled.div`
   width: 100%;
@@ -99,7 +106,7 @@ const expensesColumns = [
     title: 'Rate'
   },
   {
-    title: 'Income'
+    title: 'Amount'
   },
   {
     title: 'Profit'
@@ -116,8 +123,8 @@ class ChargesOption extends Component {
       incomeRows: [],
       expensesRows: [],
       onCloseChargesModal: false,
-      incomes: [],
-      expenses: []
+      charges: [],
+      services: []
     };
   }
 
@@ -127,68 +134,205 @@ class ChargesOption extends Component {
     });
   };
 
-  handleAddCharge = charge => {
-    const { incomeRows, expensesRows, incomes, expenses } = this.state;
-    console.log(charge);
+  componentDidMount = () => {
+    axios.defaults.headers.common[
+      'Authorization'
+    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
 
-    let service = charge.service;
-    let income = charge.income;
-    let expense = charge.expense;
-
-    if (!!income) incomes.push(income);
-    if (!!expense) expenses.push(expense);
-
-    let rowId = `${Math.floor(Math.random() * 31) + 1}`;
-
-    if (!!income.amount && !!income.payment) {
-      incomeRows.push({
-        id: `i-${rowId}`,
-        content: [
-          { text: service.serviceTypeName },
-          { text: service.serviceTypeDescription },
-          { text: income.quantity },
-          { text: income.units },
-          { text: income.rate },
-          { text: income.amount },
-          { text: income.currency },
-          { text: income.payment },
-          { text: income.profit },
-          { text: income.billTo }
-        ]
-      });
-    }
-
-    if (!!expense.amount && !!expense.payment) {
-      expensesRows.push({
-        id: `e-${rowId}`,
-        content: [
-          { text: service.serviceTypeName },
-          { text: service.serviceTypeDescription },
-          { text: expense.quantity },
-          { text: expense.units },
-          { text: expense.rate },
-          { text: expense.amount },
-          { text: expense.currency },
-          { text: expense.payment },
-          { text: expense.profit },
-          { text: expense.vendor }
-        ]
-      });
-    }
-
-    this.setState(
-      {
-        incomeRows: incomeRows,
-        expensesRows: expensesRows,
-        openModalAddCharges: false,
-        incomes: incomes,
-        expenses: expenses
+    axios.get(`${ApiServer}/api/v1/charge`).then(
+      data => {
+        let charges = data.data.charges;
+        this.setState(
+          {
+            charges: charges
+          },
+          () => {
+            this.updateChargesTables();
+          }
+        );
       },
-      () => {
-        // Propagate event to parents
-        this.props.handleChange(this.state);
+      err => {}
+    );
+
+    axios.get(`${ApiServer}/api/v1/service`).then(
+      data => {
+        console.log('in charges option for service list > >> > >> > > ');
+        console.log(data);
+        if (!!data && !!data.data) {
+          let services = data.data.map(item => ({
+            value: item.id,
+            label: item.name
+          }));
+          console.log(data);
+          this.setState({
+            services: services
+          });
+        }
+      },
+      err => {
+        console.log(err);
       }
     );
+  };
+
+  updateChargesTables = () => {
+    const { charges } = this.state;
+    let incomeRows = [];
+    let expenseRows = [];
+    if (!!charges) {
+      let incomeCharges = charges.filter(c => c.custom_id === 1);
+      let expenseCharges = charges.filter(c => c.custom_id === 2);
+
+      incomeRows = incomeCharges.map(item => {
+        return {
+          id: item.id,
+          content: [
+            { text: item.name },
+            { text: item.description },
+            { text: item.quantity },
+            { text: item.unit },
+            { text: item.rate },
+            { text: item.amount },
+            { text: item.profit },
+            { text: item.vendor }
+          ]
+        };
+      });
+
+      expenseRows = expenseCharges.map(item => {
+        return {
+          id: item.id,
+          content: [
+            { text: item.name },
+            { text: item.description },
+            { text: item.quantity },
+            { text: item.unit },
+            { text: item.rate },
+            { text: item.amount },
+            { text: item.currency },
+            { text: item.payment },
+            { text: item.profit },
+            { text: item.bill_to }
+          ]
+        };
+      });
+
+      this.setState({
+        incomeRows: incomeRows,
+        expenseRows: expenseRows
+      });
+    }
+  };
+
+  handleAddCharge = charge => {
+    const { incomeRows, expensesRows, incomes, expenses } = this.state;
+    const { shippId } = this.props;
+    let expense = charge.expense;
+    let income = charge.income;
+    let service = charge.service;
+    console.log(charge);
+    if (!!charge) {
+      console.log(charge);
+
+      let chargesDto = [];
+
+      if (!!income.amount && !!expense.amount) {
+        chargesDto.push({
+          description: income.description,
+          quantity: income.quantity,
+          unit: income.unit,
+          rate: income.rate,
+          profit: income.profit,
+          bill_to_name: income.billToName,
+          quantity_expense: income.quantityExpense,
+          vendor: income.vendor,
+          bill_to: income.billTo,
+          amount: income.amount,
+          currency: income.currency,
+          payment: income.payment,
+          shippment_id: shippId,
+          service_id: service.serviceId,
+          charge_type_id: 1
+        });
+        chargesDto.push({
+          description: expense.description,
+          quantity: expense.quantity,
+          unit: expense.unit,
+          rate: expense.rate,
+          profit: expense.profit,
+          bill_to_name: expense.billToName,
+          quantity_expense: expense.quantityExpense,
+          vendor: expense.vendor,
+          bill_to: expense.billTo,
+          amount: expense.amount,
+          currency: expense.currency,
+          payment: expense.payment,
+          shippment_id: shippId,
+          service_id: service.serviceId,
+          charge_type_id: 2
+        });
+      } else if (!!income.amount && !expense.amount) {
+        chargesDto.push({
+          description: income.description,
+          quantity: income.quantity,
+          unit: income.unit,
+          rate: income.rate,
+          profit: income.profit,
+          bill_to_name: income.billToName,
+          quantity_expense: income.quantityExpense,
+          vendor: income.vendor,
+          bill_to: income.billTo,
+          amount: income.amount,
+          currency: income.currency,
+          payment: income.payment,
+          shippment_id: shippId,
+          service_id: service.serviceId,
+          charge_type_id: 1
+        });
+      } else {
+        chargesDto.push({
+          description: expense.description,
+          quantity: expense.quantity,
+          unit: expense.unit,
+          rate: expense.rate,
+          profit: expense.profit,
+          bill_to_name: expense.billToName,
+          quantity_expense: expense.quantityExpense,
+          vendor: expense.vendor,
+          bill_to: expense.billTo,
+          amount: expense.amount,
+          currency: expense.currency,
+          payment: expense.payment,
+          shippment_id: shippId,
+          service_id: service.serviceId,
+          charge_type_id: 2
+        });
+      }
+
+      axios
+        .post(`${ApiServer}/api/v1/charge`, {
+          charges: chargesDto
+        })
+        .then(
+          data => {
+            console.log(data);
+            this.props.addNotification(
+              'Process completed',
+              'Commodity added successfully!',
+              2000,
+              NOTIFICATION_TYPES.SUCCESS
+            );
+          },
+          err => {
+            this.props.addNotification(
+              'Process interrupted',
+              "Couldn't add commodity",
+              2000,
+              NOTIFICATION_TYPES.ERROR
+            );
+          }
+        );
+    }
   };
 
   onCloseChargesModal = () => {
@@ -199,7 +343,12 @@ class ChargesOption extends Component {
 
   render() {
     const { classes } = this.props;
-    const { openModalAddCharges, expensesRows, incomeRows } = this.state;
+    const {
+      openModalAddCharges,
+      expensesRows,
+      incomeRows,
+      services
+    } = this.state;
     return (
       <>
         <Paper style={{ marginBottom: '8px' }}>
@@ -241,7 +390,11 @@ class ChargesOption extends Component {
           width="80%"
           height="80%"
         >
-          <AddCharges handleAdd={this.handleAddCharge} />
+          <AddCharges
+            services={services}
+            cookies={this.props.cookie}
+            handleAdd={this.handleAddCharge}
+          />
         </PPGModal>
       </>
     );

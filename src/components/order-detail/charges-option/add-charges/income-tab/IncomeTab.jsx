@@ -41,7 +41,7 @@ class IncomeTab extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      quantity: 0,
+      quantity: '',
       units: '',
       rate: '',
       amount: '',

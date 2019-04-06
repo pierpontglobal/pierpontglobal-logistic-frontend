@@ -10,6 +10,8 @@ import IncomeTab from './income-tab/IncomeTab';
 import ExpenseTab from './expense-tab/ExpenseTab';
 import { Button, IconButton } from '@material-ui/core';
 import PPGSimpleSelect from '../../../ppg-simple-select/PPGSimpleSelect';
+import axios from 'axios';
+import { ApiServer } from '../../../../Defaults';
 
 const styles = theme => ({
   container: {
@@ -35,22 +37,11 @@ class AddCharges extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      serviceTypes: [
-        {
-          id: 1,
-          label: 'Sample service type #1',
-          description: 'Sample service #1 description here....'
-        },
-        {
-          id: 2,
-          label: 'Sample service #2',
-          description: 'Hola daniel k ases'
-        }
-      ],
+      serviceTypes: this.props.services,
       service: {
-        serviceTypeId: '',
-        serviceTypeName: '',
-        serviceTypeDescription: ''
+        serviceId: '',
+        serviceName: ''
+        //serviceTypeDescription: ''
       },
       serviceFound: false,
       income: {},
@@ -63,15 +54,15 @@ class AddCharges extends Component {
 
   handleChange = srv => {
     console.log(srv);
-    const serviceId = srv.id;
+    const serviceId = srv.value;
 
     if (!!serviceId) {
-      const service = this.state.serviceTypes.find(x => x.id === serviceId);
+      const service = this.state.serviceTypes.find(x => x.value === serviceId);
 
       const obj = {
-        serviceTypeId: service.id,
-        serviceTypeName: service.label,
-        serviceTypeDescription: service.description
+        serviceId: service.value,
+        serviceName: service.label
+        // serviceTypeDescription: service.description
       };
 
       this.setState({
@@ -131,42 +122,24 @@ class AddCharges extends Component {
             alignItems: 'center'
           }}
         >
-          <div style={{ width: '40%' }}>
+          <div
+            style={{ width: '40%', marginTop: '24px', marginBottom: '16px' }}
+          >
             <PPGSimpleSelect
               isLoading={isFetchingService}
               handleChange={this.handleChange}
               options={serviceTypes}
             />
-            {/* <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="age-simple">Service type</InputLabel>
-              <Select
-                value={this.state.service.serviceTypeName}
-                onChange={this.handleChange}
-                inputProps={{
-                  name: 'containerType',
-                  id: 'containerType'
-                }}
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {serviceTypes.map(item => (
-                  <MenuItem key={item.id} value={item.id}>
-                    {item.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
           </div>
           <div style={{ width: '50%' }}>
-            <TextField
+            {/* <TextField
               disabled
               id="standard-disabled"
               label="Description"
               value={service.serviceTypeDescription}
               className={classes.textField}
               margin="normal"
-            />
+            /> */}
           </div>
         </div>
         <div style={{ width: '100%', padding: '7px' }}>

@@ -86,7 +86,8 @@ class OrderDetail extends Component {
       consignees: [],
       transports: [],
       isSavingShipment: false,
-      commodities: []
+      commodities: [],
+      charges: []
     };
 
     this.notificationDOMRef_info = React.createRef();
@@ -140,6 +141,7 @@ class OrderDetail extends Component {
       if (!!data && !!data.data) {
         let shippment = data.data.shippment_detail;
         let commodities = data.data.commodities;
+        let charges = data.data.charges;
 
         if (!!shippment) {
           let detailsInfo = {
@@ -166,6 +168,7 @@ class OrderDetail extends Component {
           this.setState({
             detailsInfo: detailsInfo,
             commodities: commodities,
+            charges: charges,
             shippId: !!shippment ? shippment.id : -1
           });
         }
@@ -327,7 +330,8 @@ class OrderDetail extends Component {
       containerCommodity,
       vehicleCommodity,
       commodities,
-      shippId
+      shippId,
+      charges
     } = this.state;
 
     const tabOptions = [
@@ -369,6 +373,10 @@ class OrderDetail extends Component {
           <ChargesOption
             cookies={this.props.cookies}
             handleChange={this.onChargesChange}
+            charges={charges}
+            orderId={orderId}
+            shippId={shippId}
+            addNotification={this.addNotification}
           />
         )
       },
