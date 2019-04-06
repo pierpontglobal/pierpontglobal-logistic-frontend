@@ -15,9 +15,11 @@ import Footer from './components/Footer';
 import FooterLinks from './components/FooterLinks';
 import Switcher from './components/Switcher';
 import { Link } from 'react-router-dom';
+import Particles from 'react-particles-js';
 import Aux from './hoc/Aux_';
 import BackImage from '../../assets/images/landing_background.jpeg';
 import ButtonsSelect from './components/ButtonsSelect';
+import OriginDestination from './components/OriginDestination';
 
 class HomeSeven extends React.Component {
   render() {
@@ -38,6 +40,27 @@ class HomeSeven extends React.Component {
           style={bkg1}
         >
           <div className="bg-overlay" />
+          <Particles
+            style={{ position: 'absolute', top: 0 }}
+            params={{
+              particles: {
+                number: {
+                  value: 50
+                },
+                size: {
+                  value: 4
+                }
+              },
+              interactivity: {
+                events: {
+                  onhover: {
+                    enable: true,
+                    mode: 'repulse'
+                  }
+                }
+              }
+            }}
+          />
           <div className="display-table">
             <div className="display-table-cell">
               <div className="container">
@@ -51,8 +74,19 @@ class HomeSeven extends React.Component {
                       a euismod mus luctus quam.Lorem ipsum dolor sit amet,
                       consectetur adipisicing eli.
                     </p>
-                    <div className="margin-t-30 margin-l-r-auto">
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        justifyItems: 'center',
+                        flexDirection: 'column'
+                      }}
+                      className="margin-t-30 margin-l-r-auto"
+                    >
                       <ButtonsSelect />
+                      <OriginDestination />
                     </div>
                   </div>
                 </div>

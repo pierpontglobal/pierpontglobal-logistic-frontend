@@ -5,7 +5,7 @@ import posed from 'react-pose';
 const MaterialSelect = styled.div`
   border: solid white 1px;
   margin: 0 !important;
-  padding: 4px 40px;
+  padding: 4px 30px;
   font-weight: 100;
   cursor: pointer;
   transition: 0.4s;
