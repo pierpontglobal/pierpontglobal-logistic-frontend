@@ -67,7 +67,6 @@ function InputDate(props) {
         label="Ready to load"
         type="date"
         defaultValue="2017-05-24"
-        disableUnderline={true}
         InputLabelProps={{
           shrink: true
         }}

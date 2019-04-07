@@ -39,7 +39,6 @@ class HomeSeven extends React.Component {
           id="home"
           style={bkg1}
         >
-          <div className="bg-overlay" />
           <Particles
             style={{ position: 'absolute', top: 0 }}
             params={{
@@ -61,6 +60,7 @@ class HomeSeven extends React.Component {
               }
             }}
           />
+          <div className="bg-overlay" />
           <div className="display-table">
             <div className="display-table-cell">
               <div className="container">
