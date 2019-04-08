@@ -10,9 +10,7 @@ class Testi extends React.Component {
               <h1 className="section-title text-center">What they've said</h1>
               <div className="section-title-border margin-t-20" />
               <p className="section-subtitle text-muted text-center font-secondary padding-t-30">
-                The Big Oxmox advised her not to do so, because there were
-                thousands of bad Commas, wild Question Marks and devious
-                Semikoli.
+                This is what our customers think of us!
               </p>
             </div>
           </div>

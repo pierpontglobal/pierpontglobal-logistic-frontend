@@ -23,16 +23,10 @@ class Contact extends React.Component {
                   <span className="h5">Office Address 1:</span>
                   <br />{' '}
                   <span className="text-muted d-block mt-2">
-                    4461 Cedar Street Moro, AR 72368
+                    199 E Flagler St #215
                   </span>
-                </p>
-                <p className="mt-4">
-                  <span className="h5">Office Address 2:</span>
-                  <br />{' '}
-                  <span className="text-muted d-block mt-2">
-                    2467 Swick Hill Street <br />
-                    New Orleans, LA 70171
-                  </span>
+                  <br />
+                  <span className="text-muted d-block">Miami, FL 33131</span>
                 </p>
                 <p className="mt-4">
                   <span className="h5">Working Hours:</span>

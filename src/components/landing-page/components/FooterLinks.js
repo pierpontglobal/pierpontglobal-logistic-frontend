@@ -9,7 +9,7 @@ class FooterLinks extends React.Component {
             <div className="col-lg-12">
               <div className="float-left pull-none ">
                 <p className="copy-rights text-muted">
-                  {new Date().getFullYear()} © Dorsin - Themesbrand
+                  {new Date().getFullYear()} © Pierpont Global, Inc
                 </p>
               </div>
               <div className="float-right pull-none ">
