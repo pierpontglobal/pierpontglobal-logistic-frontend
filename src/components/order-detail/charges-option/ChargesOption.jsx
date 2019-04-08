@@ -1,18 +1,18 @@
-import React, { Component } from 'react';
-import PPGTable from '../../ppg-table/PPGTable';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import MenuList from '@material-ui/core/MenuList';
-import Button from '@material-ui/core/Button';
-import PPGModal from '../../ppg-modal/PPGModal';
-import AddCharges from './add-charges/AddCharges';
-import axios from 'axios';
-import { ApiServer } from '../../../Defaults';
+import React, { Component } from "react";
+import PPGTable from "../../ppg-table/PPGTable";
+import styled from "styled-components";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import MenuList from "@material-ui/core/MenuList";
+import Button from "@material-ui/core/Button";
+import PPGModal from "../../ppg-modal/PPGModal";
+import AddCharges from "./add-charges/AddCharges";
+import axios from "axios";
+import { ApiServer } from "../../../Defaults";
 
 const NOTIFICATION_TYPES = {
-  ERROR: 'danger',
-  SUCCESS: 'success'
+  ERROR: "danger",
+  SUCCESS: "success"
 };
 
 const TitleWrapper = styled.div`
@@ -35,9 +35,9 @@ const TableWrapper = styled.div`
 
 const styles = theme => ({
   menuItem: {
-    '&:focus': {
+    "&:focus": {
       backgroundColor: theme.palette.primary.main,
-      '& $primary, & $icon': {
+      "& $primary, & $icon": {
         color: theme.palette.common.white
       }
     }
@@ -45,65 +45,65 @@ const styles = theme => ({
   primary: {},
   icon: {},
   menuList: {
-    display: 'flex',
-    flexDirection: 'row'
+    display: "flex",
+    flexDirection: "row"
   },
   button: {
     margin: theme.spacing.unit
   },
   input: {
-    display: 'none'
+    display: "none"
   }
 });
 
 const incomeColumns = [
   {
-    title: 'Service'
+    title: "Service"
   },
   {
-    title: 'QTY'
+    title: "QTY"
   },
   {
-    title: 'Unit'
+    title: "Unit"
   },
   {
-    title: 'Rate'
+    title: "Rate"
   },
   {
-    title: 'Amount'
+    title: "Amount"
   },
   {
-    title: 'Currency'
+    title: "Currency"
   },
   {
-    title: 'Payment'
+    title: "Payment"
   },
   {
-    title: 'Profit'
+    title: "Profit"
   },
   {
-    title: 'Bill to'
+    title: "Bill to"
   }
 ];
 
 const expensesColumns = [
   {
-    title: 'Service'
+    title: "Service"
   },
   {
-    title: 'QTY'
+    title: "QTY"
   },
   {
-    title: 'Unit'
+    title: "Unit"
   },
   {
-    title: 'Rate'
+    title: "Rate"
   },
   {
-    title: 'Amount'
+    title: "Amount"
   },
   {
-    title: 'Vendor'
+    title: "Vendor"
   }
 ];
 
@@ -129,8 +129,8 @@ class ChargesOption extends Component {
 
   componentDidMount = () => {
     axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+      "Authorization"
+    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
 
     axios.get(`${ApiServer}/api/v1/charge`).then(
       data => {
@@ -150,7 +150,7 @@ class ChargesOption extends Component {
 
     axios.get(`${ApiServer}/api/v1/service`).then(
       data => {
-        console.log('in charges option for service list > >> > >> > > ');
+        console.log("in charges option for service list > >> > >> > > ");
         console.log(data);
         if (!!data && !!data.data) {
           let services = data.data.map(item => ({
@@ -173,7 +173,7 @@ class ChargesOption extends Component {
     const { charges } = this.state;
     let incomeRows = [];
     let expenseRows = [];
-    console.log('will update rows >>>>>>>>>>>>>>>>> ');
+    console.log("will update rows >>>>>>>>>>>>>>>>> ");
     console.log(charges);
     if (!!charges) {
       let incomeCharges = charges.filter(c => c.custom_id === 1);
@@ -225,7 +225,7 @@ class ChargesOption extends Component {
     let service = charge.service;
     console.log(charge);
     if (!!charge) {
-      console.log('TO ADD CHARGE AJAJAJA');
+      console.log("TO ADD CHARGE AJAJAJA");
       console.log(charge);
 
       console.log(expense);
@@ -234,14 +234,14 @@ class ChargesOption extends Component {
       let dto = {};
 
       if (!!expense && !!expense.amount) {
-        dto['expense'] = {
+        dto["expense"] = {
           ...expense,
           shippment_id: shippId,
           service_id: service.serviceId
         };
       }
       if (!!income && income.amount) {
-        dto['income'] = {
+        dto["income"] = {
           ...income,
           bill_to: income.billTo,
           bill_to_name: income.billToName,
@@ -256,11 +256,11 @@ class ChargesOption extends Component {
           console.log(data);
           let response_charges = data.data.charges.map(charge => {
             let obj = { ...charge };
-            obj['charge_id'] = obj.id;
+            obj["charge_id"] = obj.id;
             return obj;
           });
           let override_charges = [...charges].concat(response_charges);
-          console.log('>>> >>>> >>>> >>>>');
+          console.log(">>> >>>> >>>> >>>>");
           console.log(charges);
           console.log(override_charges);
           this.setState(
@@ -270,12 +270,13 @@ class ChargesOption extends Component {
             },
             () => {
               this.props.addNotification(
-                'Process completed',
-                'Charge added successfully!',
+                "Process completed",
+                "Charge added successfully!",
                 2000,
                 NOTIFICATION_TYPES.SUCCESS
               );
               this.updateChargesTables();
+              this.props.handleChange(override_charges);
             }
           );
         },
@@ -286,7 +287,7 @@ class ChargesOption extends Component {
             },
             () => {
               this.props.addNotification(
-                'Process interrupted',
+                "Process interrupted",
                 "Couldn't add charge",
                 2000,
                 NOTIFICATION_TYPES.ERROR
@@ -319,7 +320,7 @@ class ChargesOption extends Component {
   };
 
   confirmedRemoveCharge = () => {
-    console.log('will enter remove charge');
+    console.log("will enter remove charge");
     const {
       toDeleteChargeId,
       carRows,
@@ -355,9 +356,10 @@ class ChargesOption extends Component {
                 },
                 () => {
                   this.updateChargesTables();
+                  this.props.handleChange(state_charges);
                   this.props.addNotification(
-                    'Process completed',
-                    'Charge removed successfully!',
+                    "Process completed",
+                    "Charge removed successfully!",
                     2000,
                     NOTIFICATION_TYPES.SUCCESS
                   );
@@ -366,7 +368,7 @@ class ChargesOption extends Component {
             },
             err => {
               this.props.addNotification(
-                'Process interrupted',
+                "Process interrupted",
                 "Couldn't remove associated charge",
                 2000,
                 NOTIFICATION_TYPES.ERROR
@@ -388,18 +390,18 @@ class ChargesOption extends Component {
     } = this.state;
     return (
       <>
-        <Paper style={{ marginBottom: '8px' }}>
+        <Paper style={{ marginBottom: "8px" }}>
           <TitleWrapper>
-            <div style={{ margin: '10px', padding: '5px' }}>
+            <div style={{ margin: "10px", padding: "5px" }}>
               <span
                 style={{
-                  fontWeight: '600',
-                  fontSize: '1.25rem',
-                  color: 'darkgray',
-                  padding: '10px'
+                  fontWeight: "600",
+                  fontSize: "1.25rem",
+                  color: "darkgray",
+                  padding: "10px"
                 }}
               >
-                Charges{' '}
+                Charges{" "}
               </span>
             </div>
             <div>
@@ -420,14 +422,14 @@ class ChargesOption extends Component {
             <div>
               <span
                 style={{
-                  fontWeight: '600',
-                  fontSize: '1.05rem',
-                  color: 'darkgray',
-                  padding: '10px'
+                  fontWeight: "600",
+                  fontSize: "1.05rem",
+                  color: "darkgray",
+                  padding: "10px"
                 }}
               >
-                Incomes{' '}
-                <span style={{ fontStyle: 'italic' }}>
+                Incomes{" "}
+                <span style={{ fontStyle: "italic" }}>
                   (Double click to remove.)
                 </span>
               </span>
@@ -444,14 +446,14 @@ class ChargesOption extends Component {
             <div>
               <span
                 style={{
-                  fontWeight: '600',
-                  fontSize: '1.05rem',
-                  color: 'darkgray',
-                  padding: '10px'
+                  fontWeight: "600",
+                  fontSize: "1.05rem",
+                  color: "darkgray",
+                  padding: "10px"
                 }}
               >
-                Expenses{' '}
-                <span style={{ fontStyle: 'italic' }}>
+                Expenses{" "}
+                <span style={{ fontStyle: "italic" }}>
                   (Double click to remove.)
                 </span>
               </span>
@@ -464,7 +466,7 @@ class ChargesOption extends Component {
           </TableWrapper>
         ) : null}
         {incomeRows.length === 0 && expenseRows.length === 0
-          ? 'No charges has been added'
+          ? "No charges has been added"
           : null}
         <PPGModal
           setOpen={openModalAddCharges}
@@ -486,24 +488,24 @@ class ChargesOption extends Component {
         >
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '30px'
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "30px"
             }}
           >
             <div>
-              <span style={{ fontWeight: '600', color: 'darkgray' }}>
+              <span style={{ fontWeight: "600", color: "darkgray" }}>
                 Are you sure you want to remove this charge?
               </span>
             </div>
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center'
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
               }}
             >
               <div>

@@ -1,38 +1,38 @@
-import React from 'react';
-import Paper from '@material-ui/core/Paper';
-import FormControl from '@material-ui/core/FormControl';
-import withStyles from '@material-ui/core/styles/withStyles';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import React from "react";
+import Paper from "@material-ui/core/Paper";
+import FormControl from "@material-ui/core/FormControl";
+import withStyles from "@material-ui/core/styles/withStyles";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import {
   ApiServer,
   PPGServer,
   APP_SERVER,
   PPG_SECRET_KEY,
   PPG_PUBLIC_KEY
-} from '../../Defaults';
-import axios from 'axios';
-import { withRouter, Redirect } from 'react-router-dom';
+} from "../../Defaults";
+import axios from "axios";
+import { withRouter, Redirect } from "react-router-dom";
 
 const styles = theme => ({
   main: {
-    width: 'auto',
-    display: 'block', // Fix IE 11 issue.
+    width: "auto",
+    display: "block", // Fix IE 11 issue.
     marginLeft: theme.spacing.unit * 3,
     marginRight: theme.spacing.unit * 3,
     [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
       width: 400,
-      marginLeft: 'auto',
-      marginRight: 'auto'
+      marginLeft: "auto",
+      marginRight: "auto"
     }
   },
   paper: {
     marginTop: theme.spacing.unit * 8,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme
       .spacing.unit * 3}px`
   },
@@ -41,15 +41,15 @@ const styles = theme => ({
     backgroundColor: theme.palette.secondary.main
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing.unit
   },
   submit: {
     marginTop: theme.spacing.unit * 3,
-    background: 'linear-gradient(45deg, #0F2027 30%, #203A43 90%)'
+    background: "linear-gradient(45deg, #0F2027 30%, #203A43 90%)"
   },
   logo: {
-    width: '100%'
+    width: "100%"
   }
 });
 
@@ -57,8 +57,8 @@ class SignUp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      email: '',
-      password: '',
+      email: "",
+      password: "",
       isLoading: false
     };
   }
@@ -71,7 +71,7 @@ class SignUp extends React.Component {
 
   handleOnSubmit = e => {
     e.preventDefault();
-    console.log(this.state);
+
     const { email, password } = this.state;
     const { cookies } = this.props;
     this.setState({
@@ -91,7 +91,7 @@ class SignUp extends React.Component {
               isLoggedIn: true
             },
             () => {
-              this.props.history.push('/');
+              this.props.history.push("/");
             }
           );
         }
@@ -109,27 +109,27 @@ class SignUp extends React.Component {
     return (
       <>
         <div
-          style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+          style={{ width: "100%", display: "flex", justifyContent: "center" }}
         >
           <div
             style={{
-              width: '350px',
-              height: 'auto',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
+              width: "350px",
+              height: "auto",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center"
             }}
           >
-            <Paper style={{ padding: '15px' }}>
-              <div style={{ marginBottom: '25px' }}>
+            <Paper style={{ padding: "15px" }}>
+              <div style={{ marginBottom: "25px" }}>
                 <span
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    fontWeight: '600',
-                    fontSize: '1.2rem'
+                    display: "flex",
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    fontWeight: "600",
+                    fontSize: "1.2rem"
                   }}
                 >
                   SignUp in Pierpont Logistics
@@ -166,10 +166,10 @@ class SignUp extends React.Component {
                   className={classes.submit}
                   onClick={this.handleOnSubmit}
                 >
-                  Sign up!{' '}
+                  Sign up!{" "}
                   {isLoading ? (
                     <CircularProgress
-                      style={{ marginLeft: '7px' }}
+                      style={{ marginLeft: "7px" }}
                       size={20}
                       color="#fff"
                     />

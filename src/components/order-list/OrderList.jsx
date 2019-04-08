@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import BaseComponent from '../base-component/BaseComponent';
-import PPGTable from '../ppg-table/PPGTable';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import styled from 'styled-components';
-import RemoveRedEye from '@material-ui/icons/RemoveRedEye';
-import { withRouter } from 'react-router-dom';
-import PPGTableEnhanced from '../ppg-table-enhanced/PPGTableEnhanced';
-import axios from 'axios';
-import { ApiServer } from '../../Defaults';
+import React, { Component } from "react";
+import BaseComponent from "../base-component/BaseComponent";
+import PPGTable from "../ppg-table/PPGTable";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import styled from "styled-components";
+import RemoveRedEye from "@material-ui/icons/RemoveRedEye";
+import { withRouter } from "react-router-dom";
+import PPGTableEnhanced from "../ppg-table-enhanced/PPGTableEnhanced";
+import axios from "axios";
+import { ApiServer } from "../../Defaults";
 
 const LoadingWrapper = styled.div`
   width: 100%;
@@ -18,20 +18,20 @@ const LoadingWrapper = styled.div`
 
 const columns = [
   {
-    title: '',
+    title: "",
     isIcon: true
   },
   {
-    title: 'Number'
+    title: "Number"
   },
   {
-    title: 'Origin'
+    title: "Origin"
   },
   {
-    title: 'Destination'
+    title: "Destination"
   },
   {
-    title: 'Service type'
+    title: "Service type"
   }
 ];
 
@@ -46,12 +46,10 @@ class OrderList extends Component {
 
   componentDidMount = () => {
     axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+      "Authorization"
+    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
 
     axios.get(`${ApiServer}/api/v1/order`).then(data => {
-      console.log('Fetching...');
-      console.log(data);
       const obj = data.data;
 
       const rowData = obj.orders_with_shipp.concat(obj.orders_without_shipp);
@@ -82,27 +80,26 @@ class OrderList extends Component {
 
   render() {
     const { isLoading, rows } = this.state;
-    console.log(this.props);
     return (
       <>
         <BaseComponent cookies={this.props.cookies}>
           {isLoading ? (
             <LoadingWrapper>
-              {' '}
-              <CircularProgress />{' '}
+              {" "}
+              <CircularProgress />{" "}
             </LoadingWrapper>
           ) : (
             <>
               <div
                 style={{
-                  width: '100%',
-                  display: 'flex',
-                  alignItems: 'space-between',
-                  justifyContent: 'space-between'
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "space-between",
+                  justifyContent: "space-between"
                 }}
               >
-                <div style={{ marginTop: '15px', marginBottom: '10px' }}>
-                  <span style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+                <div style={{ marginTop: "15px", marginBottom: "10px" }}>
+                  <span style={{ fontSize: "1.25rem", fontWeight: "600" }}>
                     Orders
                   </span>
                 </div>

@@ -16,5 +16,6 @@
         "camelcase",
         "Completionist",
         "conatiner"
-    ]
+    ],
+    "editor.formatOnSave": true
 }

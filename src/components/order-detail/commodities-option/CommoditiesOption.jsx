@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import PPGTable from '../../ppg-table/PPGTable';
-import styled from 'styled-components';
-import { withStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
-import MenuList from '@material-ui/core/MenuList';
-import Button from '@material-ui/core/Button';
-import PPGModal from '../../ppg-modal/PPGModal';
-import TYPES from '../../../constants/CommodityTypes';
-import AddCommodity from './add-commodity/AddCommodity';
-import axios from 'axios';
-import { ApiServer } from '../../../Defaults';
-import createReactContext from 'create-react-context';
+import React, { Component } from "react";
+import PPGTable from "../../ppg-table/PPGTable";
+import styled from "styled-components";
+import { withStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import MenuList from "@material-ui/core/MenuList";
+import Button from "@material-ui/core/Button";
+import PPGModal from "../../ppg-modal/PPGModal";
+import TYPES from "../../../constants/CommodityTypes";
+import AddCommodity from "./add-commodity/AddCommodity";
+import axios from "axios";
+import { ApiServer } from "../../../Defaults";
+import createReactContext from "create-react-context";
 
 const NOTIFICATION_TYPES = {
-  ERROR: 'danger',
-  SUCCESS: 'success'
+  ERROR: "danger",
+  SUCCESS: "success"
 };
 
 const TitleWrapper = styled.div`
@@ -38,9 +38,9 @@ const TableWrapper = styled.div`
 
 const styles = theme => ({
   menuItem: {
-    '&:focus': {
+    "&:focus": {
       backgroundColor: theme.palette.primary.main,
-      '& $primary, & $icon': {
+      "& $primary, & $icon": {
         color: theme.palette.common.white
       }
     }
@@ -48,86 +48,86 @@ const styles = theme => ({
   primary: {},
   icon: {},
   menuList: {
-    display: 'flex',
-    flexDirection: 'row'
+    display: "flex",
+    flexDirection: "row"
   },
   button: {
     margin: theme.spacing.unit
   },
   input: {
-    display: 'none'
+    display: "none"
   }
 });
 
 const containerColumns = [
   {
-    title: 'Reference'
+    title: "Reference"
   },
   {
-    title: 'Description'
+    title: "Description"
   },
   {
-    title: 'Pieces'
+    title: "Pieces"
   },
   {
-    title: 'Length'
+    title: "Length"
   },
   {
-    title: 'Width'
+    title: "Width"
   },
   {
-    title: 'Height'
+    title: "Height"
   },
   {
-    title: 'Tare weight'
+    title: "Tare weight"
   },
   {
-    title: 'Next weight'
+    title: "Next weight"
   },
   {
-    title: 'Total weigth'
+    title: "Total weigth"
   },
   {
-    title: 'Volume'
+    title: "Volume"
   },
   {
-    title: 'Vol weight'
+    title: "Vol weight"
   },
   {
-    title: 'Square Pt'
+    title: "Square Pt"
   }
 ];
 
 const carColumns = [
   {
-    title: 'Vin'
+    title: "Vin"
   },
   {
-    title: 'Pieces'
+    title: "Pieces"
   },
   {
-    title: 'Year'
+    title: "Year"
   },
   {
-    title: 'Model'
+    title: "Model"
   },
   {
-    title: 'Maker'
+    title: "Maker"
   },
   {
-    title: 'Engine'
+    title: "Engine"
   },
   {
-    title: 'Trim'
+    title: "Trim"
   },
   {
-    title: 'Fuel'
+    title: "Fuel"
   },
   {
-    title: 'Body'
+    title: "Body"
   },
   {
-    title: 'Type code'
+    title: "Type code"
   }
 ];
 
@@ -148,8 +148,8 @@ class CommoditiesOption extends Component {
   componentDidMount = () => {
     // Setup axios
     axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+      "Authorization"
+    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
 
     this.updateCommoditiesTables();
   };
@@ -199,7 +199,6 @@ class CommoditiesOption extends Component {
       })
       .then(
         data => {
-          console.log(data);
           let artifact = data.data.artifact;
           let commodity = data.data.commodity;
           let e = artifact.car_information;
@@ -233,10 +232,11 @@ class CommoditiesOption extends Component {
             () => {
               // Propagate commodities array to Order Detail
               this.props.onCommoditiesChange(commodities_arr);
+              // this.props.recalculateSummary();
               this.updateCommoditiesTables();
               this.props.addNotification(
-                'Process completed',
-                'Commodity added successfully!',
+                "Process completed",
+                "Commodity added successfully!",
                 2000,
                 NOTIFICATION_TYPES.SUCCESS
               );
@@ -245,7 +245,7 @@ class CommoditiesOption extends Component {
         },
         err => {
           this.props.addNotification(
-            'Process interrupted',
+            "Process interrupted",
             "Couldn't add commodity",
             2000,
             NOTIFICATION_TYPES.ERROR
@@ -302,10 +302,11 @@ class CommoditiesOption extends Component {
             },
             () => {
               this.props.onCommoditiesChange(commodities_arr);
+              // this.props.recalculateSummary();
               this.updateCommoditiesTables();
               this.props.addNotification(
-                'Process completed',
-                'Commodity added successfully!',
+                "Process completed",
+                "Commodity added successfully!",
                 2000,
                 NOTIFICATION_TYPES.SUCCESS
               );
@@ -314,7 +315,7 @@ class CommoditiesOption extends Component {
         },
         err => {
           this.props.addNotification(
-            'Process interrupted',
+            "Process interrupted",
             "Couldn't add commodity",
             2000,
             NOTIFICATION_TYPES.ERROR
@@ -331,7 +332,6 @@ class CommoditiesOption extends Component {
   };
 
   confirmedRemoveCommodity = () => {
-    console.log('will enter remove commodity');
     const {
       toDeleteCommodityId,
       carRows,
@@ -339,16 +339,13 @@ class CommoditiesOption extends Component {
       commodities,
       shippId
     } = this.state;
-    console.log(this.state);
 
     let state_commodities = [...commodities];
-    console.log(commodities);
 
     if (!!toDeleteCommodityId) {
       let commodity = commodities.find(
         x => x.commodity.id === toDeleteCommodityId
       );
-      console.log(commodity);
       if (!!commodity) {
         axios
           .delete(
@@ -365,10 +362,11 @@ class CommoditiesOption extends Component {
                   openToDeleteCarConfirmation: false
                 },
                 () => {
+                  this.props.onCommoditiesChange(state_commodities);
                   this.updateCommoditiesTables();
                   this.props.addNotification(
-                    'Process completed',
-                    'Commodity removed successfully!',
+                    "Process completed",
+                    "Commodity removed successfully!",
                     2000,
                     NOTIFICATION_TYPES.SUCCESS
                   );
@@ -377,7 +375,7 @@ class CommoditiesOption extends Component {
             },
             err => {
               this.props.addNotification(
-                'Process interrupted',
+                "Process interrupted",
                 "Couldn't remove associated commodity",
                 2000,
                 NOTIFICATION_TYPES.ERROR
@@ -460,18 +458,18 @@ class CommoditiesOption extends Component {
 
     return (
       <>
-        <Paper style={{ marginBottom: '8px' }}>
+        <Paper style={{ marginBottom: "8px" }}>
           <TitleWrapper>
-            <div style={{ margin: '10px', padding: '5px' }}>
+            <div style={{ margin: "10px", padding: "5px" }}>
               <span
                 style={{
-                  fontWeight: '600',
-                  fontSize: '1.25rem',
-                  color: 'darkgray',
-                  padding: '10px'
+                  fontWeight: "600",
+                  fontSize: "1.25rem",
+                  color: "darkgray",
+                  padding: "10px"
                 }}
               >
-                Commodities{' '}
+                Commodities{" "}
               </span>
             </div>
             <div>
@@ -499,14 +497,14 @@ class CommoditiesOption extends Component {
             <div>
               <span
                 style={{
-                  fontWeight: '600',
-                  fontSize: '1.05rem',
-                  color: 'darkgray',
-                  padding: '10px'
+                  fontWeight: "600",
+                  fontSize: "1.05rem",
+                  color: "darkgray",
+                  padding: "10px"
                 }}
               >
-                Vehicles{' '}
-                <span style={{ fontStyle: 'italic' }}>
+                Vehicles{" "}
+                <span style={{ fontStyle: "italic" }}>
                   (Double click to remove.)
                 </span>
               </span>
@@ -523,14 +521,14 @@ class CommoditiesOption extends Component {
             <div>
               <span
                 style={{
-                  fontWeight: '600',
-                  fontSize: '1.05rem',
-                  color: 'darkgray',
-                  padding: '10px'
+                  fontWeight: "600",
+                  fontSize: "1.05rem",
+                  color: "darkgray",
+                  padding: "10px"
                 }}
               >
-                Containers{' '}
-                <span style={{ fontStyle: 'italic' }}>
+                Containers{" "}
+                <span style={{ fontStyle: "italic" }}>
                   (Double click to remove.)
                 </span>
               </span>
@@ -543,7 +541,7 @@ class CommoditiesOption extends Component {
           </TableWrapper>
         ) : null}
         {carRows.length === 0 && containerRows.length === 0
-          ? 'No commodities has been added'
+          ? "No commodities has been added"
           : null}
         <PPGModal
           setOpen={openModalAddVehicle}
@@ -577,24 +575,24 @@ class CommoditiesOption extends Component {
         >
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginTop: '30px'
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "30px"
             }}
           >
             <div>
-              <span style={{ fontWeight: '600', color: 'darkgray' }}>
+              <span style={{ fontWeight: "600", color: "darkgray" }}>
                 Are you sure you want to remove this commodity?
               </span>
             </div>
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center'
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center"
               }}
             >
               <div>

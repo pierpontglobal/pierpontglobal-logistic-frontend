@@ -1,42 +1,42 @@
-import React, { Component } from 'react';
-import BaseComponent from '../base-component/BaseComponent';
-import PPGTable from '../ppg-table/PPGTable';
-import { withRouter } from 'react-router-dom';
-import PPGModal from '../ppg-modal/PPGModal';
-import { Paper, Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import ShipperCreate from './shipper-create/ShipperCreate';
-import axios from 'axios';
-import { ApiServer } from '../../Defaults';
-import { withCookies } from 'react-cookie';
+import React, { Component } from "react";
+import BaseComponent from "../base-component/BaseComponent";
+import PPGTable from "../ppg-table/PPGTable";
+import { withRouter } from "react-router-dom";
+import PPGModal from "../ppg-modal/PPGModal";
+import { Paper, Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import ShipperCreate from "./shipper-create/ShipperCreate";
+import axios from "axios";
+import { ApiServer } from "../../Defaults";
+import { withCookies } from "react-cookie";
 
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit
   },
   input: {
-    display: 'none'
+    display: "none"
   }
 });
 
 const columns = [
   {
-    title: 'Name'
+    title: "Name"
   },
   {
-    title: 'Address'
+    title: "Address"
   },
   {
-    title: 'Location'
+    title: "Location"
   },
   {
-    title: 'City'
+    title: "City"
   },
   {
-    title: 'Place ID'
+    title: "Place ID"
   },
   {
-    title: 'Vicinity'
+    title: "Vicinity"
   }
 ];
 
@@ -50,12 +50,10 @@ class ShipperList extends Component {
 
   componentDidMount = () => {
     axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+      "Authorization"
+    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
 
     axios.get(`${ApiServer}/api/v1/shipper`).then(data => {
-      console.log('Fetching...');
-      console.log(data);
       const rowData = data.data;
       let mappedData = rowData.map(row => {
         let rowObj = {
@@ -78,7 +76,7 @@ class ShipperList extends Component {
   };
 
   createShipper = () => {
-    this.props.history.push('shippers/create');
+    this.props.history.push("shippers/create");
   };
 
   render() {
@@ -88,14 +86,14 @@ class ShipperList extends Component {
         <BaseComponent cookies={this.props.cookies}>
           <div
             style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'space-between',
-              justifyContent: 'space-between'
+              width: "100%",
+              display: "flex",
+              alignItems: "space-between",
+              justifyContent: "space-between"
             }}
           >
-            <div style={{ marginTop: '15px', marginBottom: '10px' }}>
-              <span style={{ fontSize: '1.25rem', fontWeight: '600' }}>
+            <div style={{ marginTop: "15px", marginBottom: "10px" }}>
+              <span style={{ fontSize: "1.25rem", fontWeight: "600" }}>
                 Available Shippers
               </span>
             </div>

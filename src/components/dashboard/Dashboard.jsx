@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import CustomCard from '../card/CustomCard';
-import styled from 'styled-components';
-import BaseComponent from '../base-component/BaseComponent';
-import PPGActivePie from '../charts/ppg-active-pie/PPGActivePie';
-import PPGComposedBar from '../charts/ppg-compose-bar/PPGComposedBar';
-import Paper from '@material-ui/core/Paper';
+import React, { Component } from "react";
+import CustomCard from "../card/CustomCard";
+import styled from "styled-components";
+import BaseComponent from "../base-component/BaseComponent";
+import PPGActivePie from "../charts/ppg-active-pie/PPGActivePie";
+import PPGComposedBar from "../charts/ppg-compose-bar/PPGComposedBar";
+import Paper from "@material-ui/core/Paper";
 
 const CardsWrapper = styled.div`
   display: flex;
@@ -28,17 +28,17 @@ class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      title: 'Pierpont Logistics',
+      title: "Pierpont Logistics",
       pieChartData: [
-        { name: 'Step #1', value: 400 },
-        { name: 'Step #2', value: 300 },
-        { name: 'Step #3', value: 300 }
+        { name: "Step #1", value: 400 },
+        { name: "Step #2", value: 300 },
+        { name: "Step #3", value: 300 }
       ]
     };
   }
 
   handleClick = () => {
-    alert('click handled');
+    alert("click handled");
   };
 
   render() {
@@ -47,7 +47,7 @@ class Dashboard extends Component {
       <>
         <BaseComponent cookies={this.props.cookies}>
           <CardsWrapper
-            style={{ display: 'flex', justifyContent: 'space-evenly' }}
+            style={{ display: "flex", justifyContent: "space-evenly" }}
           >
             <CustomCard
               title="Income"
@@ -81,10 +81,7 @@ class Dashboard extends Component {
             />
           </CardsWrapper>
           <ChartWrapper>
-            <Paper style={{ margin: '5px', width: '30%' }}>
-              <PPGActivePie data={pieChartData} />
-            </Paper>
-            <Paper style={{ margin: '5px', width: '60%' }}>
+            <Paper style={{ margin: "5px", width: "60%" }}>
               <PPGComposedBar />
             </Paper>
           </ChartWrapper>

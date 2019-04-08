@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
 
 const styles = theme => ({
   root: {
-    width: '100%',
-    overflowX: 'scroll'
+    width: "100%",
+    overflowX: "scroll"
   },
   table: {
     minWidth: 700
@@ -43,7 +43,6 @@ class PPGTable extends Component {
 
   render() {
     const { classes, columns, rows } = this.props;
-    console.log(columns);
 
     return (
       <Paper className={classes.root}>
@@ -53,8 +52,8 @@ class PPGTable extends Component {
               <TableHead>
                 <TableRow>
                   {columns.map((c, index) => {
-                    let cWidth = '';
-                    if (c.isIcon) cWidth = '10px';
+                    let cWidth = "";
+                    if (c.isIcon) cWidth = "10px";
                     return (
                       <TableCell
                         style={{ width: cWidth }}
@@ -86,7 +85,7 @@ class PPGTable extends Component {
                       ? rowContent.text
                       : rowContent.icon
                       ? rowContent.icon
-                      : ''}
+                      : ""}
                   </TableCell>
                 ))}
               </TableRow>

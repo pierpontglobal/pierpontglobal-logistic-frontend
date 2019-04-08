@@ -1,23 +1,23 @@
-import React from 'react';
-import classNames from 'classnames';
-import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
-import TableSortLabel from '@material-ui/core/TableSortLabel';
-import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
-import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import { lighten } from '@material-ui/core/styles/colorManipulator';
+import React from "react";
+import classNames from "classnames";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TablePagination from "@material-ui/core/TablePagination";
+import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+import Paper from "@material-ui/core/Paper";
+import Checkbox from "@material-ui/core/Checkbox";
+import IconButton from "@material-ui/core/IconButton";
+import Tooltip from "@material-ui/core/Tooltip";
+import DeleteIcon from "@material-ui/icons/Delete";
+import FilterListIcon from "@material-ui/icons/FilterList";
+import { lighten } from "@material-ui/core/styles/colorManipulator";
 
 function desc(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -40,7 +40,7 @@ function stableSort(array, cmp) {
 }
 
 function getSorting(order, orderBy) {
-  return order === 'desc'
+  return order === "desc"
     ? (a, b) => desc(a, b, orderBy)
     : (a, b) => -desc(a, b, orderBy);
 }
@@ -68,13 +68,13 @@ class EnhancedTableHead extends React.Component {
             (column, index) => (
               <TableCell
                 key={index}
-                align={'left'}
-                padding={column.disablePadding ? 'none' : 'default'}
+                align={"left"}
+                padding={column.disablePadding ? "none" : "default"}
                 sortDirection={order}
               >
                 <Tooltip
                   title="Sort"
-                  placement={column.numeric ? 'bottom-end' : 'bottom-start'}
+                  placement={column.numeric ? "bottom-end" : "bottom-start"}
                   enterDelay={300}
                 >
                   <TableSortLabel
@@ -103,7 +103,7 @@ const toolbarStyles = theme => ({
     paddingRight: theme.spacing.unit
   },
   highlight:
-    theme.palette.type === 'light'
+    theme.palette.type === "light"
       ? {
           color: theme.palette.secondary.main,
           backgroundColor: lighten(theme.palette.secondary.light, 0.85)
@@ -113,13 +113,13 @@ const toolbarStyles = theme => ({
           backgroundColor: theme.palette.secondary.dark
         },
   spacer: {
-    flex: '1 1 100%'
+    flex: "1 1 100%"
   },
   actions: {
     color: theme.palette.text.secondary
   },
   title: {
-    flex: '0 0 auto'
+    flex: "0 0 auto"
   }
 });
 
@@ -167,14 +167,14 @@ EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
 
 const styles = theme => ({
   root: {
-    width: '100%',
+    width: "100%",
     marginTop: theme.spacing.unit * 3
   },
   table: {
     minWidth: 1020
   },
   tableWrapper: {
-    overflowX: 'auto'
+    overflowX: "auto"
   }
 });
 
@@ -182,8 +182,8 @@ class PPGEnhancedTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      order: 'asc',
-      orderBy: 'status',
+      order: "asc",
+      orderBy: "status",
       selected: [],
       data: this.props.rows,
       rows: this.props.rows,
@@ -195,10 +195,10 @@ class PPGEnhancedTable extends React.Component {
 
   handleRequestSort = (event, property) => {
     const orderBy = property;
-    let order = 'desc';
+    let order = "desc";
 
-    if (this.state.orderBy === property && this.state.order === 'desc') {
-      order = 'asc';
+    if (this.state.orderBy === property && this.state.order === "desc") {
+      order = "asc";
     }
 
     this.setState({ order, orderBy });
@@ -223,9 +223,7 @@ class PPGEnhancedTable extends React.Component {
     console.log(page);
   };
 
-  handleChangeRowsPerPage = event => {
-    console.log(event.target.value);
-  };
+  handleChangeRowsPerPage = event => {};
 
   render() {
     const { classes } = this.props;
@@ -274,7 +272,7 @@ class PPGEnhancedTable extends React.Component {
                               ? rowContent.text
                               : rowContent.icon
                               ? rowContent.icon
-                              : ''}
+                              : ""}
                           </TableCell>
                         ))}
                       </TableRow>
@@ -296,10 +294,10 @@ class PPGEnhancedTable extends React.Component {
           rowsPerPage={rowsPerPage}
           page={page}
           backIconButtonProps={{
-            'aria-label': 'Previous Page'
+            "aria-label": "Previous Page"
           }}
           nextIconButtonProps={{
-            'aria-label': 'Next Page'
+            "aria-label": "Next Page"
           }}
           onChangePage={this.handleChangePage}
           onChangeRowsPerPage={this.handleChangeRowsPerPage}

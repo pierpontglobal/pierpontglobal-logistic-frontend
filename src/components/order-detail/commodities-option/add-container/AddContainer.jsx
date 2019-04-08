@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import { Button, IconButton } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import Input from '@material-ui/core/Input';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import FilledInput from '@material-ui/core/FilledInput';
-import InputLabel from '@material-ui/core/InputLabel';
-import axios from 'axios';
-import { ApiServer } from '../../../../Defaults';
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import { Button, IconButton } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
+import ReactDOM from "react-dom";
+import PropTypes from "prop-types";
+import Input from "@material-ui/core/Input";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import FilledInput from "@material-ui/core/FilledInput";
+import InputLabel from "@material-ui/core/InputLabel";
+import axios from "axios";
+import { ApiServer } from "../../../../Defaults";
 
 const styles = theme => ({
   container: {
-    display: 'flex',
-    flexWrap: 'wrap'
+    display: "flex",
+    flexWrap: "wrap"
   },
   input: {
     margin: theme.spacing.unit
@@ -27,7 +27,7 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '100%'
+    width: "100%"
   },
   formControl: {
     margin: theme.spacing.unit,
@@ -43,16 +43,16 @@ class AddContainer extends Component {
       types: [],
       isLoading: false,
       container: {
-        containerType: '',
-        length: '',
-        width: '',
-        height: '',
-        tareWeight: '',
-        nextWeight: '',
-        totalWeight: '',
-        volumne: '',
-        volWeigth: '',
-        squarePt: '',
+        containerType: "",
+        length: "",
+        width: "",
+        height: "",
+        tareWeight: "",
+        nextWeight: "",
+        totalWeight: "",
+        volumne: "",
+        volWeigth: "",
+        squarePt: "",
         pieces: 1
       }
     };
@@ -60,8 +60,8 @@ class AddContainer extends Component {
 
   componentDidMount = () => {
     axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+      "Authorization"
+    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
     axios.get(`${ApiServer}/api/v1/container`).then(data => {
       let containers = data.data;
       this.setState({
@@ -86,7 +86,6 @@ class AddContainer extends Component {
 
   handleChange = event => {
     // Get container type info
-    console.log(event);
     let containerId = event.target.value;
     this.setState(
       {
@@ -96,7 +95,6 @@ class AddContainer extends Component {
         axios.get(`${ApiServer}/api/v1/container/${containerId}`).then(
           data => {
             let container = data.data;
-            console.log(data.data);
             const obj = {
               id: containerId,
               width: container.width,
@@ -145,25 +143,25 @@ class AddContainer extends Component {
     return (
       <>
         <div>
-          <span style={{ fontWeight: '600' }}>Add Container</span>
+          <span style={{ fontWeight: "600" }}>Add Container</span>
         </div>
         <div
           style={{
-            marginTop: '17px',
-            display: 'flex',
-            flexDirection: 'column',
-            width: '50%'
+            marginTop: "17px",
+            display: "flex",
+            flexDirection: "column",
+            width: "50%"
           }}
         >
-          <div style={{ width: '80%' }}>
+          <div style={{ width: "80%" }}>
             <FormControl className={classes.formControl}>
               <InputLabel htmlFor="age-simple">Container type</InputLabel>
               <Select
                 value={this.state.container.containerType}
                 onChange={this.handleChange}
                 inputProps={{
-                  name: 'containerType',
-                  id: 'containerType'
+                  name: "containerType",
+                  id: "containerType"
                 }}
               >
                 <MenuItem value="">
@@ -177,8 +175,8 @@ class AddContainer extends Component {
               </Select>
             </FormControl>
           </div>
-          <div style={{ width: '100%' }}>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <div style={{ width: "100%" }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
               <TextField
                 disabled={true}
                 id="length"
@@ -186,7 +184,7 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.length}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
               <TextField
                 disabled={true}
@@ -195,7 +193,7 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.width}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
               <TextField
                 disabled={true}
@@ -204,7 +202,7 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.height}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
               <TextField
                 disabled={true}
@@ -213,10 +211,10 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.tareWeight}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
               <TextField
                 disabled={true}
                 id="nextWeight"
@@ -224,7 +222,7 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.nextWeight}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
               <TextField
                 disabled={true}
@@ -233,7 +231,7 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.totalWeight}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
               <TextField
                 disabled={true}
@@ -242,7 +240,7 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.volumne}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
               <TextField
                 disabled={true}
@@ -251,10 +249,10 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.volWeigth}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
             </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
+            <div style={{ display: "flex", flexDirection: "row" }}>
               <TextField
                 disabled={true}
                 id="squarePt"
@@ -262,7 +260,7 @@ class AddContainer extends Component {
                 className={classes.textField}
                 margin="normal"
                 value={container.squarePt}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
               <TextField
                 disabled={!containerFound}
@@ -274,18 +272,18 @@ class AddContainer extends Component {
                 value={container.pieces}
                 defaultValue={1}
                 onChange={this.handleChangePieces}
-                style={{ width: '100px' }}
+                style={{ width: "100px" }}
               />
             </div>
           </div>
         </div>
-        <div width={{ width: '100%' }}>
+        <div width={{ width: "100%" }}>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              alignItems: 'center'
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center"
             }}
           >
             <Button

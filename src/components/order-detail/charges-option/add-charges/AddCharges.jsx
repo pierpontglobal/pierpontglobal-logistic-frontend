@@ -50,8 +50,6 @@ class AddCharges extends Component {
     };
   }
 
-  componentDidMount = () => {};
-
   handleChange = srv => {
     console.log(srv);
     const serviceId = srv.value;

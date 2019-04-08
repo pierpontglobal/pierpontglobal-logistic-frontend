@@ -1,25 +1,25 @@
-import React, { Component } from 'react';
-import OrderPrincipalInfo from './order-principal-info/OrderPrincipalInfo';
-import BaseComponent from '../base-component/BaseComponent';
-import TabsComponent from '../Tabs/TabsComponent';
-import DetailsOption from './details-option/DetailsOption';
-import CommoditiesOption from './commodities-option/CommoditiesOption';
-import ChargesOption from './charges-option/ChargesOption';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import styled from 'styled-components';
-import ProgressStep from '../progress-step/ProgressStep';
-import OrderSummary from './order-summary/OrderSummary';
-import { withRouter } from 'react-router-dom';
-import RouteDisplay from '../route-display/RouteDisplay';
-import GoogleRouteDraw from '../google-route-draw/GoogleRouteDraw';
-import axios from 'axios';
-import { ApiServer } from '../../Defaults';
-import ReactNotification from 'react-notifications-component';
-import 'react-notifications-component/dist/theme.css';
+import React, { Component } from "react";
+import OrderPrincipalInfo from "./order-principal-info/OrderPrincipalInfo";
+import BaseComponent from "../base-component/BaseComponent";
+import TabsComponent from "../Tabs/TabsComponent";
+import DetailsOption from "./details-option/DetailsOption";
+import CommoditiesOption from "./commodities-option/CommoditiesOption";
+import ChargesOption from "./charges-option/ChargesOption";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import styled from "styled-components";
+import ProgressStep from "../progress-step/ProgressStep";
+import OrderSummary from "./order-summary/OrderSummary";
+import { withRouter } from "react-router-dom";
+import RouteDisplay from "../route-display/RouteDisplay";
+import GoogleRouteDraw from "../google-route-draw/GoogleRouteDraw";
+import axios from "axios";
+import { ApiServer } from "../../Defaults";
+import ReactNotification from "react-notifications-component";
+import "react-notifications-component/dist/theme.css";
 
 const NOTIFICATION_TYPES = {
-  ERROR: 'danger',
-  SUCCESS: 'success'
+  ERROR: "danger",
+  SUCCESS: "success"
 };
 
 const LoadingWrapper = styled.div`
@@ -38,19 +38,19 @@ class OrderDetail extends Component {
       orderId: -1,
       shippId: -1,
       detailsInfo: {
-        agentAddress: '',
-        agentName: '',
-        consigneeAddress: '',
-        consigneeName: '',
-        date: '',
-        destinationName: '',
-        issuingCompany: '',
-        orderNumber: '',
-        originName: '',
-        serviceType: '',
-        shipperAddress: '',
-        shipperName: '',
-        transportationMode: '',
+        agentAddress: "",
+        agentName: "",
+        consigneeAddress: "",
+        consigneeName: "",
+        date: "",
+        destinationName: "",
+        issuingCompany: "",
+        orderNumber: "",
+        originName: "",
+        serviceType: "",
+        shipperAddress: "",
+        shipperName: "",
+        transportationMode: "",
         agentId: -1,
         consigneeId: -1,
         issuingCompanyId: -1,
@@ -60,23 +60,23 @@ class OrderDetail extends Component {
       chargesInfo: {},
       orderStates: [
         {
-          label: 'NEW',
+          label: "NEW",
+          active: true
+        },
+        {
+          label: "PRINCIPAL INFO",
           active: false
         },
         {
-          label: 'PRINCIPAL INFO',
+          label: "COMMODITIES",
           active: false
         },
         {
-          label: 'COMMODITIES',
+          label: "CHARGES",
           active: false
         },
         {
-          label: 'CHARGES',
-          active: false
-        },
-        {
-          label: 'DISPATCHED',
+          label: "DISPATCHED",
           active: false
         }
       ],
@@ -88,7 +88,16 @@ class OrderDetail extends Component {
       isSavingShipment: false,
       commodities: [],
       charges: [],
-      hasShippment: false
+      hasShippment: false,
+      summary: {
+        pcs: 0,
+        weight: 0,
+        volume: 0,
+        volWeight: 0,
+        income: 0,
+        expense: 0,
+        profit: 0
+      }
     };
 
     this.notificationDOMRef_info = React.createRef();
@@ -107,10 +116,10 @@ class OrderDetail extends Component {
       title: title,
       message: message,
       type: type,
-      insert: 'top',
-      container: 'top-right',
-      animationIn: ['animated', 'fadeIn'],
-      animationOut: ['animated', 'fadeOut'],
+      insert: "top",
+      container: "top-right",
+      animationIn: ["animated", "fadeIn"],
+      animationOut: ["animated", "fadeOut"],
       dismiss: { duration: duration },
       dismissable: { click: true }
     });
@@ -123,20 +132,26 @@ class OrderDetail extends Component {
   };
 
   onChargesChange = e => {
-    this.setState({
-      chargesInfo: e
-    });
+    this.setState(
+      {
+        chargesInfo: e,
+        charges: e
+      },
+      () => {
+        this.calculateSummary();
+      }
+    );
   };
 
   componentDidMount = () => {
     const orderId = this.props.match.params.id;
 
     axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+      "Authorization"
+    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
 
     axios.get(`${ApiServer}/api/v1/shippment/${orderId}`).then(data => {
-      console.log('Fetching...');
+      console.log("Fetching...");
       console.log(data);
 
       if (!!data && !!data.data) {
@@ -167,13 +182,18 @@ class OrderDetail extends Component {
             transportationModeId: shippment.mode_of_transportation_id
           };
 
-          this.setState({
-            detailsInfo: detailsInfo,
-            commodities: commodities,
-            charges: charges,
-            shippId: !!shippment ? shippment.id : -1,
-            hasShippment: hasshippment
-          });
+          this.setState(
+            {
+              detailsInfo: detailsInfo,
+              commodities: commodities,
+              charges: charges,
+              shippId: !!shippment ? shippment.id : -1,
+              hasShippment: hasshippment
+            },
+            () => {
+              this.calculateSummary();
+            }
+          );
         }
       }
 
@@ -211,6 +231,64 @@ class OrderDetail extends Component {
     });
   };
 
+  calculateSummary = () => {
+    console.log("WIL CALCULATE ORDER SUMMARY >>>>> >>>>> >>>> ");
+    const { commodities, charges, summary } = this.state;
+    console.log(this.state);
+
+    let summ = {
+      pcs: 0,
+      weight: 0,
+      volume: 0,
+      volWeight: 0,
+      income: 0,
+      expense: 0,
+      profit: 0
+    };
+
+    if (!!commodities && commodities.length > 0) {
+      console.log(commodities);
+      for (let i = 0; i < commodities.length; i++) {
+        let c = commodities[i];
+
+        if (c.commodity.commodity_type_id == 1) {
+        } else if (c.commodity.commodity_type_id == 2) {
+          summ.weight += Number(c.artifact.total_weight);
+          summ.volWeight += Number(c.artifact.vol_weight);
+          summ.volume += Number(c.artifact.volume);
+        }
+        summ.pcs += parseInt(c.commodity.pieces);
+      }
+    }
+    if (!!charges && charges.length > 0) {
+      console.log(charges);
+      let amount_income = 0;
+      let amount_expense = 0;
+      for (let i = 0; i < charges.length; i++) {
+        let c = charges[i];
+        if (c.custom_id === 1) {
+          // Income
+          amount_income += Number(c.rate) * Number(c.amount) + Number(c.amount);
+        } else if (c.custom_id === 2) {
+          // Expense
+          amount_expense +=
+            Number(c.rate) * Number(c.amount) + Number(c.amount);
+        }
+        summ.pcs += parseInt(c.quantity);
+      }
+      summ.income = amount_income;
+      summ.expense = amount_expense;
+      summ.profit = amount_income - amount_expense;
+    }
+
+    console.log("summ");
+    console.log(summ);
+
+    this.setState({
+      summary: summ
+    });
+  };
+
   handleSaveShippment = () => {
     console.log(this.state);
     const { detailsInfo, commodities, orderId } = this.state;
@@ -237,7 +315,7 @@ class OrderDetail extends Component {
           order_detail: detailsInfoDto,
           order_number: orderId // WARNING, this should always be sent!!
         };
-        console.log('DTO:   ::');
+        console.log("DTO:   ::");
         console.log(orderShippmentDto);
         axios
           .post(`${ApiServer}/api/v1/order/create_shippment`, orderShippmentDto)
@@ -245,8 +323,8 @@ class OrderDetail extends Component {
             data => {
               console.log(data);
               this.addNotification(
-                'Process has completed',
-                'Shipment was saved sucessfully.',
+                "Process has completed",
+                "Shipment was saved sucessfully.",
                 2000,
                 NOTIFICATION_TYPES.SUCCESS
               );
@@ -257,7 +335,7 @@ class OrderDetail extends Component {
             },
             err => {
               this.addNotification(
-                'Process has completed',
+                "Process has completed",
                 "There was an error in the process, coudln't saved the shipment",
                 2500,
                 NOTIFICATION_TYPES.ERROR
@@ -321,9 +399,15 @@ class OrderDetail extends Component {
   };
 
   onCommoditiesChange = commodities => {
-    this.setState({
-      commodities: commodities
-    });
+    console.log("Hey, how are you???");
+    this.setState(
+      {
+        commodities: commodities
+      },
+      () => {
+        this.calculateSummary();
+      }
+    );
   };
 
   render() {
@@ -342,12 +426,13 @@ class OrderDetail extends Component {
       commodities,
       shippId,
       charges,
-      hasShippment
+      hasShippment,
+      summary
     } = this.state;
 
     const tabOptions = [
       {
-        label: 'Details',
+        label: "Details",
         item: (
           <DetailsOption
             handleChange={this.onDetailsChange}
@@ -367,7 +452,7 @@ class OrderDetail extends Component {
         )
       },
       {
-        label: 'Commodities',
+        label: "Commodities",
         disabled: !hasShippment,
         item: (
           <CommoditiesOption
@@ -377,11 +462,12 @@ class OrderDetail extends Component {
             shippId={shippId}
             addNotification={this.addNotification}
             onCommoditiesChange={this.onCommoditiesChange}
+            recalculateSummary={this.calculateSummary}
           />
         )
       },
       {
-        label: 'Charges',
+        label: "Charges",
         disabled: !hasShippment,
         item: (
           <ChargesOption
@@ -391,11 +477,12 @@ class OrderDetail extends Component {
             orderId={orderId}
             shippId={shippId}
             addNotification={this.addNotification}
+            recalculateSummary={this.calculateSummary}
           />
         )
       },
       {
-        label: 'Road path',
+        label: "Road path",
         disabled: !hasShippment,
         item: (
           <GoogleRouteDraw
@@ -412,8 +499,8 @@ class OrderDetail extends Component {
         <BaseComponent cookies={this.props.cookies}>
           {isLoading ? (
             <LoadingWrapper>
-              {' '}
-              <CircularProgress />{' '}
+              {" "}
+              <CircularProgress />{" "}
             </LoadingWrapper>
           ) : (
             <>
@@ -426,34 +513,34 @@ class OrderDetail extends Component {
               />
               <div
                 style={{
-                  marginTop: '15px',
-                  marginBottom: '15px',
-                  width: '100%'
+                  marginTop: "15px",
+                  marginBottom: "15px",
+                  width: "100%"
                 }}
               >
                 <ProgressStep steps={this.state.orderStates} />
               </div>
               <div
                 style={{
-                  marginTop: '15px',
-                  display: 'flex',
-                  flexDirection: 'row'
+                  marginTop: "15px",
+                  display: "flex",
+                  flexDirection: "row"
                 }}
               >
-                <div style={{ width: '70%', height: 'auto' }}>
+                <div style={{ width: "70%", height: "auto" }}>
                   <TabsComponent options={tabOptions} />
                 </div>
-                <div style={{ width: '30%', margin: '15px' }}>
+                <div style={{ width: "30%", margin: "15px" }}>
                   <div
                     style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center'
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center"
                     }}
                   >
-                    <OrderSummary />
-                    <RouteDisplay />
+                    <OrderSummary summary={summary} />
+                    {/* <RouteDisplay /> */}
                   </div>
                 </div>
               </div>

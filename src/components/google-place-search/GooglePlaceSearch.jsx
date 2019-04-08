@@ -1,22 +1,22 @@
 /* global google */
-import React, { Component } from 'react';
-import Script from 'react-load-script';
-import { GOOGLE_API_KEY } from '../../Defaults';
+import React, { Component } from "react";
+import Script from "react-load-script";
+import { GOOGLE_API_KEY } from "../../Defaults";
 
 class GooglePlaceSearch extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      city: '',
-      query: '',
-      placeId: '',
+      city: "",
+      query: "",
+      placeId: "",
       photos: [],
       geometry: {},
-      icon: '',
-      name: '',
-      vicinity: '',
-      website: ''
+      icon: "",
+      name: "",
+      vicinity: "",
+      website: ""
     };
   }
 
@@ -36,8 +36,6 @@ class GooglePlaceSearch extends Component {
   handlePlaceSelect = () => {
     // Extract City From Address Object
     let addressObject = this.autocomplete.getPlace();
-    console.log('Selected place:');
-    console.log(addressObject);
     let address = addressObject.address_components;
 
     // Check if address is valid
@@ -81,10 +79,10 @@ class GooglePlaceSearch extends Component {
           value={this.state.query}
           onChange={this.handleChange}
           style={{
-            margin: '0 auto',
-            padding: '8px',
-            width: '400px',
-            maxWidth: '1200'
+            margin: "0 auto",
+            padding: "8px",
+            width: "400px",
+            maxWidth: "1200"
           }}
         />
       </>

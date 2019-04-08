@@ -53,7 +53,7 @@ class IncomeTab extends Component {
     };
   }
 
-  handleChangeInput = e => {
+  handleChangeInput = (e) => {
     this.setState(
       {
         [e.target.id]: e.target.value

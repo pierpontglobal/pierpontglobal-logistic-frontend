@@ -1,51 +1,51 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-import { withStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ExitToApp from '@material-ui/icons/ExitToApp';
-import ListAlt from '@material-ui/icons/ListAlt';
-import DirectionsCar from '@material-ui/icons/DirectionsCar';
-import People from '@material-ui/icons/People';
-import DirectionsTransit from '@material-ui/icons/DirectionsTransit';
-import Home from '@material-ui/icons/Home';
-import LocalShipping from '@material-ui/icons/LocalShipping';
-import { Link, NavLink } from 'react-router-dom';
-import Icon from '@material-ui/core/Icon';
-import { withCookies } from 'react-cookie';
+import React from "react";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { withStyles } from "@material-ui/core/styles";
+import Drawer from "@material-ui/core/Drawer";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import List from "@material-ui/core/List";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Typography from "@material-ui/core/Typography";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import ExitToApp from "@material-ui/icons/ExitToApp";
+import ListAlt from "@material-ui/icons/ListAlt";
+import DirectionsCar from "@material-ui/icons/DirectionsCar";
+import People from "@material-ui/icons/People";
+import DirectionsTransit from "@material-ui/icons/DirectionsTransit";
+import Home from "@material-ui/icons/Home";
+import LocalShipping from "@material-ui/icons/LocalShipping";
+import { Link, NavLink } from "react-router-dom";
+import Icon from "@material-ui/core/Icon";
+import { withCookies } from "react-cookie";
 
 const drawerWidth = 240;
 
 const styles = theme => ({
   root: {
-    display: 'flex'
+    display: "flex"
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    backgroundColor: 'white',
-    color: 'black'
+    backgroundColor: "white",
+    color: "black"
   },
   appBarShift: {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
+    transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
     })
@@ -55,48 +55,50 @@ const styles = theme => ({
     marginRight: 36
   },
   hide: {
-    display: 'none'
+    display: "none"
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: 'nowrap',
-    backgroundColor: '#2d034c'
+    whiteSpace: "nowrap",
+    backgroundColor: "#D62020"
   },
   drawerOpen: {
     width: drawerWidth,
-    transition: theme.transitions.create('width', {
+    backgroundColor: "#931616",
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen
     })
   },
   drawerClose: {
-    transition: theme.transitions.create('width', {
+    backgroundColor: "#931616",
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen
     }),
-    overflowX: 'hidden',
+    overflowX: "hidden",
     width: theme.spacing.unit * 7 + 1,
-    [theme.breakpoints.up('sm')]: {
+    [theme.breakpoints.up("sm")]: {
       width: theme.spacing.unit * 9 + 1
     }
   },
   toolbar: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    backgroundColor: 'white',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    backgroundColor: "white",
     ...theme.mixins.toolbar
   },
   content: {
-    padding: '0px',
-    width: '90%',
-    margin: '0 auto',
-    marginTop: '75px'
+    padding: "0px",
+    width: "90%",
+    margin: "0 auto",
+    marginTop: "75px"
   },
   LogoutButtonIcon: {
-    transform: 'rotate(180deg)'
+    transform: "rotate(180deg)"
   }
 });
 
@@ -122,8 +124,8 @@ class MiniDrawer extends React.Component {
         open: false
       },
       () => {
-        this.props.cookies.remove('token', { path: '/' });
-        window.location.href = '/';
+        this.props.cookies.remove("token", { path: "/" });
+        window.location.href = "/";
       }
     );
   };
@@ -153,7 +155,14 @@ class MiniDrawer extends React.Component {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" color="inherit" noWrap>
-                Pierpont Logistics
+                <span
+                  style={{
+                    fontWeight: "400",
+                    background: "linear-gradient(left right, #5b0170, #6b0184)"
+                  }}
+                >
+                  Pierpont Logistics
+                </span>
               </Typography>
             </Toolbar>
           </AppBar>
@@ -169,15 +178,15 @@ class MiniDrawer extends React.Component {
                 [classes.drawerClose]: !this.state.open
               })
             }}
-            style={{ backgroundColor: '#2d034c' }}
+            style={{ backgroundColor: "#2d034c" }}
             open={this.state.open}
           >
             <div className={classes.toolbar}>
               <IconButton
-                style={{ color: '#2d034c' }}
+                style={{ color: "#2d034c" }}
                 onClick={this.handleDrawerClose}
               >
-                {theme.direction === 'rtl' ? (
+                {theme.direction === "rtl" ? (
                   <ChevronRightIcon />
                 ) : (
                   <ChevronLeftIcon />
@@ -188,124 +197,143 @@ class MiniDrawer extends React.Component {
             <List>
               <NavLink
                 to="/dashboard"
-                style={{ textDecoration: 'none', color: 'white' }}
+                style={{ textDecoration: "none", color: "white" }}
                 activeStyle={{
-                  fontWeight: 'bold',
-                  color: 'red'
+                  fontWeight: "bold",
+                  color: "red"
                 }}
               >
                 <ListItem button>
                   <ListItemIcon>
-                    {' '}
-                    <Home />{' '}
+                    {" "}
+                    <Home style={{ fill: "#fff" }} />{" "}
                   </ListItemIcon>
-                  <ListItemText primary="Dashboard" />
+                  <ListItemText
+                    primary={<span style={{ color: "#fff" }}>Dashboard</span>}
+                  />
                 </ListItem>
               </NavLink>
               <NavLink
                 to="/orders"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
                 activeStyle={{
-                  fontWeight: 'bold',
-                  color: 'red'
+                  fontWeight: "bold",
+                  color: "red"
                 }}
               >
                 <ListItem button>
                   <ListItemIcon>
-                    {' '}
-                    <ListAlt />{' '}
+                    {" "}
+                    <ListAlt style={{ fill: "#fff" }} />{" "}
                   </ListItemIcon>
-                  <ListItemText primary="Order list" />
+                  <ListItemText
+                    primary={<span style={{ color: "#fff" }}>Orders</span>}
+                  />
                 </ListItem>
               </NavLink>
               <NavLink
                 to="/shippers"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
                 activeStyle={{
-                  fontWeight: 'bold',
-                  color: 'red'
+                  fontWeight: "bold",
+                  color: "red"
                 }}
               >
                 <ListItem button>
                   <ListItemIcon>
-                    {' '}
-                    <LocalShipping />{' '}
+                    {" "}
+                    <LocalShipping style={{ fill: "#fff" }} />{" "}
                   </ListItemIcon>
-                  <ListItemText primary="Shippers" />
+                  <ListItemText
+                    primary={<span style={{ color: "#fff" }}>Shippers</span>}
+                  />
                 </ListItem>
               </NavLink>
               <NavLink
                 to="/Dealers"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
                 activeStyle={{
-                  fontWeight: 'bold',
-                  color: 'red'
+                  fontWeight: "bold",
+                  color: "red"
                 }}
               >
                 <ListItem button>
                   <ListItemIcon>
-                    {' '}
-                    <DirectionsCar />{' '}
+                    {" "}
+                    <DirectionsCar style={{ fill: "#fff" }} />{" "}
                   </ListItemIcon>
-                  <ListItemText primary="Dealers" />
+                  <ListItemText
+                    primary={<span style={{ color: "#fff" }}>Dealers</span>}
+                  />
                 </ListItem>
               </NavLink>
               <NavLink
                 to="/agents"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
                 activeStyle={{
-                  fontWeight: 'bold',
-                  color: 'red'
+                  fontWeight: "bold",
+                  color: "red"
                 }}
               >
                 <ListItem button>
                   <ListItemIcon>
-                    {' '}
-                    <People />{' '}
+                    {" "}
+                    <People style={{ fill: "#fff" }} />{" "}
                   </ListItemIcon>
-                  <ListItemText primary="Agents" />
+                  <ListItemText
+                    primary={<span style={{ color: "#fff" }}>Agents</span>}
+                  />
                 </ListItem>
               </NavLink>
               <NavLink
                 to="/mode_of_transportations"
-                style={{ textDecoration: 'none' }}
+                style={{ textDecoration: "none" }}
                 activeStyle={{
-                  fontWeight: 'bold',
-                  color: 'red'
+                  fontWeight: "bold",
+                  color: "red"
                 }}
               >
                 <ListItem button>
                   <ListItemIcon>
-                    {' '}
-                    <DirectionsTransit />{' '}
+                    {" "}
+                    <DirectionsTransit style={{ fill: "#fff" }} />{" "}
                   </ListItemIcon>
-                  <ListItemText primary="Mode of transports" />
+                  <ListItemText
+                    primary={
+                      <span style={{ color: "#fff" }}>Mode of transports</span>
+                    }
+                  />
                 </ListItem>
               </NavLink>
             </List>
-            <Divider />
+            <Divider style={{ backgroundColor: "#D62020" }} />
             <List>
               <ListItem button onClick={this.handleLogout}>
                 <ListItemIcon>
-                  {' '}
-                  <ExitToApp className={classes.LogoutButtonIcon} />{' '}
+                  {" "}
+                  <ExitToApp
+                    style={{ fill: "#fff" }}
+                    className={classes.LogoutButtonIcon}
+                  />{" "}
                 </ListItemIcon>
-                <ListItemText primary="Logout" />
+                <ListItemText
+                  primary={<span style={{ color: "#fff" }}>Logout</span>}
+                />
               </ListItem>
             </List>
           </Drawer>
           <main className={classes.content}>
-            <div style={{ marginTop: '15px' }}>{this.props.children}</div>
+            <div style={{ marginTop: "15px" }}>{this.props.children}</div>
             <div
               style={{
-                position: 'relative',
-                width: '100%',
-                marginTop: '25px',
-                bottom: '5px',
-                display: 'flex',
-                flexDirection: 'row',
-                padding: '5px',
-                justifyContent: 'center'
+                position: "relative",
+                width: "100%",
+                marginTop: "25px",
+                bottom: "5px",
+                display: "flex",
+                flexDirection: "row",
+                padding: "5px",
+                justifyContent: "center"
               }}
             >
               Pierpont Logistics. 2019 - All rights reserved.

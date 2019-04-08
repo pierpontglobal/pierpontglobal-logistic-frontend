@@ -1,10 +1,10 @@
 /* global google */
-import React, { Component } from 'react';
-import Script from 'react-load-script';
-import { GOOGLE_API_KEY } from '../../Defaults';
-import AUTO_ICON from '../../assets/images/auto_marker_image.png';
-import Paper from '@material-ui/core/Paper';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import Script from "react-load-script";
+import { GOOGLE_API_KEY } from "../../Defaults";
+import AUTO_ICON from "../../assets/images/auto_marker_image.png";
+import Paper from "@material-ui/core/Paper";
+import styled from "styled-components";
 
 const DirectionsPanelInfo = styled.div`
   display: flex;
@@ -28,7 +28,7 @@ class GoogleRouteDraw extends Component {
         lng: 99.87
       },
       wayPoints: this.props.wayPoints,
-      travelMode: 'DRIVING',
+      travelMode: "DRIVING",
       autoDriveSteps: [],
       copyAutoDriveSteps: []
     };
@@ -58,7 +58,7 @@ class GoogleRouteDraw extends Component {
     /*global google*/
     this.directionsService = new google.maps.DirectionsService();
     this.directionsDisplay = new google.maps.DirectionsRenderer();
-    this.map = new google.maps.Map(document.getElementById('maporders'), {
+    this.map = new google.maps.Map(document.getElementById("maporders"), {
       zoom: 6,
       center: { lat: 41.85, lng: -87.65 }
     });
@@ -89,7 +89,7 @@ class GoogleRouteDraw extends Component {
       animation: google.maps.Animation.DROP,
       icon: icon
     });
-    this.marker.addListener('click', this.toggleBounce(this.marker));
+    this.marker.addListener("click", this.toggleBounce(this.marker));
   };
 
   toggleBounce = marker => {
@@ -104,8 +104,6 @@ class GoogleRouteDraw extends Component {
     const { from, to, wayPoints, travelMode, autoDriveSteps } = this.state;
     let waypts = wayPoints;
 
-    console.log(this.state);
-
     directionsService.route(
       {
         origin: from,
@@ -115,7 +113,7 @@ class GoogleRouteDraw extends Component {
         travelMode: travelMode
       },
       (response, status) => {
-        if (status === 'OK') {
+        if (status === "OK") {
           directionsDisplay.setDirections(response);
           let route = response.routes[0];
 
@@ -143,26 +141,36 @@ class GoogleRouteDraw extends Component {
           }
 
           // Fill panel below map
-          let summaryPanel = document.getElementById('directions-panel');
+          let summaryPanel = document.getElementById("directions-panel");
           if (!!summaryPanel) {
-            summaryPanel.innerHTML = '';
+            summaryPanel.innerHTML = "";
             // For each route, display summary information.
             for (var i = 0; i < route.legs.length; i++) {
               var routeSegment = i + 1;
               summaryPanel.innerHTML +=
-                '<b>Route Segment: ' + routeSegment + '</b><br>';
-              summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-              summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
+                "<b>Route Segment: " + routeSegment + "</b><br>";
+              summaryPanel.innerHTML += route.legs[i].start_address + " to ";
+              summaryPanel.innerHTML += route.legs[i].end_address + "<br>";
               summaryPanel.innerHTML +=
-                route.legs[i].distance.text + '<br><br>';
+                route.legs[i].distance.text + "<br><br>";
             }
           }
+
+          let flightPath = new google.maps.Polyline({
+            path: autoDriveSteps,
+            geodesic: true,
+            strokeColor: "#FF0000",
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+
+          flightPath.setMap(this.map);
+
           this.setState({
             autoDriveSteps: autoDriveSteps,
             copyAutoDriveSteps: [...autoDriveSteps]
           });
         } else {
-          console.log('Directions request failed due to ' + status);
         }
       }
     );
@@ -208,10 +216,10 @@ class GoogleRouteDraw extends Component {
           url={`https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`}
           onLoad={this.handleScriptLoad}
         />
-        <Paper style={{ padding: '12px', marginBottom: '8px' }}>
+        <Paper style={{ padding: "12px", marginBottom: "8px" }}>
           <div
             id="maporders"
-            style={{ width: '100%', overflow: 'scroll', height: '400px' }}
+            style={{ width: "100%", overflow: "scroll", height: "400px" }}
           />
           <DirectionsPanelInfo id="directions-panel" />
         </Paper>

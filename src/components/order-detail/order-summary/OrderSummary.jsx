@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import React, { Component } from "react";
+import styled from "styled-components";
+import numeral from "numeral";
 
 const SummaryWrapper = styled.div`
   width: 100%;
-  margin: 10px;
+  margin-top: 10px;
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -19,15 +20,6 @@ const SummaryWrapper = styled.div`
 class OrderSummary extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      pcs: 11,
-      weight: 1000,
-      volume: 0,
-      volWeight: 0,
-      income: 1515,
-      expense: 606,
-      profit: 909
-    };
   }
 
   componentDidMount = () => {
@@ -35,115 +27,120 @@ class OrderSummary extends Component {
   };
 
   render() {
-    const {
-      pcs,
-      weight,
-      volWeight,
-      volume,
-      income,
-      expense,
-      profit
-    } = this.state;
+    const { summary } = this.props;
+
     return (
       <>
         <SummaryWrapper>
-          <div style={{ width: '100%', marginBottom: '15px' }}>
+          <div style={{ width: "100%", marginBottom: "15px" }}>
             <span
-              style={{ fontSize: '1.25rem', color: 'black', padding: '10px' }}
+              style={{ fontSize: "1.25rem", color: "black", padding: "8px" }}
             >
-              Summary{' '}
+              Summary{" "}
             </span>
           </div>
           <div
             style={{
-              padding: '15px',
-              borderRadius: '10px'
+              padding: "8px",
+              borderRadius: "10px"
             }}
           >
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: '18px'
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: "16px"
               }}
             >
               <div>
                 <div>
-                  <span style={{ fontWeight: '600' }}>PCs</span>
+                  <span style={{ fontWeight: "600" }}>PCs</span>
                 </div>
                 <div>
-                  <span style={{ fontStyle: 'italic' }}>{pcs}</span>
-                </div>
-              </div>
-              <div>
-                <div>
-                  <span style={{ fontWeight: '600' }}>Weight</span>
-                </div>
-                <div>
-                  <span style={{ fontStyle: 'italic' }}>{weight}</span>
+                  <span style={{ fontStyle: "italic" }}>{summary.pcs}</span>
                 </div>
               </div>
               <div>
                 <div>
-                  <span style={{ fontWeight: '600' }}>Volumne</span>
+                  <span style={{ fontWeight: "600" }}>Weight</span>
                 </div>
                 <div>
-                  <span style={{ fontStyle: 'italic' }}>{volume}</span>
+                  <span style={{ fontStyle: "italic" }}>
+                    {summary.weight} kg
+                  </span>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <span style={{ fontWeight: "600" }}>Volumne</span>
+                </div>
+                <div>
+                  <span style={{ fontStyle: "italic" }}>
+                    {summary.volume} cm3
+                  </span>
                 </div>
               </div>
             </div>
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: '18px'
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: "18px"
               }}
             >
               <div>
                 <div>
-                  <span style={{ fontWeight: '600' }}>volWeight</span>
+                  <span style={{ fontWeight: "600" }}>volWeight</span>
                 </div>
                 <div>
-                  <span style={{ fontStyle: 'italic' }}>{volWeight}</span>
+                  <span style={{ fontStyle: "italic" }}>
+                    {summary.volWeight} cm3
+                  </span>
                 </div>
               </div>
             </div>
             <hr />
             <div
               style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                marginTop: '18px'
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginTop: "18px"
               }}
             >
               <div>
                 <div>
-                  <span style={{ fontWeight: '600' }}>Income</span>
+                  <span style={{ fontWeight: "600" }}>Income</span>
                 </div>
                 <div>
-                  <span style={{ fontStyle: 'italic' }}>{income}</span>
-                </div>
-              </div>
-              <div>
-                <div>
-                  <span style={{ fontWeight: '600' }}>Expense</span>
-                </div>
-                <div>
-                  <span style={{ fontStyle: 'italic' }}>{expense}</span>
+                  <span style={{ fontStyle: "italic" }}>
+                    {numeral(summary.income).format("$0.00")}
+                  </span>
                 </div>
               </div>
               <div>
                 <div>
-                  <span style={{ fontWeight: '600' }}>Profit</span>
+                  <span style={{ fontWeight: "600" }}>Expense</span>
                 </div>
                 <div>
-                  <span style={{ fontStyle: 'italic' }}>{profit}</span>
+                  <span style={{ fontStyle: "italic" }}>
+                    {numeral(summary.expense).format("$0.00")}
+                  </span>
+                </div>
+              </div>
+              <div>
+                <div>
+                  <span style={{ fontWeight: "600" }}>Profit</span>
+                </div>
+                <div>
+                  <span style={{ fontStyle: "italic" }}>
+                    {numeral(summary.profit).format("$0.00")}
+                  </span>
                 </div>
               </div>
             </div>

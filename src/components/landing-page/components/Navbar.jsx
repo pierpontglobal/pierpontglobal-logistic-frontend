@@ -1,6 +1,11 @@
-import React from 'react';
+import React from "react";
+import { withRouter } from "react-router-dom";
 
 class Navbar extends React.Component {
+  redirectToLogin = () => {
+    window.location = "/sign-in";
+  };
+
   render() {
     return (
       <nav className="navbar navbar-expand-lg fixed-top navbar-custom sticky sticky-dark">
@@ -48,8 +53,9 @@ class Navbar extends React.Component {
                   <button
                     type="button"
                     className="btn btn-custom navbar-btn btn-rounded waves-effect waves-light"
+                    onClick={this.redirectToLogin}
                   >
-                    Subscribe
+                    Login
                   </button>
                 </li>
               </ul>
@@ -61,4 +67,4 @@ class Navbar extends React.Component {
   }
 }
 
-export default Navbar;
+export default withRouter(Navbar);

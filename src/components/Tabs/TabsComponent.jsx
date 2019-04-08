@@ -1,10 +1,10 @@
-import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import SwipeableViews from 'react-swipeable-views';
-import AppBar from '@material-ui/core/AppBar';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
-import Typography from '@material-ui/core/Typography';
+import React from "react";
+import { withStyles } from "@material-ui/core/styles";
+import SwipeableViews from "react-swipeable-views";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs from "@material-ui/core/Tabs";
+import Tab from "@material-ui/core/Tab";
+import Typography from "@material-ui/core/Typography";
 
 function TabContainer({ children, dir }) {
   return (
@@ -16,7 +16,10 @@ function TabContainer({ children, dir }) {
 
 const styles = theme => ({
   root: {
-    width: '100%'
+    width: "100%"
+  },
+  indicator: {
+    backgroundColor: "#D62020"
   }
 });
 
@@ -61,7 +64,11 @@ class TabsComponent extends React.Component {
             onChange={this.handleChange}
             indicatorColor="primary"
             textColor="primary"
+            classes={{
+              indicator: classes.indicator
+            }}
           >
+            >
             {options.map((tab, index) => (
               <Tab
                 key={index}
@@ -73,7 +80,7 @@ class TabsComponent extends React.Component {
           </Tabs>
         )}
         <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          axis={theme.direction === "rtl" ? "x-reverse" : "x"}
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
         >

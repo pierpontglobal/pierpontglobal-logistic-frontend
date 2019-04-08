@@ -1,5 +1,5 @@
 /* global google */
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 const RouteSelector = ({ addresses, onAddressChanged }) => {
   return (
@@ -7,7 +7,7 @@ const RouteSelector = ({ addresses, onAddressChanged }) => {
       <strong>Start: </strong>
       <select
         onChange={e =>
-          onAddressChanged({ type: 'start', value: e.target.value })
+          onAddressChanged({ type: "start", value: e.target.value })
         }
       >
         <option>-- Select start address--</option>
@@ -21,7 +21,7 @@ const RouteSelector = ({ addresses, onAddressChanged }) => {
       </select>
       <strong>End: </strong>
       <select
-        onChange={e => onAddressChanged({ type: 'end', value: e.target.value })}
+        onChange={e => onAddressChanged({ type: "end", value: e.target.value })}
       >
         <option>-- Select end address--</option>
         {addresses.map((address, i) => {
@@ -50,23 +50,22 @@ class RouteInfo extends Component {
     this.directionsDisplay.setPanel(this.directionsPanelRef.current);
 
     this.request = {
-      origin: '',
-      destination: '',
+      origin: "",
+      destination: "",
       travelMode: google.maps.TravelMode.DRIVING
     };
   }
 
   calcRoute(changedAddress) {
-    if (changedAddress.type === 'start')
+    if (changedAddress.type === "start")
       this.request.origin = changedAddress.value;
     else this.request.destination = changedAddress.value;
-    console.log(this.request);
 
     this.directionsService.route(this.request, (response, status) => {
       if (status === google.maps.DirectionsStatus.OK) {
         this.directionsDisplay.setDirections(response);
       } else {
-        console.log('Directions request failed due to ' + status);
+        console.log("Directions request failed due to " + status);
       }
     });
   }
@@ -78,7 +77,7 @@ class RouteInfo extends Component {
           addresses={this.props.addresses}
           onAddressChanged={this.calcRoute.bind(this)}
         />
-        <div style={{ maxHeight: '350px', overflowY: 'scroll' }}>
+        <div style={{ maxHeight: "350px", overflowY: "scroll" }}>
           <div ref={this.directionsPanelRef} />
         </div>
       </div>

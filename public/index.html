@@ -1,130 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#fafafa" />
+    <link rel="manifest" href="/manifest.json" />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#fafafa">
-  <link rel="manifest" href="/manifest.json">
+    <title>Pierpont Logistics</title>
+    <meta
+      name="Description"
+      content="A site where you can manage and track orders for Pierpont Global clients."
+    />
+    <meta
+      name="google-site-verification"
+      content="lsw97pt4ncfBfZdZAAQXNh1KIbzjEEJEl9hST-f3UCY"
+    />
 
-  <title>Pierpont Logistics</title>
-  <meta name="Description"
-  content="A site where you can manage and track orders for Pierpont Global clients."/>
-  <meta name="google-site-verification" content="lsw97pt4ncfBfZdZAAQXNh1KIbzjEEJEl9hST-f3UCY" />
+    <link rel="dns-prefetch" href="https://cdn.iubenda.com/iubenda.js" />
 
-  <link rel='dns-prefetch' href="https://cdn.iubenda.com/iubenda.js" />
+    <!-- Google Font -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Poppins:400,500,700|Rubik:300,400,500,100"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Raleway"
+      rel="stylesheet"
+    />
+    <!-- pe-icon-7 Css-->
+    <link rel="stylesheet" type="text/css" href="css/pe-icon-7-stroke.css" />
 
-      <!-- Google Font -->
-      <link href="https://fonts.googleapis.com/css?family=Poppins:400,500,700|Rubik:300,400,500,100" rel="stylesheet">
-      <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-      <!-- pe-icon-7 Css-->
-      <link rel="stylesheet" type="text/css" href="css/pe-icon-7-stroke.css" />
+    <!--Material Icon -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="css/materialdesignicons.min.css"
+    />
 
-      <!--Material Icon -->
-      <link rel="stylesheet" type="text/css" href="css/materialdesignicons.min.css" />
+    <!-- Waves effect Css-->
+    <link rel="stylesheet" type="text/css" href="css/waves.css" />
 
-      <!-- Waves effect Css-->
-      <link rel="stylesheet" type="text/css" href="css/waves.css" />
+    <!-- Bootstrap Css-->
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 
-      <!-- Bootstrap Css-->
-      <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <!-- Magnific-popup -->
+    <link rel="stylesheet" href="css/magnific-popup.css" />
 
-      <!-- Magnific-popup -->
-      <link rel="stylesheet" href="css/magnific-popup.css">
+    <!-- Custom Css -->
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" href="css/colors/red.css" id="color-opt" />
 
-      <!-- Custom Css -->
-      <link rel="stylesheet" type="text/css" href="css/style.css" />
-      <link rel="stylesheet" href="css/colors/red.css" id="color-opt" /> 
+    <style>
+      body {
+        margin-top: 0px !important;
+      }
+    </style>
+  </head>
 
-</head>
-
-<body id="root" data-spy="scroll" data-target="#data-scroll"  data-hijacking="on" data-animation="scaleDown">
-  <div id="root">
-    <noscript>
-      <h1
-        style="position: absolute; top: 0; right: 0; left: 0; margin: 0 auto; text-align: center; text-decoration: underline;">
-        This app rely on JavaScript please upgrade your device</h1>
-    </noscript>
-    <div class="full-page-loader">
-
-      <style>
-        .full-page-loader {
-          display: flex;
-          align-items: center;
-          flex-direction: column;
-          justify-content: center;
-          position: fixed;
-          top: 0;
-          right: 0;
-          left: 0;
-          bottom: 0;
-        }
-
-        .full-page-loader>img {
-          animation: 1.8s infinite heartbeat;
-        }
-
-        @keyframes heartbeat {
-          0% {
-            transform: scale(1);
+  <body
+    id="root"
+    data-spy="scroll"
+    data-target="#data-scroll"
+    data-hijacking="on"
+    data-animation="scaleDown"
+  >
+    <div id="root" style="margin: 0px">
+      <noscript>
+        <h1
+          style="position: absolute; top: 0; right: 0; left: 0; margin: 0 auto; text-align: center; text-decoration: underline;"
+        >
+          This app rely on JavaScript please upgrade your device
+        </h1>
+      </noscript>
+      <div class="full-page-loader">
+        <style>
+          .full-page-loader {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
           }
 
-          25% {
-            transform: scale(1.05);
+          .full-page-loader > img {
+            animation: 1.8s infinite heartbeat;
           }
 
-          50% {
-            transform: scale(1);
-          }
+          @keyframes heartbeat {
+            0% {
+              transform: scale(1);
+            }
 
-          75% {
-            transform: scale(1.05);
-          }
+            25% {
+              transform: scale(1.05);
+            }
 
-          100% {
-            transform: scale(1);
+            50% {
+              transform: scale(1);
+            }
+
+            75% {
+              transform: scale(1.05);
+            }
+
+            100% {
+              transform: scale(1);
+            }
           }
-        }
-      </style>
-      <img width="200" src="/logos/loading_logo.png" alt="PierpontGlobal logo" />
+        </style>
+        <img
+          width="200"
+          src="/logos/loading_logo.png"
+          alt="PierpontGlobal logo"
+        />
+      </div>
     </div>
-  </div>
-</body>
+  </body>
 
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-  integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <link
+    rel="stylesheet"
+    href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
+    integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU"
+    crossorigin="anonymous"
+  />
 
-<link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
 
+  <script src="js/jquery.min.js"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/jquery.easing.1.3.min.js"></script>
+  <script src="js/scrollspy.min.js"></script>
+  <!-- Sticky Header -->
+  <script src="js/jquery.sticky.js"></script>
+  <!-- Waves Effect js -->
+  <script src="js/waves.min.js"></script>
+  <!-- Magnific Popup -->
+  <script src="js/jquery.magnific-popup.min.js"></script>
+  <!-- switcher js -->
+  <script src="js/switcher.js"></script>
 
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.bundle.min.js"></script>
-<script src="js/jquery.easing.1.3.min.js"></script>  
-<script src="js/scrollspy.min.js"></script>
-<!-- Sticky Header -->
-<script src="js/jquery.sticky.js"></script>
-<!-- Waves Effect js -->
-<script src="js/waves.min.js"></script>
-<!-- Magnific Popup -->
-<script src="js/jquery.magnific-popup.min.js"></script>
-<!-- switcher js -->
-<script src="js/switcher.js"></script>   
+  <script src="js/app.js"></script>
 
-<script src="js/app.js"></script>
+  <script async type="text/javascript">
+    (function(w, d) {
+      var loader = function() {
+        var s = d.createElement("script"),
+          tag = d.getElementsByTagName("script")[0];
+        s.src = "https://cdn.iubenda.com/iubenda.js";
+        tag.parentNode.insertBefore(s, tag);
+      };
+      if (w.addEventListener) {
+        w.addEventListener("load", loader, false);
+      } else if (w.attachEvent) {
+        w.attachEvent("onload", loader);
+      } else {
+        w.onload = loader;
+      }
+    })(window, document);
+  </script>
 
-<script async
-  type="text/javascript">(function (w, d) { var loader = function () { var s = d.createElement("script"), tag = d.getElementsByTagName("script")[0]; s.src = "https://cdn.iubenda.com/iubenda.js"; tag.parentNode.insertBefore(s, tag); }; if (w.addEventListener) { w.addEventListener("load", loader, false); } else if (w.attachEvent) { w.attachEvent("onload", loader); } else { w.onload = loader; } })(window, document);</script>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    console.log("Will the service worker register?");
-    navigator.serviceWorker.register('service-worker.js')
-      .then(function (reg) {
-        console.log("Yes, it did.");
-      }).catch(function (err) {
-        console.log("No it didn't. This happened: ", err)
-      });
-  }
-</script>
-
+  <script>
+    if ("serviceWorker" in navigator) {
+      console.log("Will the service worker register?");
+      navigator.serviceWorker
+        .register("service-worker.js")
+        .then(function(reg) {
+          console.log("Yes, it did.");
+        })
+        .catch(function(err) {
+          console.log("No it didn't. This happened: ", err);
+        });
+    }
+  </script>
 </html>

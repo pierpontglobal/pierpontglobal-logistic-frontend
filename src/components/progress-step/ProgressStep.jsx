@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import styled, { css } from 'styled-components';
+import React, { Component } from "react";
+import styled, { css } from "styled-components";
 
 const StepWrapper = styled.div`
   width: 200px;
@@ -29,7 +29,7 @@ const StepWrapper = styled.div`
   margin: 18px;
   border-radius: 50px 0px 0px 50px;
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     right: -20px;
     bottom: 0;
@@ -44,33 +44,33 @@ const StepWrapper = styled.div`
 
 const ColorsInOrder = [
   {
-    start: '#0b740b',
-    end: '#0f9b0f',
+    start: "#851414",
+    end: "#9b1717",
     background: `background: linear-gradient(to right, #0b740b, #0f9b0f);`
   },
   {
-    start: '#0f9b0f',
-    end: '#10a210',
+    start: "#9b1717",
+    end: "#b11b1b",
     background: `background: linear-gradient(to right, #0f9b0f, #10a210);`
   },
   {
-    start: '#10a210',
-    end: '#12ba12',
+    start: "#b11b1b",
+    end: "#c81e1e",
     background: `background: linear-gradient(to right, #10a210, #12ba12);`
   },
   {
-    start: '#12ba12',
-    end: '#15d115',
+    start: "#c81e1e",
+    end: "#de2121",
     background: `background: linear-gradient(to right, #12ba12, #15d115);`
   },
   {
-    start: '#15d115',
-    end: '#17e817',
+    start: "#de2121",
+    end: "#e13737",
     background: `background: linear-gradient(to right, #15d115, #17e817);`
   },
   {
-    start: '#17e817',
-    end: '#2eea2e',
+    start: "#e13737",
+    end: "#e44e4e",
     background: `background: linear-gradient(to right, #17e817, #2eea2e);`
   }
 ];
@@ -79,8 +79,8 @@ class ProgressStep extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      activeColor: '#2ECB57',
-      inactiveColor: '#eee',
+      activeColor: "#2ECB57",
+      inactiveColor: "#eee",
       steps: this.props.steps
     };
   }
@@ -107,25 +107,25 @@ class ProgressStep extends Component {
     return (
       <div
         style={{
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-around',
-          alignItems: 'center'
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-around",
+          alignItems: "center"
         }}
       >
         {steps.map((step, index) => (
           <StepWrapper
             key={index}
             statusColor={step.active ? activeColor : inactiveColor}
-            textColor={step.active ? 'white' : 'black'}
+            textColor={step.active ? "white" : "black"}
             id={index}
             onClick={this.updateStatus}
             isActive={!step.active}
             backgroundGradient={ColorsInOrder[index].background}
             startColor={ColorsInOrder[index].start}
             endColor={ColorsInOrder[index].end}
-            gradientStyle={'to right'}
+            gradientStyle={"to right"}
           >
             {step.label}
           </StepWrapper>

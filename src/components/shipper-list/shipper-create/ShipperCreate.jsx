@@ -1,20 +1,20 @@
-import React, { Component } from 'react';
-import GooglePlaceSearch from '../../google-place-search/GooglePlaceSearch';
-import BaseComponent from '../../base-component/BaseComponent';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { Carousel } from 'react-responsive-carousel';
-import { Paper, Button } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
-import { withRouter } from 'react-router-dom';
-import axios from 'axios';
-import { ApiServer } from '../../../Defaults';
+import React, { Component } from "react";
+import GooglePlaceSearch from "../../google-place-search/GooglePlaceSearch";
+import BaseComponent from "../../base-component/BaseComponent";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
+import { Paper, Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+import { withRouter } from "react-router-dom";
+import axios from "axios";
+import { ApiServer } from "../../../Defaults";
 
 const styles = theme => ({
   button: {
     margin: theme.spacing.unit
   },
   input: {
-    display: 'none'
+    display: "none"
   }
 });
 
@@ -24,19 +24,17 @@ class ShipperCreate extends Component {
     this.state = {
       placeSelected: false,
       place: {},
-      customPlaceName: ''
+      customPlaceName: ""
     };
   }
 
   componentDidMount = () => {
     axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+      "Authorization"
+    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
   };
 
   selectedPlace = place => {
-    console.log('Selected place::::    >>>');
-    console.log(place);
     if (!!place) {
       this.setState({
         placeSelected: true,
@@ -46,7 +44,7 @@ class ShipperCreate extends Component {
   };
 
   goBack = () => {
-    this.props.history.push('/shippers');
+    this.props.history.push("/shippers");
   };
 
   createShipper = () => {
@@ -58,7 +56,7 @@ class ShipperCreate extends Component {
         // MAKE API CALL TO SAVE SHIPPER TO LOGISTICS DATABASE
         const { place, customPlaceName } = this.state;
         let placeLocation =
-          place.geometry.location.lat() + ',' + place.geometry.location.lng();
+          place.geometry.location.lat() + "," + place.geometry.location.lng();
         axios
           .post(`${ApiServer}/api/v1/shipper`, {
             shipper: {
@@ -76,10 +74,10 @@ class ShipperCreate extends Component {
             this.setState(
               {
                 isLoading: false,
-                customPlaceName: ''
+                customPlaceName: ""
               },
               () => {
-                this.props.history.push('/shippers');
+                this.props.history.push("/shippers");
               }
             );
           });
@@ -91,27 +89,27 @@ class ShipperCreate extends Component {
     const { classes } = this.props;
     return (
       <BaseComponent>
-        <div style={{ minHeight: '300px' }}>
+        <div style={{ minHeight: "300px" }}>
           <div>
-            <span style={{ fontSize: '1.3rem', fontWeight: '600' }}>
+            <span style={{ fontSize: "1.3rem", fontWeight: "600" }}>
               Add a new shipper
             </span>
           </div>
           <div
             style={{
-              marginTop: '20px',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center'
+              marginTop: "20px",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center"
             }}
           >
-            <div style={{ marginBottom: '12px' }}>
+            <div style={{ marginBottom: "12px" }}>
               <span
                 style={{
-                  fontWeight: '600',
-                  fontSize: '1.05rem',
-                  marginRight: '13px'
+                  fontWeight: "600",
+                  fontSize: "1.05rem",
+                  marginRight: "13px"
                 }}
               >
                 Locate Shipper
@@ -122,29 +120,29 @@ class ShipperCreate extends Component {
           {this.state.placeSelected && !!this.state.place ? (
             <div
               style={{
-                marginTop: '25px',
-                display: 'flex',
-                flexDirection: 'row',
-                width: '100%',
-                justifyContent: 'space-between'
+                marginTop: "25px",
+                display: "flex",
+                flexDirection: "row",
+                width: "100%",
+                justifyContent: "space-between"
               }}
             >
               <Paper
                 style={{
-                  width: '100%',
-                  padding: '12px',
-                  flexDirection: 'row',
-                  justifyContent: 'center',
-                  alignItems: 'center'
+                  width: "100%",
+                  padding: "12px",
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center"
                 }}
               >
                 <div>
-                  <div style={{ marginBottom: '12px' }}>
-                    <span style={{ fontWeight: '600', fontSize: '1.2rem' }}>
+                  <div style={{ marginBottom: "12px" }}>
+                    <span style={{ fontWeight: "600", fontSize: "1.2rem" }}>
                       Place information
                     </span>
                   </div>
-                  <div style={{ maxWidth: '600px', overflow: 'scroll' }}>
+                  <div style={{ maxWidth: "600px", overflow: "scroll" }}>
                     <div>{this.state.place.placeId}</div>
                     <div>{this.state.place.query}</div>
                     <div>{this.state.place.city}</div>
@@ -169,33 +167,33 @@ class ShipperCreate extends Component {
                 <div>
                   <div
                     style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      justifyContent: 'center',
-                      alignContent: 'center'
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignContent: "center"
                     }}
                   >
                     <div
-                      style={{ margin: '12px' }}
-                      style={{ width: '220px', height: '210px' }}
+                      style={{ margin: "12px" }}
+                      style={{ width: "220px", height: "210px" }}
                     >
                       {!!this.state.place.photos ? (
                         <Carousel
                           showThumbs={false}
                           showIndicators={false}
-                          style={{ width: '100%', height: '100%' }}
+                          style={{ width: "100%", height: "100%" }}
                         >
                           {this.state.place.photos.map((placeImg, index) => (
-                            <div key={index} style={{ width: '100%' }}>
+                            <div key={index} style={{ width: "100%" }}>
                               <img
                                 src={placeImg}
-                                style={{ maxHeight: '210px' }}
+                                style={{ maxHeight: "210px" }}
                               />
                             </div>
                           ))}
                         </Carousel>
                       ) : (
-                        'No photos to show for this place'
+                        "No photos to show for this place"
                       )}
                     </div>
                   </div>
@@ -205,12 +203,12 @@ class ShipperCreate extends Component {
           ) : null}
           <div
             style={{
-              width: '100%',
-              margin: '18px',
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center'
+              width: "100%",
+              margin: "18px",
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center"
             }}
           >
             <Button
