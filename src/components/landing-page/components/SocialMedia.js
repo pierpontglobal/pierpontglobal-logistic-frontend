@@ -41,15 +41,10 @@ class SocialMedia extends React.Component {
                 </li>
               </ul>
             </div>
-            <div className="col-lg-3 margin-t-30">
-              <p className="margin-b-0 contact-title">
-                <i className="pe-7s-call" /> &nbsp;+91 123 4556 789
-              </p>
-            </div>
             <div className="col-lg-3 margin-t-30 text-right">
               <p className="contact-title">
                 <i className="pe-7s-mail-open" />
-                &nbsp; Support@info.com
+                &nbsp; support@pierpontglobal.com
               </p>
             </div>
           </div>

@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import Particles from 'react-particles-js';
 import Navbar from './components/Navbar';
 import Services from './components/Services';
 import Features from './components/Features';
@@ -14,8 +16,6 @@ import SocialMedia from './components/SocialMedia';
 import Footer from './components/Footer';
 import FooterLinks from './components/FooterLinks';
 import Switcher from './components/Switcher';
-import { Link } from 'react-router-dom';
-import Particles from 'react-particles-js';
 import Aux from './hoc/Aux_';
 import BackImage from '../../assets/images/landing_background.jpeg';
 import ButtonsSelect from './components/ButtonsSelect';
@@ -23,7 +23,7 @@ import OriginDestination from './components/OriginDestination';
 
 class HomeSeven extends React.Component {
   render() {
-    var bkg1 = {
+    const bkg1 = {
       backgroundImage: `url(${BackImage})`,
       backgroundSize: 'cover',
       backgroundPosition: 'center'
@@ -31,7 +31,7 @@ class HomeSeven extends React.Component {
 
     return (
       <Aux>
-        {/* Navbar Component*/}
+        {/* Navbar Component */}
         <Navbar />
 
         <section
@@ -70,9 +70,9 @@ class HomeSeven extends React.Component {
                       The future of logistics
                     </h1>
                     <p className="padding-t-15 home-desc">
-                      Etiam sed.Interdum consequat proin vestibulum className at
-                      a euismod mus luctus quam.Lorem ipsum dolor sit amet,
-                      consectetur adipisicing eli.
+                      Let us take care of your transportation necessities, we
+                      can handle land, sea and air transportation so you only
+                      need worry about receiving your car.
                     </p>
                     <div
                       style={{
@@ -95,28 +95,28 @@ class HomeSeven extends React.Component {
           </div>
         </section>
 
-        {/* Services Component*/}
+        {/* Services Component */}
         <Services />
 
-        {/* Features Component*/}
+        {/* Features Component */}
         <Features />
 
-        {/* Process Component*/}
+        {/* Process Component */}
         <Process />
 
-        {/* Testi Component*/}
+        {/* Testi Component */}
         <Testi />
 
-        {/* Contact Component*/}
+        {/* Contact Component */}
         <Contact />
 
-        {/* SocialMedia Component*/}
+        {/* SocialMedia Component */}
         <SocialMedia />
 
-        {/* Footer Component*/}
+        {/* Footer Component */}
         <Footer />
 
-        {/* FooterLinks Component*/}
+        {/* FooterLinks Component */}
         <FooterLinks />
       </Aux>
     );
