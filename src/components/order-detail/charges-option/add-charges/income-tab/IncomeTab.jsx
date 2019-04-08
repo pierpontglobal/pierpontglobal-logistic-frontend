@@ -85,6 +85,7 @@ class IncomeTab extends Component {
             <TextField
               id="quantity"
               label="Quantity"
+              type="number"
               className={classes.textField}
               margin="normal"
               onChange={this.handleChangeInput}
@@ -107,6 +108,7 @@ class IncomeTab extends Component {
             <TextField
               id="rate"
               label="Rate"
+              type="number"
               className={classes.textField}
               margin="normal"
               value={rate}
@@ -118,6 +120,7 @@ class IncomeTab extends Component {
             <TextField
               id="amount"
               label="Amount"
+              type="number"
               className={classes.textField}
               margin="normal"
               value={amount}
@@ -142,6 +145,7 @@ class IncomeTab extends Component {
               label="Payment"
               className={classes.textField}
               margin="normal"
+              type="number"
               value={payment}
               onChange={this.handleChangeInput}
               variant="outlined"
@@ -157,6 +161,7 @@ class IncomeTab extends Component {
               label="Show rate"
               className={classes.textField}
               margin="normal"
+              type="number"
               value={rate}
               disabled={true}
               onChange={this.handleChangeInput}
@@ -171,6 +176,7 @@ class IncomeTab extends Component {
               className={classes.textField}
               margin="normal"
               value={amount}
+              type="number"
               onChange={this.handleChangeInput}
               variant="outlined"
             />

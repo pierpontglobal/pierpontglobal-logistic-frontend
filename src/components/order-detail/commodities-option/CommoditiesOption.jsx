@@ -186,7 +186,8 @@ class CommoditiesOption extends Component {
 
   handleAddVehicle = e => {
     const { carRows } = this.state;
-    const { orderId } = this.props;
+    const { orderId, commodities } = this.props;
+    let commodities_arr = [...commodities];
 
     axios
       .post(`${ApiServer}/api/v1/commodity?order_number=${orderId}`, {
@@ -202,6 +203,10 @@ class CommoditiesOption extends Component {
           let artifact = data.data.artifact;
           let commodity = data.data.commodity;
           let e = artifact.car_information;
+          commodities_arr.push({
+            artifact: artifact,
+            commodity: commodity
+          });
           this.setState(
             {
               carRows: [
@@ -222,9 +227,13 @@ class CommoditiesOption extends Component {
                   ]
                 }
               ],
-              openModalAddVehicle: false
+              openModalAddVehicle: false,
+              commodities: commodities_arr
             },
             () => {
+              // Propagate commodities array to Order Detail
+              this.props.onCommoditiesChange(commodities_arr);
+              this.updateCommoditiesTables();
               this.props.addNotification(
                 'Process completed',
                 'Commodity added successfully!',
@@ -247,7 +256,8 @@ class CommoditiesOption extends Component {
 
   handleAddContainer = container => {
     const { containerRows } = this.state;
-    const { orderId } = this.props;
+    const { orderId, commodities } = this.props;
+    let commodities_arr = [...commodities];
 
     axios
       .post(`${ApiServer}/api/v1/commodity?order_number=${orderId}`, {
@@ -261,6 +271,10 @@ class CommoditiesOption extends Component {
         data => {
           let added_container = data.data.artifact;
           let commodity = data.data.commodity;
+          commodities_arr.push({
+            artifact: added_container,
+            commodity: commodity
+          });
           this.setState(
             {
               containerRows: [
@@ -283,9 +297,12 @@ class CommoditiesOption extends Component {
                   ]
                 }
               ],
-              openModalAddContainer: false
+              openModalAddContainer: false,
+              commodities: commodities_arr
             },
             () => {
+              this.props.onCommoditiesChange(commodities_arr);
+              this.updateCommoditiesTables();
               this.props.addNotification(
                 'Process completed',
                 'Commodity added successfully!',
@@ -317,13 +334,15 @@ class CommoditiesOption extends Component {
     console.log('will enter remove commodity');
     const {
       toDeleteCommodityId,
-      commodities,
       carRows,
       containerRows,
+      commodities,
       shippId
     } = this.state;
     console.log(this.state);
+
     let state_commodities = [...commodities];
+    console.log(commodities);
 
     if (!!toDeleteCommodityId) {
       let commodity = commodities.find(

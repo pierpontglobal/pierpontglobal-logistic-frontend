@@ -87,7 +87,8 @@ class OrderDetail extends Component {
       transports: [],
       isSavingShipment: false,
       commodities: [],
-      charges: []
+      charges: [],
+      hasShippment: false
     };
 
     this.notificationDOMRef_info = React.createRef();
@@ -142,6 +143,7 @@ class OrderDetail extends Component {
         let shippment = data.data.shippment_detail;
         let commodities = data.data.commodities;
         let charges = data.data.charges;
+        let hasshippment = true;
 
         if (!!shippment) {
           let detailsInfo = {
@@ -169,7 +171,8 @@ class OrderDetail extends Component {
             detailsInfo: detailsInfo,
             commodities: commodities,
             charges: charges,
-            shippId: !!shippment ? shippment.id : -1
+            shippId: !!shippment ? shippment.id : -1,
+            hasShippment: hasshippment
           });
         }
       }
@@ -248,7 +251,8 @@ class OrderDetail extends Component {
                 NOTIFICATION_TYPES.SUCCESS
               );
               this.setState({
-                isSavingShipment: false
+                isSavingShipment: false,
+                hasShippment: true
               });
             },
             err => {
@@ -316,6 +320,12 @@ class OrderDetail extends Component {
     });
   };
 
+  onCommoditiesChange = commodities => {
+    this.setState({
+      commodities: commodities
+    });
+  };
+
   render() {
     const {
       isLoading,
@@ -331,7 +341,8 @@ class OrderDetail extends Component {
       vehicleCommodity,
       commodities,
       shippId,
-      charges
+      charges,
+      hasShippment
     } = this.state;
 
     const tabOptions = [
@@ -357,6 +368,7 @@ class OrderDetail extends Component {
       },
       {
         label: 'Commodities',
+        disabled: !hasShippment,
         item: (
           <CommoditiesOption
             cookies={this.props.cookies}
@@ -364,11 +376,13 @@ class OrderDetail extends Component {
             orderId={orderId}
             shippId={shippId}
             addNotification={this.addNotification}
+            onCommoditiesChange={this.onCommoditiesChange}
           />
         )
       },
       {
         label: 'Charges',
+        disabled: !hasShippment,
         item: (
           <ChargesOption
             cookies={this.props.cookies}
@@ -382,6 +396,7 @@ class OrderDetail extends Component {
       },
       {
         label: 'Road path',
+        disabled: !hasShippment,
         item: (
           <GoogleRouteDraw
             from="Chicago, IL"

@@ -66,10 +66,10 @@ class DealerList extends Component {
         address2: 'Address 2 sample dealer'
       }
     ];
-    axios.get(`${ApiServer}/api/v1/shipper`).then(data => {
+    axios.get(`${ApiServer}/api/v1/consignee`).then(data => {
       console.log('Fetching...');
       console.log(data);
-      const rowData = examples; // omitting retrieved data, since the backend for this is not created yet, putting examples though.
+      const rowData = data.data;
       let mappedData = rowData.map(row => {
         let rowObj = {
           id: row.id,

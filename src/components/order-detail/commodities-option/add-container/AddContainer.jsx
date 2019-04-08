@@ -272,7 +272,7 @@ class AddContainer extends Component {
                 margin="normal"
                 type="number"
                 value={container.pieces}
-                defaultValue={container.pieces}
+                defaultValue={1}
                 onChange={this.handleChangePieces}
                 style={{ width: '100px' }}
               />

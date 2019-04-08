@@ -61,9 +61,6 @@ const incomeColumns = [
     title: 'Service'
   },
   {
-    title: 'Description'
-  },
-  {
     title: 'QTY'
   },
   {
@@ -94,9 +91,6 @@ const expensesColumns = [
     title: 'Service'
   },
   {
-    title: 'Description'
-  },
-  {
     title: 'QTY'
   },
   {
@@ -109,9 +103,6 @@ const expensesColumns = [
     title: 'Amount'
   },
   {
-    title: 'Profit'
-  },
-  {
     title: 'Vendor'
   }
 ];
@@ -121,10 +112,12 @@ class ChargesOption extends Component {
     super(props);
     this.state = {
       incomeRows: [],
-      expensesRows: [],
+      expenseRows: [],
       onCloseChargesModal: false,
       charges: [],
-      services: []
+      services: [],
+      openToDeleteChargeConfirmation: false,
+      toDeleteChargeId: -1
     };
   }
 
@@ -142,6 +135,7 @@ class ChargesOption extends Component {
     axios.get(`${ApiServer}/api/v1/charge`).then(
       data => {
         let charges = data.data.charges;
+
         this.setState(
           {
             charges: charges
@@ -179,32 +173,17 @@ class ChargesOption extends Component {
     const { charges } = this.state;
     let incomeRows = [];
     let expenseRows = [];
+    console.log('will update rows >>>>>>>>>>>>>>>>> ');
+    console.log(charges);
     if (!!charges) {
       let incomeCharges = charges.filter(c => c.custom_id === 1);
       let expenseCharges = charges.filter(c => c.custom_id === 2);
 
       incomeRows = incomeCharges.map(item => {
         return {
-          id: item.id,
+          id: item.charge_id,
           content: [
             { text: item.name },
-            { text: item.description },
-            { text: item.quantity },
-            { text: item.unit },
-            { text: item.rate },
-            { text: item.amount },
-            { text: item.profit },
-            { text: item.vendor }
-          ]
-        };
-      });
-
-      expenseRows = expenseCharges.map(item => {
-        return {
-          id: item.id,
-          content: [
-            { text: item.name },
-            { text: item.description },
             { text: item.quantity },
             { text: item.unit },
             { text: item.rate },
@@ -217,6 +196,20 @@ class ChargesOption extends Component {
         };
       });
 
+      expenseRows = expenseCharges.map(item => {
+        return {
+          id: item.charge_id,
+          content: [
+            { text: item.name },
+            { text: item.quantity },
+            { text: item.unit },
+            { text: item.rate },
+            { text: item.amount },
+            { text: item.vendor }
+          ]
+        };
+      });
+
       this.setState({
         incomeRows: incomeRows,
         expenseRows: expenseRows
@@ -225,113 +218,83 @@ class ChargesOption extends Component {
   };
 
   handleAddCharge = charge => {
-    const { incomeRows, expensesRows, incomes, expenses } = this.state;
+    const { incomeRows, expenseRows, incomes, expenses, charges } = this.state;
     const { shippId } = this.props;
     let expense = charge.expense;
     let income = charge.income;
     let service = charge.service;
     console.log(charge);
     if (!!charge) {
+      console.log('TO ADD CHARGE AJAJAJA');
       console.log(charge);
 
-      let chargesDto = [];
+      console.log(expense);
+      console.log(income);
 
-      if (!!income.amount && !!expense.amount) {
-        chargesDto.push({
-          description: income.description,
-          quantity: income.quantity,
-          unit: income.unit,
-          rate: income.rate,
-          profit: income.profit,
-          bill_to_name: income.billToName,
-          quantity_expense: income.quantityExpense,
-          vendor: income.vendor,
+      let dto = {};
+
+      if (!!expense && !!expense.amount) {
+        dto['expense'] = {
+          ...expense,
+          shippment_id: shippId,
+          service_id: service.serviceId
+        };
+      }
+      if (!!income && income.amount) {
+        dto['income'] = {
+          ...income,
           bill_to: income.billTo,
-          amount: income.amount,
-          currency: income.currency,
-          payment: income.payment,
-          shippment_id: shippId,
-          service_id: service.serviceId,
-          charge_type_id: 1
-        });
-        chargesDto.push({
-          description: expense.description,
-          quantity: expense.quantity,
-          unit: expense.unit,
-          rate: expense.rate,
-          profit: expense.profit,
-          bill_to_name: expense.billToName,
-          quantity_expense: expense.quantityExpense,
-          vendor: expense.vendor,
-          bill_to: expense.billTo,
-          amount: expense.amount,
-          currency: expense.currency,
-          payment: expense.payment,
-          shippment_id: shippId,
-          service_id: service.serviceId,
-          charge_type_id: 2
-        });
-      } else if (!!income.amount && !expense.amount) {
-        chargesDto.push({
-          description: income.description,
-          quantity: income.quantity,
-          unit: income.unit,
-          rate: income.rate,
-          profit: income.profit,
           bill_to_name: income.billToName,
-          quantity_expense: income.quantityExpense,
-          vendor: income.vendor,
-          bill_to: income.billTo,
-          amount: income.amount,
-          currency: income.currency,
-          payment: income.payment,
+          unit: income.units,
           shippment_id: shippId,
-          service_id: service.serviceId,
-          charge_type_id: 1
-        });
-      } else {
-        chargesDto.push({
-          description: expense.description,
-          quantity: expense.quantity,
-          unit: expense.unit,
-          rate: expense.rate,
-          profit: expense.profit,
-          bill_to_name: expense.billToName,
-          quantity_expense: expense.quantityExpense,
-          vendor: expense.vendor,
-          bill_to: expense.billTo,
-          amount: expense.amount,
-          currency: expense.currency,
-          payment: expense.payment,
-          shippment_id: shippId,
-          service_id: service.serviceId,
-          charge_type_id: 2
-        });
+          service_id: service.serviceId
+        };
       }
 
-      axios
-        .post(`${ApiServer}/api/v1/charge`, {
-          charges: chargesDto
-        })
-        .then(
-          data => {
-            console.log(data);
-            this.props.addNotification(
-              'Process completed',
-              'Commodity added successfully!',
-              2000,
-              NOTIFICATION_TYPES.SUCCESS
-            );
-          },
-          err => {
-            this.props.addNotification(
-              'Process interrupted',
-              "Couldn't add commodity",
-              2000,
-              NOTIFICATION_TYPES.ERROR
-            );
-          }
-        );
+      axios.post(`${ApiServer}/api/v1/charge`, dto).then(
+        data => {
+          console.log(data);
+          let response_charges = data.data.charges.map(charge => {
+            let obj = { ...charge };
+            obj['charge_id'] = obj.id;
+            return obj;
+          });
+          let override_charges = [...charges].concat(response_charges);
+          console.log('>>> >>>> >>>> >>>>');
+          console.log(charges);
+          console.log(override_charges);
+          this.setState(
+            {
+              openModalAddCharges: false,
+              charges: override_charges
+            },
+            () => {
+              this.props.addNotification(
+                'Process completed',
+                'Charge added successfully!',
+                2000,
+                NOTIFICATION_TYPES.SUCCESS
+              );
+              this.updateChargesTables();
+            }
+          );
+        },
+        err => {
+          this.setState(
+            {
+              openModalAddCharges: false
+            },
+            () => {
+              this.props.addNotification(
+                'Process interrupted',
+                "Couldn't add charge",
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          );
+        }
+      );
     }
   };
 
@@ -341,13 +304,87 @@ class ChargesOption extends Component {
     });
   };
 
+  onCloseConfirmDialog = () => {
+    this.setState({
+      openToDeleteChargeConfirmation: false
+    });
+  };
+
+  onDeleteCharge = (e, rowId) => {
+    console.log(rowId);
+    this.setState({
+      openToDeleteChargeConfirmation: true,
+      toDeleteChargeId: rowId
+    });
+  };
+
+  confirmedRemoveCharge = () => {
+    console.log('will enter remove charge');
+    const {
+      toDeleteChargeId,
+      carRows,
+      containerRows,
+      commodities,
+      charges
+    } = this.state;
+    const { shippId } = this.props;
+
+    console.log(this.state);
+
+    let state_charges = [...charges];
+    console.log(charges);
+
+    if (!!toDeleteChargeId) {
+      let charge = charges.find(x => x.charge_id === toDeleteChargeId);
+      console.log(charge);
+      if (!!charge) {
+        axios
+          .delete(
+            `${ApiServer}/api/v1/charge?charge_id=${toDeleteChargeId}&shipp_id=${shippId}`
+          )
+          .then(
+            data => {
+              state_charges = charges.filter(
+                c => c.charge_id !== toDeleteChargeId
+              );
+              this.updateChargesTables();
+              this.setState(
+                {
+                  charges: state_charges,
+                  openToDeleteChargeConfirmation: false
+                },
+                () => {
+                  this.updateChargesTables();
+                  this.props.addNotification(
+                    'Process completed',
+                    'Charge removed successfully!',
+                    2000,
+                    NOTIFICATION_TYPES.SUCCESS
+                  );
+                }
+              );
+            },
+            err => {
+              this.props.addNotification(
+                'Process interrupted',
+                "Couldn't remove associated charge",
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          );
+      }
+    }
+  };
+
   render() {
     const { classes } = this.props;
     const {
       openModalAddCharges,
-      expensesRows,
+      expenseRows,
       incomeRows,
-      services
+      services,
+      openToDeleteChargeConfirmation
     } = this.state;
     return (
       <>
@@ -378,12 +415,57 @@ class ChargesOption extends Component {
             </div>
           </TitleWrapper>
         </Paper>
-        <TableWrapper>
-          <PPGTable columns={incomeColumns} rows={incomeRows} />
-        </TableWrapper>
-        <TableWrapper>
-          <PPGTable columns={expensesColumns} rows={expensesRows} />
-        </TableWrapper>
+        {incomeRows.length > 0 ? (
+          <TableWrapper>
+            <div>
+              <span
+                style={{
+                  fontWeight: '600',
+                  fontSize: '1.05rem',
+                  color: 'darkgray',
+                  padding: '10px'
+                }}
+              >
+                Incomes{' '}
+                <span style={{ fontStyle: 'italic' }}>
+                  (Double click to remove.)
+                </span>
+              </span>
+            </div>
+            <PPGTable
+              columns={incomeColumns}
+              rows={incomeRows}
+              handleOnRowDoubleClick={this.onDeleteCharge}
+            />
+          </TableWrapper>
+        ) : null}
+        {expenseRows.length > 0 ? (
+          <TableWrapper>
+            <div>
+              <span
+                style={{
+                  fontWeight: '600',
+                  fontSize: '1.05rem',
+                  color: 'darkgray',
+                  padding: '10px'
+                }}
+              >
+                Expenses{' '}
+                <span style={{ fontStyle: 'italic' }}>
+                  (Double click to remove.)
+                </span>
+              </span>
+            </div>
+            <PPGTable
+              columns={expensesColumns}
+              rows={expenseRows}
+              handleOnRowDoubleClick={this.onDeleteCharge}
+            />
+          </TableWrapper>
+        ) : null}
+        {incomeRows.length === 0 && expenseRows.length === 0
+          ? 'No charges has been added'
+          : null}
         <PPGModal
           setOpen={openModalAddCharges}
           handleClose={this.onCloseChargesModal}
@@ -395,6 +477,43 @@ class ChargesOption extends Component {
             cookies={this.props.cookie}
             handleAdd={this.handleAddCharge}
           />
+        </PPGModal>
+        <PPGModal
+          setOpen={openToDeleteChargeConfirmation}
+          handleClose={this.onCloseConfirmDialog}
+          width="240px"
+          height="80px"
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '30px'
+            }}
+          >
+            <div>
+              <span style={{ fontWeight: '600', color: 'darkgray' }}>
+                Are you sure you want to remove this charge?
+              </span>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
+              }}
+            >
+              <div>
+                <Button onClick={this.onCloseConfirmDialog}>Cancel</Button>
+              </div>
+              <div>
+                <Button onClick={this.confirmedRemoveCharge}>Remove</Button>
+              </div>
+            </div>
+          </div>
         </PPGModal>
       </>
     );
