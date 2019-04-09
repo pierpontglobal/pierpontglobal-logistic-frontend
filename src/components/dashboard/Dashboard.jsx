@@ -27,6 +27,17 @@ const ChartWrapper = styled.div`
   justify-content: center;
 `;
 
+const ChartTitle = styled.div`
+  margin: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: darkgray;
+  font-weight: 600;
+`;
+
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +54,8 @@ class Dashboard extends Component {
         profit: 0,
         pcs: 0,
         weight: 0
-      }
+      },
+      days_ago_for_chart: 4 // Includes 0, so its really 5
     };
   }
 
@@ -52,6 +64,8 @@ class Dashboard extends Component {
     axios.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
+
+    const { days_ago_for_chart } = this.state;
 
     axios.get(`${ApiServer}/api/v1/dashboard`).then(data => {
       let response = data.data;
@@ -68,16 +82,18 @@ class Dashboard extends Component {
     });
 
     axios
-      .get(`${ApiServer}/api/v1/dashboard/composed_chart?days=5`)
+      .get(
+        `${ApiServer}/api/v1/dashboard/composed_chart?days=${days_ago_for_chart}`
+      )
       .then(data => {
         let response = data.data;
         console.log(response);
         let chart_data = response.map(item => {
           return {
             name: item.label,
-            uv: Number(item.total_income),
-            pv: Number(item.total_expense),
-            amt: Number(item.total_income) - Number(item.total_expense)
+            income: Number(item.total_income),
+            expense: Number(item.total_expense),
+            profit: Number(item.total_income) - Number(item.total_expense)
           };
         });
         this.setState({
@@ -92,7 +108,12 @@ class Dashboard extends Component {
   };
 
   render() {
-    const { pieChartData, cardsData, chartData } = this.state;
+    const {
+      pieChartData,
+      cardsData,
+      chartData,
+      days_ago_for_chart
+    } = this.state;
     return (
       <>
         <BaseComponent cookies={this.props.cookies}>
@@ -132,6 +153,7 @@ class Dashboard extends Component {
           </CardsWrapper>
           <ChartWrapper>
             <Paper style={{ margin: "5px", width: "60%" }}>
+              <ChartTitle> Last {days_ago_for_chart + 1} days</ChartTitle>
               <PPGComposedBar data={chartData} />
             </Paper>
           </ChartWrapper>
