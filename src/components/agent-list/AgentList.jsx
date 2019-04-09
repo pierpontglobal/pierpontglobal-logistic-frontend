@@ -7,6 +7,7 @@ import { Paper, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import PPGModal from "../ppg-modal/PPGModal";
 import AddAgent from "./add-agent/AddAgent";
+import UpdateAgent from "./update-agent/UpdateAgent";
 import { NOTIFICATION_TYPES } from "../../constants/NotificationTypes";
 
 const styles = theme => ({
@@ -32,7 +33,8 @@ class AgentList extends Component {
     super(props);
     this.state = {
       rows: [],
-      openModalAdd: false
+      openModalAdd: false,
+      openModalUpdate: false
     };
   }
 
@@ -58,9 +60,9 @@ class AgentList extends Component {
     });
   };
 
-  openModal = e => {
+  openModal = modal => {
     this.setState({
-      openModalAdd: true
+      [modal]: true
     });
   };
 
@@ -120,14 +122,85 @@ class AgentList extends Component {
     );
   };
 
-  onCloseChargesModal = () => {
+  onCloseModal = modal => {
     this.setState({
-      openModalAdd: false
+      [modal]: false
+    });
+  };
+
+  openUpdateModal = (e, rowId) => {
+    axios.get(`${ApiServer}/api/v1/agent/${rowId}`).then(data => {
+      let response = data.data;
+      console.log(response);
+      this.setState({
+        openModalUpdate: true,
+        fetchedAgent: response
+      });
+    });
+  };
+
+  updateAgent = agent => {
+    const { rows } = this.state;
+
+    this.setState(
+      {
+        openModalUpdate: false
+      },
+      () => {
+        axios
+          .put(`${ApiServer}/api/v1/agent?id=${agent.agent_id}`, {
+            agent: {
+              name: agent.agent_name,
+              address: agent.agent_address
+            }
+          })
+          .then(
+            data => {
+              let response = data.data;
+              if (!!response) {
+                console.log(response);
+
+                this.updateRowsWithModifiedData(response);
+
+                this.props.addNotification(
+                  "Process has completed",
+                  "Agent was updated successfully",
+                  2000,
+                  NOTIFICATION_TYPES.SUCCESS
+                );
+              }
+            },
+            err => {
+              this.props.addNotification(
+                "Process has completed",
+                err,
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          );
+      }
+    );
+  };
+
+  updateRowsWithModifiedData = entity => {
+    const { rows } = this.state;
+
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].id === entity.id) {
+        let row = rows[i];
+        row.content = [{ text: entity.name }, { text: entity.address }];
+        break;
+      }
+    }
+
+    this.setState({
+      rows: rows
     });
   };
 
   render() {
-    const { rows, openModalAdd } = this.state;
+    const { rows, openModalAdd, fetchedAgent, openModalUpdate } = this.state;
     const { classes } = this.props;
     return (
       <>
@@ -149,19 +222,34 @@ class AgentList extends Component {
               variant="contained"
               color="primary"
               className={classes.button}
-              onClick={this.openModal}
+              onClick={() => this.openModal("openModalAdd")}
             >
               Create Agent
             </Button>
           </div>
-          <PPGTable rows={rows} columns={columns} />
+          <PPGTable
+            rows={rows}
+            columns={columns}
+            handleOnRowDoubleClick={this.openUpdateModal}
+          />
           <PPGModal
             setOpen={openModalAdd}
-            handleClose={this.onCloseChargesModal}
-            width="40%"
+            handleClose={() => this.onCloseModal("openModalAdd")}
+            width="50%"
             height="30%"
           >
             <AddAgent handleAdd={this.createAgent} />
+          </PPGModal>
+          <PPGModal
+            setOpen={openModalUpdate}
+            handleClose={() => this.onCloseModal("openModalUpdate")}
+            width="50%"
+            height="30%"
+          >
+            <UpdateAgent
+              handleUpdate={this.updateAgent}
+              fetchedAgent={fetchedAgent}
+            />
           </PPGModal>
         </BaseComponent>
       </>
