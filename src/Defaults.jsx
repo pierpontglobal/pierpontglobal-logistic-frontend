@@ -17,10 +17,10 @@ export const WEB_APP_PLATFORM =
 
 export const PPG_SECRET_KEY =
   process.env.NODE_ENV === "development"
-    ? "2ca9963f3ee0647ade22302f6d89abfe84acb262"
+    ? "31844aeb13702eda3daff5f0e8c3acc4152da413"
     : "";
 export const PPG_PUBLIC_KEY =
-  process.env.NODE_ENV === "development" ? "ArE5KRqqmNd6b3KUrb7s6emk" : "";
+  process.env.NODE_ENV === "development" ? "dfSv2vzRieJMmbevVbQMHWpB" : "";
 
 export const GOOGLE_API_KEY =
   process.env.NODE_ENV === "development"

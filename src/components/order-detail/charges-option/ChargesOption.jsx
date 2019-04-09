@@ -132,7 +132,9 @@ class ChargesOption extends Component {
       "Authorization"
     ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
 
-    axios.get(`${ApiServer}/api/v1/charge`).then(
+    const { shippId } = this.props;
+
+    axios.get(`${ApiServer}/api/v1/charge?shipp_id=${shippId}`).then(
       data => {
         let charges = data.data.charges;
 

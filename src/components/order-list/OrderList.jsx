@@ -32,6 +32,9 @@ const columns = [
   },
   {
     title: "Service type"
+  },
+  {
+    title: "Order Status"
   }
 ];
 
@@ -61,7 +64,8 @@ class OrderList extends Component {
             { text: row.order_number },
             { text: row.origin_name },
             { text: row.destination_name },
-            { text: row.service_type }
+            { text: row.service_type },
+            { text: row.order_state_name }
           ]
         };
         return rowObj;

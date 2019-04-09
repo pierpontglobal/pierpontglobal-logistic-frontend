@@ -96,9 +96,15 @@ class ProgressStep extends Component {
     for (let i = selectedIndex + 1; i < steps.length; i++) {
       steps[i].active = false;
     }
-    this.setState({
-      steps: steps
-    });
+    this.setState(
+      {
+        steps: steps
+      },
+      () => {
+        const { steps } = this.state;
+        this.props.updateOrderStatus(steps[selectedIndex]);
+      }
+    );
   };
 
   render() {

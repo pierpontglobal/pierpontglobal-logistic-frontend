@@ -150,6 +150,19 @@ class OrderDetail extends Component {
       "Authorization"
     ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
 
+    axios.get(`${ApiServer}/api/v1/order_state`).then(data => {
+      let order_states = data.data;
+      this.setState({
+        orderStates: order_states.map(state => {
+          return {
+            label: state.name,
+            state_id: state.id,
+            active: false
+          };
+        })
+      });
+    });
+
     axios.get(`${ApiServer}/api/v1/shippment/${orderId}`).then(data => {
       console.log("Fetching...");
       console.log(data);
@@ -158,6 +171,7 @@ class OrderDetail extends Component {
         let shippment = data.data.shippment_detail;
         let commodities = data.data.commodities;
         let charges = data.data.charges;
+        let order = data.data.order;
         let hasshippment = true;
 
         if (!!shippment) {
@@ -188,9 +202,11 @@ class OrderDetail extends Component {
               commodities: commodities,
               charges: charges,
               shippId: !!shippment ? shippment.id : -1,
-              hasShippment: hasshippment
+              hasShippment: hasshippment,
+              order: order
             },
             () => {
+              this.calculateCurrentStepProgress();
               this.calculateSummary();
             }
           );
@@ -228,6 +244,20 @@ class OrderDetail extends Component {
         isLoading: false,
         orderId: orderId
       });
+    });
+  };
+
+  calculateCurrentStepProgress = () => {
+    const { order, orderStates } = this.state;
+    for (let i = 0; i < orderStates.length; i++) {
+      let state = orderStates[i];
+      orderStates[i].active = true;
+      if (state.label === order.order_state_name) {
+        break;
+      }
+    }
+    this.setState({
+      orderStates: orderStates
     });
   };
 
@@ -410,6 +440,23 @@ class OrderDetail extends Component {
     );
   };
 
+  updateOrderStatus = step => {
+    let state_id = step.state_id;
+    const { orderId } = this.state;
+    axios
+      .patch(`${ApiServer}/api/v1/order?id=${orderId}&state_id=${state_id}`)
+      .then(data => {
+        console.log("Update order status!");
+        console.log(data);
+        this.addNotification(
+          "Process has completed",
+          "Order state was updated succesfully!",
+          2000,
+          NOTIFICATION_TYPES.SUCCESS
+        );
+      });
+  };
+
   render() {
     const {
       isLoading,
@@ -518,7 +565,10 @@ class OrderDetail extends Component {
                   width: "100%"
                 }}
               >
-                <ProgressStep steps={this.state.orderStates} />
+                <ProgressStep
+                  updateOrderStatus={this.updateOrderStatus}
+                  steps={this.state.orderStates}
+                />
               </div>
               <div
                 style={{

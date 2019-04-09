@@ -1,32 +1,32 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Particles from 'react-particles-js';
-import Navbar from './components/Navbar';
-import Services from './components/Services';
-import Features from './components/Features';
-import Descriptions from './components/Descriptions';
-import Pricing from './components/Pricing';
-import Team from './components/Team';
-import Process from './components/Process';
-import Testi from './components/Testi';
-import Started from './components/Started';
-import Blog from './components/Blog';
-import Contact from './components/Contact';
-import SocialMedia from './components/SocialMedia';
-import Footer from './components/Footer';
-import FooterLinks from './components/FooterLinks';
-import Switcher from './components/Switcher';
-import Aux from './hoc/Aux_';
-import BackImage from '../../assets/images/landing_background.jpeg';
-import ButtonsSelect from './components/ButtonsSelect';
-import OriginDestination from './components/OriginDestination';
+import React from "react";
+import { Link } from "react-router-dom";
+import Particles from "react-particles-js";
+import Navbar from "./components/Navbar";
+import Services from "./components/Services";
+import Features from "./components/Features";
+import Descriptions from "./components/Descriptions";
+import Pricing from "./components/Pricing";
+import Team from "./components/Team";
+import Process from "./components/Process";
+import Testi from "./components/Testi";
+import Started from "./components/Started";
+import Blog from "./components/Blog";
+import Contact from "./components/Contact";
+import SocialMedia from "./components/SocialMedia";
+import Footer from "./components/Footer";
+import FooterLinks from "./components/FooterLinks";
+import Switcher from "./components/Switcher";
+import Aux from "./hoc/Aux_";
+import BackImage from "../../assets/images/landing_background.jpeg";
+import ButtonsSelect from "./components/ButtonsSelect";
+import OriginDestination from "./components/OriginDestination";
 
 class HomeSeven extends React.Component {
   render() {
     const bkg1 = {
       backgroundImage: `url(${BackImage})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
+      backgroundSize: "cover",
+      backgroundPosition: "center"
     };
 
     return (
@@ -40,7 +40,7 @@ class HomeSeven extends React.Component {
           style={bkg1}
         >
           <Particles
-            style={{ position: 'absolute', top: 0 }}
+            style={{ position: "absolute", top: 0 }}
             params={{
               particles: {
                 number: {
@@ -54,7 +54,7 @@ class HomeSeven extends React.Component {
                 events: {
                   onhover: {
                     enable: true,
-                    mode: 'repulse'
+                    mode: "repulse"
                   }
                 }
               }
@@ -76,12 +76,12 @@ class HomeSeven extends React.Component {
                     </p>
                     <div
                       style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignContent: 'center',
-                        alignItems: 'center',
-                        justifyItems: 'center',
-                        flexDirection: 'column'
+                        display: "flex",
+                        justifyContent: "center",
+                        alignContent: "center",
+                        alignItems: "center",
+                        justifyItems: "center",
+                        flexDirection: "column"
                       }}
                       className="margin-t-30 margin-l-r-auto"
                     >
@@ -99,25 +99,25 @@ class HomeSeven extends React.Component {
         <Services />
 
         {/* Features Component */}
-        <Features />
+        {/* <Features /> */}
 
         {/* Process Component */}
-        <Process />
+        {/* <Process /> */}
 
         {/* Testi Component */}
-        <Testi />
+        {/* <Testi /> */}
 
         {/* Contact Component */}
-        <Contact />
+        {/* <Contact /> */}
 
         {/* SocialMedia Component */}
-        <SocialMedia />
+        {/* <SocialMedia /> */}
 
         {/* Footer Component */}
-        <Footer />
+        {/* <Footer /> */}
 
         {/* FooterLinks Component */}
-        <FooterLinks />
+        {/* <FooterLinks /> */}
       </Aux>
     );
   }
