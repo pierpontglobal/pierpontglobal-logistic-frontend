@@ -55,23 +55,25 @@ class ShipperList extends Component {
 
     axios.get(`${ApiServer}/api/v1/shipper`).then(data => {
       const rowData = data.data;
-      let mappedData = rowData.map(row => {
-        let rowObj = {
-          id: row.id,
-          content: [
-            { text: row.name },
-            { text: row.address },
-            { text: row.location },
-            { text: row.city },
-            { text: row.place_id },
-            { text: row.vicinity }
-          ]
-        };
-        return rowObj;
-      });
-      this.setState({
-        rows: mappedData
-      });
+      if (!!rowData) {
+        let mappedData = rowData.map(row => {
+          let rowObj = {
+            id: row.id,
+            content: [
+              { text: row.name },
+              { text: row.address },
+              { text: row.location },
+              { text: row.city },
+              { text: row.place_id },
+              { text: row.vicinity }
+            ]
+          };
+          return rowObj;
+        });
+        this.setState({
+          rows: mappedData
+        });
+      }
     });
   };
 

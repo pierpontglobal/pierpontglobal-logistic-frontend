@@ -43,11 +43,6 @@ class Dashboard extends Component {
     super(props);
     this.state = {
       title: "Pierpont Logistics",
-      pieChartData: [
-        { name: "Step #1", value: 400 },
-        { name: "Step #2", value: 300 },
-        { name: "Step #3", value: 300 }
-      ],
       cardsData: {
         income: 0,
         expense: 0,
@@ -69,16 +64,18 @@ class Dashboard extends Component {
 
     axios.get(`${ApiServer}/api/v1/dashboard`).then(data => {
       let response = data.data;
-      let cardsData = {
-        income: Number(response.total_income),
-        expense: Number(response.total_expense),
-        profit: Number(response.total_profit),
-        pcs: Number(response.total_pieces),
-        weight: Number(response.total_weight)
-      };
-      this.setState({
-        cardsData: cardsData
-      });
+      if (!!response) {
+        let cardsData = {
+          income: Number(response.total_income),
+          expense: Number(response.total_expense),
+          profit: Number(response.total_profit),
+          pcs: Number(response.total_pieces),
+          weight: Number(response.total_weight)
+        };
+        this.setState({
+          cardsData: cardsData
+        });
+      }
     });
 
     axios
@@ -88,18 +85,19 @@ class Dashboard extends Component {
       .then(data => {
         let response = data.data;
         console.log(response);
-        let chart_data = response.map(item => {
-          return {
-            name: item.label,
-            income: Number(item.total_income),
-            expense: Number(item.total_expense),
-            profit: Number(item.total_income) - Number(item.total_expense)
-          };
-        });
-        this.setState({
-          chartData: chart_data
-        });
-        console.log(chart_data);
+        if (!!response) {
+          let chart_data = response.map(item => {
+            return {
+              name: item.label,
+              income: Number(item.total_income),
+              expense: Number(item.total_expense),
+              profit: Number(item.total_income) - Number(item.total_expense)
+            };
+          });
+          this.setState({
+            chartData: chart_data
+          });
+        }
       });
   };
 

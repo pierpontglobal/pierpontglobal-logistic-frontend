@@ -1,31 +1,31 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import Select from '@material-ui/core/Select';
-import TabsComponent from '../../../Tabs/TabsComponent';
-import IncomeTab from './income-tab/IncomeTab';
-import ExpenseTab from './expense-tab/ExpenseTab';
-import { Button, IconButton } from '@material-ui/core';
-import PPGSimpleSelect from '../../../ppg-simple-select/PPGSimpleSelect';
-import axios from 'axios';
-import { ApiServer } from '../../../../Defaults';
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import FormControl from "@material-ui/core/FormControl";
+import InputLabel from "@material-ui/core/InputLabel";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
+import TabsComponent from "../../../Tabs/TabsComponent";
+import IncomeTab from "./income-tab/IncomeTab";
+import ExpenseTab from "./expense-tab/ExpenseTab";
+import { Button, IconButton } from "@material-ui/core";
+import PPGSimpleSelect from "../../../ppg-simple-select/PPGSimpleSelect";
+import axios from "axios";
+import { ApiServer } from "../../../../Defaults";
 
 const styles = theme => ({
   container: {
-    display: 'flex',
-    flexWrap: 'wrap'
+    display: "flex",
+    flexWrap: "wrap"
   },
   input: {
     margin: theme.spacing.unit,
-    height: '5px'
+    height: "5px"
   },
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '90%'
+    width: "90%"
   },
   formControl: {
     margin: theme.spacing.unit,
@@ -39,8 +39,8 @@ class AddCharges extends Component {
     this.state = {
       serviceTypes: this.props.services,
       service: {
-        serviceId: '',
-        serviceName: ''
+        serviceId: "",
+        serviceName: ""
         //serviceTypeDescription: ''
       },
       serviceFound: false,
@@ -97,11 +97,11 @@ class AddCharges extends Component {
 
     const tabOptions = [
       {
-        label: 'INCOME',
+        label: "INCOME",
         item: <IncomeTab hanleData={this.handleIncomeData} />
       },
       {
-        label: 'EXPENSES',
+        label: "EXPENSES",
         item: <ExpenseTab handleData={this.handleExpenseData} />
       }
     ];
@@ -109,19 +109,19 @@ class AddCharges extends Component {
     return (
       <>
         <div>
-          <span style={{ fontWeight: '600' }}>Add Charge</span>
+          <span style={{ fontWeight: "600" }}>Add Charge</span>
         </div>
         <div
           style={{
-            width: '100%',
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
+            width: "100%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center"
           }}
         >
           <div
-            style={{ width: '40%', marginTop: '24px', marginBottom: '16px' }}
+            style={{ width: "40%", marginTop: "24px", marginBottom: "16px" }}
           >
             <PPGSimpleSelect
               isLoading={isFetchingService}
@@ -129,7 +129,7 @@ class AddCharges extends Component {
               options={serviceTypes}
             />
           </div>
-          <div style={{ width: '50%' }}>
+          <div style={{ width: "50%" }}>
             {/* <TextField
               disabled
               id="standard-disabled"
@@ -140,16 +140,16 @@ class AddCharges extends Component {
             /> */}
           </div>
         </div>
-        <div style={{ width: '100%', padding: '7px' }}>
+        <div style={{ width: "100%", padding: "7px" }}>
           <TabsComponent options={tabOptions} />
         </div>
-        <div style={{ width: '100%', marginTop: '18px' }}>
+        <div style={{ width: "100%", marginTop: "18px" }}>
           <div
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              alignItems: 'center'
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              alignItems: "center"
             }}
           >
             <Button

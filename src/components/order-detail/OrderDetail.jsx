@@ -14,13 +14,7 @@ import RouteDisplay from "../route-display/RouteDisplay";
 import GoogleRouteDraw from "../google-route-draw/GoogleRouteDraw";
 import axios from "axios";
 import { ApiServer } from "../../Defaults";
-import ReactNotification from "react-notifications-component";
-import "react-notifications-component/dist/theme.css";
-
-const NOTIFICATION_TYPES = {
-  ERROR: "danger",
-  SUCCESS: "success"
-};
+import { NOTIFICATION_TYPES } from "../../constants/NotificationTypes";
 
 const LoadingWrapper = styled.div`
   width: 100%;
@@ -99,31 +93,7 @@ class OrderDetail extends Component {
         profit: 0
       }
     };
-
-    this.notificationDOMRef_info = React.createRef();
-    this.notificationDOMRef_sucess = React.createRef();
-    this.notificationDOMRef_error = React.createRef();
   }
-
-  addNotification = (title, message, duration, type) => {
-    let obj = this.notificationDOMRef_info;
-    if (type === NOTIFICATION_TYPES.SUCCESS)
-      obj = this.notificationDOMRef_sucess;
-    else if (type === NOTIFICATION_TYPES.ERROR)
-      obj = this.notificationDOMRef_error;
-
-    obj.current.addNotification({
-      title: title,
-      message: message,
-      type: type,
-      insert: "top",
-      container: "top-right",
-      animationIn: ["animated", "fadeIn"],
-      animationOut: ["animated", "fadeOut"],
-      dismiss: { duration: duration },
-      dismissable: { click: true }
-    });
-  };
 
   onDetailsChange = e => {
     this.setState({
@@ -164,9 +134,6 @@ class OrderDetail extends Component {
     });
 
     axios.get(`${ApiServer}/api/v1/shippment/${orderId}`).then(data => {
-      console.log("Fetching...");
-      console.log(data);
-
       if (!!data && !!data.data) {
         let shippment = data.data.shippment_detail;
         let commodities = data.data.commodities;
@@ -262,9 +229,7 @@ class OrderDetail extends Component {
   };
 
   calculateSummary = () => {
-    console.log("WIL CALCULATE ORDER SUMMARY >>>>> >>>>> >>>> ");
     const { commodities, charges, summary } = this.state;
-    console.log(this.state);
 
     let summ = {
       pcs: 0,
@@ -311,19 +276,14 @@ class OrderDetail extends Component {
       summ.profit = amount_income - amount_expense;
     }
 
-    console.log("summ");
-    console.log(summ);
-
     this.setState({
       summary: summ
     });
   };
 
   handleSaveShippment = () => {
-    console.log(this.state);
     const { detailsInfo, commodities, orderId } = this.state;
 
-    // this.addNotification('Process has started', 'We\'ll notify you when it\'s completed.', 1500, 'info');
     this.setState(
       {
         isSavingShipment: true
@@ -345,14 +305,13 @@ class OrderDetail extends Component {
           order_detail: detailsInfoDto,
           order_number: orderId // WARNING, this should always be sent!!
         };
-        console.log("DTO:   ::");
-        console.log(orderShippmentDto);
+
         axios
           .post(`${ApiServer}/api/v1/order/create_shippment`, orderShippmentDto)
           .then(
             data => {
               console.log(data);
-              this.addNotification(
+              this.props.addNotification(
                 "Process has completed",
                 "Shipment was saved sucessfully.",
                 2000,
@@ -364,7 +323,7 @@ class OrderDetail extends Component {
               });
             },
             err => {
-              this.addNotification(
+              this.props.addNotification(
                 "Process has completed",
                 "There was an error in the process, coudln't saved the shipment",
                 2500,
@@ -410,7 +369,6 @@ class OrderDetail extends Component {
   };
 
   transportChange = e => {
-    console.log(e);
     const { detailsInfo } = this.state;
     detailsInfo.transportationMode = e.name;
     detailsInfo.transportationModeId = e.id;
@@ -429,7 +387,6 @@ class OrderDetail extends Component {
   };
 
   onCommoditiesChange = commodities => {
-    console.log("Hey, how are you???");
     this.setState(
       {
         commodities: commodities
@@ -446,9 +403,7 @@ class OrderDetail extends Component {
     axios
       .patch(`${ApiServer}/api/v1/order?id=${orderId}&state_id=${state_id}`)
       .then(data => {
-        console.log("Update order status!");
-        console.log(data);
-        this.addNotification(
+        this.props.addNotification(
           "Process has completed",
           "Order state was updated succesfully!",
           2000,
@@ -507,7 +462,7 @@ class OrderDetail extends Component {
             commodities={commodities}
             orderId={orderId}
             shippId={shippId}
-            addNotification={this.addNotification}
+            addNotification={this.props.addNotification}
             onCommoditiesChange={this.onCommoditiesChange}
             recalculateSummary={this.calculateSummary}
           />
@@ -523,7 +478,7 @@ class OrderDetail extends Component {
             charges={charges}
             orderId={orderId}
             shippId={shippId}
-            addNotification={this.addNotification}
+            addNotification={this.props.addNotification}
             recalculateSummary={this.calculateSummary}
           />
         )
@@ -551,9 +506,6 @@ class OrderDetail extends Component {
             </LoadingWrapper>
           ) : (
             <>
-              <ReactNotification ref={this.notificationDOMRef_info} />
-              <ReactNotification ref={this.notificationDOMRef_error} />
-              <ReactNotification ref={this.notificationDOMRef_sucess} />
               <OrderPrincipalInfo
                 handleSaveShippment={this.handleSaveShippment}
                 orderId={orderId}

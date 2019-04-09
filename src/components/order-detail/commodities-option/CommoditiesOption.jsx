@@ -11,11 +11,7 @@ import AddCommodity from "./add-commodity/AddCommodity";
 import axios from "axios";
 import { ApiServer } from "../../../Defaults";
 import createReactContext from "create-react-context";
-
-const NOTIFICATION_TYPES = {
-  ERROR: "danger",
-  SUCCESS: "success"
-};
+import { NOTIFICATION_TYPES } from "../../../constants/NotificationTypes";
 
 const TitleWrapper = styled.div`
   width: 100%;

@@ -7,6 +7,7 @@ import { Paper, Button } from "@material-ui/core";
 import { withStyles } from "@material-ui/core/styles";
 import PPGModal from "../ppg-modal/PPGModal";
 import AddAgent from "./add-agent/AddAgent";
+import { NOTIFICATION_TYPES } from "../../constants/NotificationTypes";
 
 const styles = theme => ({
   button: {
@@ -39,17 +40,21 @@ class AgentList extends Component {
     axios.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
+
     axios.get(`${ApiServer}/api/v1/agent`).then(data => {
-      let mappedData = data.data.map(row => {
-        let mappedRow = {
-          id: row.id,
-          content: [{ text: row.name }, { text: row.address }]
-        };
-        return mappedRow;
-      });
-      this.setState({
-        rows: mappedData
-      });
+      let response = data.data;
+      if (!!response) {
+        let mappedData = response.map(row => {
+          let mappedRow = {
+            id: row.id,
+            content: [{ text: row.name }, { text: row.address }]
+          };
+          return mappedRow;
+        });
+        this.setState({
+          rows: mappedData
+        });
+      }
     });
   };
 
@@ -60,8 +65,59 @@ class AgentList extends Component {
   };
 
   createAgent = e => {
-    console.log(e);
-    alert(e.agent_name);
+    const { rows } = this.state;
+    this.setState(
+      {
+        openModalAdd: false
+      },
+      () => {
+        axios
+          .post(`${ApiServer}/api/v1/agent`, {
+            agent: {
+              name: e.agent_name,
+              address: e.agent_address
+            }
+          })
+          .then(
+            data => {
+              let response = data.data;
+              if (!!response) {
+                console.log(response);
+                rows.push({
+                  id: response.id,
+                  content: [{ text: response.name }, { text: response.address }]
+                });
+                this.setState(
+                  {
+                    isLoading: false,
+                    rows: rows
+                  },
+                  () => {
+                    this.props.addNotification(
+                      "Process has completed",
+                      "Agent was added successfully",
+                      2000,
+                      NOTIFICATION_TYPES.SUCCESS
+                    );
+                  }
+                );
+              } else {
+                this.setState({
+                  isLoading: false
+                });
+              }
+            },
+            err => {
+              this.props.addNotification(
+                "Process has completed",
+                "We couldn't add your agent, try again later.",
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          );
+      }
+    );
   };
 
   onCloseChargesModal = () => {

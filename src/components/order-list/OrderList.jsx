@@ -55,25 +55,31 @@ class OrderList extends Component {
     axios.get(`${ApiServer}/api/v1/order`).then(data => {
       const obj = data.data;
 
-      const rowData = obj.orders_with_shipp.concat(obj.orders_without_shipp);
-      let mappedData = rowData.map(row => {
-        let rowObj = {
-          id: row.order_number,
-          content: [
-            { isIcon: true, icon: <RemoveRedEye /> },
-            { text: row.order_number },
-            { text: row.origin_name },
-            { text: row.destination_name },
-            { text: row.service_type },
-            { text: row.order_state_name }
-          ]
-        };
-        return rowObj;
-      });
-      this.setState({
-        rows: mappedData,
-        isLoading: false
-      });
+      if (!!obj && (!!obj.orders_with_shipp || !!obj.orders_without_shipp)) {
+        const rowData = obj.orders_with_shipp.concat(obj.orders_without_shipp);
+        let mappedData = rowData.map(row => {
+          let rowObj = {
+            id: row.order_number,
+            content: [
+              { isIcon: true, icon: <RemoveRedEye /> },
+              { text: row.order_number },
+              { text: row.origin_name },
+              { text: row.destination_name },
+              { text: row.service_type },
+              { text: row.order_state_name }
+            ]
+          };
+          return rowObj;
+        });
+        this.setState({
+          rows: mappedData,
+          isLoading: false
+        });
+      } else {
+        this.setState({
+          isLoading: false
+        });
+      }
     });
   };
 

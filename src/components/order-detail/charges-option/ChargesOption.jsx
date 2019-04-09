@@ -9,11 +9,7 @@ import PPGModal from "../../ppg-modal/PPGModal";
 import AddCharges from "./add-charges/AddCharges";
 import axios from "axios";
 import { ApiServer } from "../../../Defaults";
-
-const NOTIFICATION_TYPES = {
-  ERROR: "danger",
-  SUCCESS: "success"
-};
+import { NOTIFICATION_TYPES } from "../../../constants/NotificationTypes";
 
 const TitleWrapper = styled.div`
   width: 100%;
@@ -238,6 +234,7 @@ class ChargesOption extends Component {
       if (!!expense && !!expense.amount) {
         dto["expense"] = {
           ...expense,
+          unit: expense.units,
           shippment_id: shippId,
           service_id: service.serviceId
         };
