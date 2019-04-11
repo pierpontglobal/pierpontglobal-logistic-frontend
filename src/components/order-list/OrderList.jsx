@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 import PPGTableEnhanced from "../ppg-table-enhanced/PPGTableEnhanced";
 import axios from "axios";
 import { ApiServer } from "../../Defaults";
+import PPGFilterPanel from "../ppg-filter-panel/PPGFilterPanel";
 
 const LoadingWrapper = styled.div`
   width: 100%;
@@ -114,11 +115,12 @@ class OrderList extends Component {
                   </span>
                 </div>
               </div>
-              {/*<PPGTable handleOnRowClick={this.onRowClick} columns={columns} rows={rows} />*/}
+              <PPGFilterPanel />
               <PPGTable
                 columns={columns}
                 rows={rows}
                 handleOnRowClick={this.onRowClick}
+                maxHeight="120px"
               />
             </>
           )}

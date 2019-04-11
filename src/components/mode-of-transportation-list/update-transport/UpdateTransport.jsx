@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 
-class UpdateAgent extends Component {
+class UpdateTransport extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      agent_name: this.props.fetchedAgent.name,
-      agent_address: this.props.fetchedAgent.address
+      transport_name: this.props.fetchedTransport.name
     };
   }
 
@@ -19,27 +18,29 @@ class UpdateAgent extends Component {
   };
 
   handleUpdate = () => {
-    const { fetchedAgent } = this.props;
+    const { fetchedTransport } = this.props;
     this.props.handleUpdate({
       ...this.state,
-      agent_id: fetchedAgent.id
+      transport_id: fetchedTransport.id
     });
   };
 
   handleDelete = () => {
-    const { fetchedAgent } = this.props;
+    const { fetchedTransport } = this.props;
     this.props.handleDelete({
       ...this.state,
-      agent_id: fetchedAgent.id
+      transport_id: fetchedTransport.id
     });
   };
 
   render() {
-    const { fetchedAgent } = this.props;
+    const { fetchedTransport } = this.props;
     return (
       <>
         <div>
-          <span style={{ fontWeight: "600" }}>Update / Delete Agent</span>
+          <span style={{ fontWeight: "600" }}>
+            Update / Delete Transportation mode
+          </span>
         </div>
         <div
           style={{
@@ -64,20 +65,11 @@ class UpdateAgent extends Component {
           >
             <div style={{ width: "100%" }}>
               <TextField
-                id="agent_name"
-                label="Agent name"
+                id="transport_name"
+                label="Transport name"
                 margin="normal"
                 onChange={this.handleChange}
-                defaultValue={fetchedAgent.name}
-              />
-            </div>
-            <div style={{ width: "100%" }}>
-              <TextField
-                id="agent_address"
-                label="Agent Address"
-                margin="normal"
-                onChange={this.handleChange}
-                defaultValue={fetchedAgent.address}
+                defaultValue={fetchedTransport.name}
               />
             </div>
           </div>
@@ -111,4 +103,4 @@ class UpdateAgent extends Component {
   }
 }
 
-export default UpdateAgent;
+export default UpdateTransport;

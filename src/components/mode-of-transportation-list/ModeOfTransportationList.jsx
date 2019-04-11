@@ -8,6 +8,7 @@ import { ApiServer } from "../../Defaults";
 import { NOTIFICATION_TYPES } from "../../constants/NotificationTypes";
 import AddTransport from "./add-transport/AddTransport";
 import PPGModal from "../ppg-modal/PPGModal";
+import UpdateTransport from "./update-transport/UpdateTransport";
 
 const styles = theme => ({
   button: {
@@ -30,6 +31,7 @@ class ModeOfTransportationList extends Component {
     this.state = {
       rows: [],
       openModalAdd: false,
+      openModalUpdate: false,
       name: ""
     };
   }
@@ -115,14 +117,152 @@ class ModeOfTransportationList extends Component {
     );
   };
 
-  onCloseModal = () => {
+  onCloseModal = modal => {
     this.setState({
-      openModalAdd: false
+      [modal]: false
     });
   };
 
+  updateTransport = transport => {
+    const { rows } = this.state;
+
+    this.setState(
+      {
+        openModalUpdate: false
+      },
+      () => {
+        axios
+          .put(
+            `${ApiServer}/api/v1/mode_of_transportation?id=${
+              transport.transport_id
+            }`,
+            {
+              mode_of_transportation: {
+                name: transport.transport_name
+              }
+            }
+          )
+          .then(
+            data => {
+              let response = data.data;
+              if (!!response) {
+                console.log(response);
+
+                this.updateRowsWithModifiedData(response);
+
+                this.props.addNotification(
+                  "Process has completed",
+                  "Transport mode was updated successfully",
+                  2000,
+                  NOTIFICATION_TYPES.SUCCESS
+                );
+              }
+            },
+            err => {
+              this.props.addNotification(
+                "Process has completed",
+                "Couldn't update transport mode.",
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          );
+      }
+    );
+  };
+
+  updateRowsWithModifiedData = entity => {
+    const { rows } = this.state;
+
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].id === entity.id) {
+        let row = rows[i];
+        row.content = [{ text: entity.name }];
+        break;
+      }
+    }
+
+    this.setState({
+      rows: rows
+    });
+  };
+
+  deleteTransport = transport => {
+    const { rows } = this.state;
+    let modified_rows = [...rows];
+
+    this.setState(
+      {
+        openModalUpdate: false
+      },
+      () => {
+        axios
+          .delete(
+            `${ApiServer}/api/v1/mode_of_transportation?id=${
+              transport.transport_id
+            }`
+          )
+          .then(data => {
+            let response = data.data;
+            if (!!response) {
+              modified_rows = modified_rows.filter(x => x.id !== response.id);
+              this.setState(
+                {
+                  rows: modified_rows
+                },
+                () => {
+                  this.props.addNotification(
+                    "Success!",
+                    "Mode of transport was deleted successfully",
+                    2000,
+                    NOTIFICATION_TYPES.SUCCESS
+                  );
+                }
+              );
+            }
+          })
+          .catch(err => {
+            if (
+              err &&
+              err.response &&
+              err.response.status &&
+              err.response.status === 502
+            ) {
+              console.log(err.response);
+              this.props.addNotification(
+                "Transport mode couldn't be deleted",
+                !!err.response.data.error
+                  ? err.response.data.error
+                  : "An error ocurred, please contact your administrator.",
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          });
+      }
+    );
+  };
+
+  openUpdateModal = (e, rowId) => {
+    axios
+      .get(`${ApiServer}/api/v1/mode_of_transportation/${rowId}`)
+      .then(data => {
+        let response = data.data;
+        console.log(response);
+        this.setState({
+          openModalUpdate: true,
+          fetchedTransport: response
+        });
+      });
+  };
+
   render() {
-    const { rows, openModalAdd } = this.state;
+    const {
+      rows,
+      openModalAdd,
+      fetchedTransport,
+      openModalUpdate
+    } = this.state;
     const { classes } = this.props;
     return (
       <>
@@ -149,14 +289,30 @@ class ModeOfTransportationList extends Component {
               Create mode
             </Button>
           </div>
-          <PPGTable rows={rows} columns={columns} />
+          <PPGTable
+            rows={rows}
+            columns={columns}
+            handleOnRowDoubleClick={this.openUpdateModal}
+          />
           <PPGModal
             setOpen={openModalAdd}
-            handleClose={this.onCloseModal}
+            handleClose={() => this.onCloseModal("openModalAdd")}
             width="40%"
             height="30%"
           >
             <AddTransport handleAdd={this.createTransport} />
+          </PPGModal>
+          <PPGModal
+            setOpen={openModalUpdate}
+            handleClose={() => this.onCloseModal("openModalUpdate")}
+            width="45%"
+            height="30%"
+          >
+            <UpdateTransport
+              handleUpdate={this.updateTransport}
+              handleDelete={this.deleteTransport}
+              fetchedTransport={fetchedTransport}
+            />
           </PPGModal>
         </BaseComponent>
       </>

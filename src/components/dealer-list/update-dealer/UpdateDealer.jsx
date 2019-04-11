@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import TextField from "@material-ui/core/TextField";
 import { Button } from "@material-ui/core";
 
-class UpdateAgent extends Component {
+class UpdateDealer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      agent_name: this.props.fetchedAgent.name,
-      agent_address: this.props.fetchedAgent.address
+      consignee_name: this.props.fetchedDealer.name,
+      consignee_address: this.props.fetchedDealer.address
     };
   }
 
@@ -19,27 +19,27 @@ class UpdateAgent extends Component {
   };
 
   handleUpdate = () => {
-    const { fetchedAgent } = this.props;
+    const { fetchedDealer } = this.props;
     this.props.handleUpdate({
       ...this.state,
-      agent_id: fetchedAgent.id
+      consignee_id: fetchedDealer.id
     });
   };
 
   handleDelete = () => {
-    const { fetchedAgent } = this.props;
+    const { fetchedDealer } = this.props;
     this.props.handleDelete({
       ...this.state,
-      agent_id: fetchedAgent.id
+      consignee_id: fetchedDealer.id
     });
   };
 
   render() {
-    const { fetchedAgent } = this.props;
+    const { fetchedDealer } = this.props;
     return (
       <>
         <div>
-          <span style={{ fontWeight: "600" }}>Update / Delete Agent</span>
+          <span style={{ fontWeight: "600" }}>Update / Delete Dealer</span>
         </div>
         <div
           style={{
@@ -64,20 +64,20 @@ class UpdateAgent extends Component {
           >
             <div style={{ width: "100%" }}>
               <TextField
-                id="agent_name"
-                label="Agent name"
+                id="consignee_name"
+                label="Dealer name"
                 margin="normal"
                 onChange={this.handleChange}
-                defaultValue={fetchedAgent.name}
+                defaultValue={fetchedDealer.name}
               />
             </div>
             <div style={{ width: "100%" }}>
               <TextField
-                id="agent_address"
-                label="Agent Address"
+                id="consignee_address"
+                label="Dealer Address"
                 margin="normal"
                 onChange={this.handleChange}
-                defaultValue={fetchedAgent.address}
+                defaultValue={fetchedDealer.address}
               />
             </div>
           </div>
@@ -111,4 +111,4 @@ class UpdateAgent extends Component {
   }
 }
 
-export default UpdateAgent;
+export default UpdateDealer;

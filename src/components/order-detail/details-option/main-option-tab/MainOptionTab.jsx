@@ -1,16 +1,17 @@
-import React, { Component } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Paper from '@material-ui/core/Paper';
-import PPGSimpleSelect from '../../../ppg-simple-select/PPGSimpleSelect';
-import axios from 'axios';
-import { ApiServer } from '../../../../Defaults';
-import { withCookies } from 'react-cookie';
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Paper from "@material-ui/core/Paper";
+import PPGSimpleSelect from "../../../ppg-simple-select/PPGSimpleSelect";
+import axios from "axios";
+import { ApiServer } from "../../../../Defaults";
+import { withCookies } from "react-cookie";
+import { DatePicker } from "material-ui-pickers";
 
 const styles = theme => ({
   container: {
-    display: 'flex',
-    flexWrap: 'wrap'
+    display: "flex",
+    flexWrap: "wrap"
   },
   input: {
     margin: theme.spacing.unit
@@ -18,7 +19,7 @@ const styles = theme => ({
   textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: '100%'
+    width: "100%"
   }
 });
 
@@ -54,8 +55,8 @@ class MainOptionTab extends Component {
 
   componentDidMount = () => {
     axios.defaults.headers.common[
-      'Authorization'
-    ] = `Bearer ${this.props.cookies.get('token', { path: '/' })}`;
+      "Authorization"
+    ] = `Bearer ${this.props.cookies.get("token", { path: "/" })}`;
   };
 
   onInputValueChange = e => {
@@ -226,30 +227,42 @@ class MainOptionTab extends Component {
       isFetchingAgent,
       transportationModeId
     } = this.state;
+
+    let orderDate = new Date(date);
+    let month = "" + (orderDate.getMonth() + 1);
+    let day = "" + orderDate.getDate();
+    let year = orderDate.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    let defaultDateValue = [year, month, day].join("-");
+    console.log(defaultDateValue);
+
     return (
-      <Paper style={{ padding: '15px' }}>
-        <div style={{ width: '100%' }}>
+      <Paper style={{ padding: "15px" }}>
+        <div style={{ width: "100%" }}>
           <span
             style={{
-              fontWeight: '600',
-              fontSize: '1.25rem',
-              color: 'darkgray',
-              padding: '10px'
+              fontWeight: "600",
+              fontSize: "1.25rem",
+              color: "darkgray",
+              padding: "10px"
             }}
           >
-            Main information{' '}
+            Main information{" "}
           </span>
         </div>
         <div
           style={{
-            padding: '15px',
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between'
+            padding: "15px",
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between"
           }}
         >
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <TextField
               disabled
               id="order-number"
@@ -260,7 +273,7 @@ class MainOptionTab extends Component {
               variant="outlined"
             />
           </div>
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <TextField
               id="serviceType"
               label="Service type"
@@ -274,27 +287,27 @@ class MainOptionTab extends Component {
         </div>
         <div
           style={{
-            padding: '15px',
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between'
+            padding: "15px",
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between"
           }}
         >
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <TextField
               id="date"
               label="Date"
               type="date"
+              defaultValue={defaultDateValue}
               className={classes.textField}
+              onChange={this.onInputValueChange}
               InputLabelProps={{
                 shrink: true
               }}
-              onChange={this.onInputValueChange}
-              defaultValue={date}
             />
           </div>
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <label>Issuing company</label>
             <PPGSimpleSelect
               isLoading={isFetchingIssuingComp}
@@ -304,28 +317,28 @@ class MainOptionTab extends Component {
             />
           </div>
         </div>
-        <div style={{ width: '100%' }}>
+        <div style={{ width: "100%" }}>
           <span
             style={{
-              fontWeight: '600',
-              fontSize: '1.25rem',
-              color: 'darkgray',
-              padding: '10px'
+              fontWeight: "600",
+              fontSize: "1.25rem",
+              color: "darkgray",
+              padding: "10px"
             }}
           >
-            Entities{' '}
+            Entities{" "}
           </span>
         </div>
         <div
           style={{
-            padding: '15px',
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between'
+            padding: "15px",
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between"
           }}
         >
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <label>Shipper</label>
             <PPGSimpleSelect
               isLoading={isFetchingShipper}
@@ -334,7 +347,7 @@ class MainOptionTab extends Component {
               options={shippers}
             />
           </div>
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <TextField
               id="shipperAddress"
               label="Shipper address"
@@ -348,14 +361,14 @@ class MainOptionTab extends Component {
         </div>
         <div
           style={{
-            padding: '15px',
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between'
+            padding: "15px",
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between"
           }}
         >
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <label>Consignee</label>
             <PPGSimpleSelect
               isLoading={isFetchingConsignee}
@@ -364,7 +377,7 @@ class MainOptionTab extends Component {
               options={consignees}
             />
           </div>
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <TextField
               id="consigneeAddress"
               label="Consignee address"
@@ -378,14 +391,14 @@ class MainOptionTab extends Component {
         </div>
         <div
           style={{
-            padding: '15px',
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between'
+            padding: "15px",
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between"
           }}
         >
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <label>Agent</label>
             <PPGSimpleSelect
               isLoading={isFetchingAgent}
@@ -394,7 +407,7 @@ class MainOptionTab extends Component {
               options={agents}
             />
           </div>
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <TextField
               id="agentAddress"
               label="Agent address"
@@ -406,28 +419,28 @@ class MainOptionTab extends Component {
             />
           </div>
         </div>
-        <div style={{ width: '100%' }}>
+        <div style={{ width: "100%" }}>
           <span
             style={{
-              fontWeight: '600',
-              fontSize: '1.25rem',
-              color: 'darkgray',
-              padding: '10px'
+              fontWeight: "600",
+              fontSize: "1.25rem",
+              color: "darkgray",
+              padding: "10px"
             }}
           >
-            Itenerary{' '}
+            Itenerary{" "}
           </span>
         </div>
         <div
           style={{
-            padding: '15px',
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between'
+            padding: "15px",
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between"
           }}
         >
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <label>Mode of transportation</label>
             <PPGSimpleSelect
               handleChange={this.onSelectTransportChange}
@@ -438,7 +451,7 @@ class MainOptionTab extends Component {
               options={transports}
             />
           </div>
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <TextField
               id="destinationName"
               label="Destination name"
@@ -452,14 +465,14 @@ class MainOptionTab extends Component {
         </div>
         <div
           style={{
-            padding: '15px',
-            display: 'flex',
-            flexDirection: 'row',
-            width: '100%',
-            justifyContent: 'space-between'
+            padding: "15px",
+            display: "flex",
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-between"
           }}
         >
-          <div style={{ width: '45%' }}>
+          <div style={{ width: "45%" }}>
             <TextField
               id="originName"
               label="Origin name"

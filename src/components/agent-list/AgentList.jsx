@@ -84,7 +84,6 @@ class AgentList extends Component {
             data => {
               let response = data.data;
               if (!!response) {
-                console.log(response);
                 rows.push({
                   id: response.id,
                   content: [{ text: response.name }, { text: response.address }]
@@ -199,6 +198,58 @@ class AgentList extends Component {
     });
   };
 
+  deleteAgent = agent => {
+    const { rows } = this.state;
+    let modified_rows = [...rows];
+
+    this.setState(
+      {
+        openModalUpdate: false
+      },
+      () => {
+        axios
+          .delete(`${ApiServer}/api/v1/agent?id=${agent.agent_id}`)
+          .then(data => {
+            let response = data.data;
+            if (!!response) {
+              modified_rows = modified_rows.filter(x => x.id !== response.id);
+              this.setState(
+                {
+                  rows: modified_rows
+                },
+                () => {
+                  this.props.addNotification(
+                    "Success!",
+                    "Agent was deleted successfully",
+                    2000,
+                    NOTIFICATION_TYPES.SUCCESS
+                  );
+                }
+              );
+            }
+          })
+          .catch(err => {
+            if (
+              err &&
+              err.response &&
+              err.response.status &&
+              err.response.status === 502
+            ) {
+              console.log(err.response);
+              this.props.addNotification(
+                "Agent couldn't be deleted",
+                !!err.response.data.error
+                  ? err.response.data.error
+                  : "An error ocurred, please contact your administrator.",
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          });
+      }
+    );
+  };
+
   render() {
     const { rows, openModalAdd, fetchedAgent, openModalUpdate } = this.state;
     const { classes } = this.props;
@@ -243,11 +294,12 @@ class AgentList extends Component {
           <PPGModal
             setOpen={openModalUpdate}
             handleClose={() => this.onCloseModal("openModalUpdate")}
-            width="50%"
+            width="45%"
             height="30%"
           >
             <UpdateAgent
               handleUpdate={this.updateAgent}
+              handleDelete={this.deleteAgent}
               fetchedAgent={fetchedAgent}
             />
           </PPGModal>

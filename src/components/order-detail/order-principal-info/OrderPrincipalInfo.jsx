@@ -41,12 +41,20 @@ class OrderPrinciopalInfo extends Component {
     this.props.handleSaveShippment();
   };
 
+  createAttachmentHandler = () => {
+    this.props.handleAddAttachment();
+  };
+
   render() {
     const { classes, orderId } = this.props;
     const actionItems = [
       {
         label: "Save shipment",
         handler: this.createShipHandler
+      },
+      {
+        label: "Add attachment",
+        handler: this.createAttachmentHandler
       }
     ];
 

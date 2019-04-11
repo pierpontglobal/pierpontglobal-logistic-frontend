@@ -1,21 +1,21 @@
 {
-    "cSpell.language": "en",
-    "cSpell.words": [
-        "Pierpont",
-        "Sider",
-        "flyin",
-        "noninteractive",
-        "pannel",
-        "searchables",
-        "Manheim",
-        "flaticon",
-        "imac",
-        "webp",
-        "iplocation",
-        "phonenumber",
-        "camelcase",
-        "Completionist",
-        "conatiner"
-    ],
-    "editor.formatOnSave": true
+  "cSpell.language": "en",
+  "cSpell.words": [
+    "Pierpont",
+    "Sider",
+    "flyin",
+    "noninteractive",
+    "pannel",
+    "searchables",
+    "Manheim",
+    "flaticon",
+    "imac",
+    "webp",
+    "iplocation",
+    "phonenumber",
+    "camelcase",
+    "Completionist",
+    "conatiner"
+  ],
+  "editor.formatOnSave": true
 }

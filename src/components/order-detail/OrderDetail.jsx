@@ -15,6 +15,8 @@ import GoogleRouteDraw from "../google-route-draw/GoogleRouteDraw";
 import axios from "axios";
 import { ApiServer } from "../../Defaults";
 import { NOTIFICATION_TYPES } from "../../constants/NotificationTypes";
+import PPGModal from "../ppg-modal/PPGModal";
+import AddAttachment from "./add-attachment/AddAttachment";
 
 const LoadingWrapper = styled.div`
   width: 100%;
@@ -91,7 +93,8 @@ class OrderDetail extends Component {
         income: 0,
         expense: 0,
         profit: 0
-      }
+      },
+      showAttachmentModal: false
     };
   }
 
@@ -143,7 +146,7 @@ class OrderDetail extends Component {
 
         if (!!shippment) {
           let detailsInfo = {
-            agent_address: shippment.agent_address,
+            agentAddress: shippment.agent_address,
             agentName: shippment.agent_name,
             consigneeAddress: shippment.consignee_address,
             consigneeName: shippment.consignee_name,
@@ -162,6 +165,9 @@ class OrderDetail extends Component {
             shipperId: shippment.shipper_id,
             transportationModeId: shippment.mode_of_transportation_id
           };
+
+          console.log("DETAILS INFO ::::  >>>>>>>>>>>>>");
+          console.log(detailsInfo);
 
           this.setState(
             {
@@ -338,6 +344,18 @@ class OrderDetail extends Component {
     );
   };
 
+  handleAddAttachment = () => {
+    this.setState({
+      showAttachmentModal: true
+    });
+  };
+
+  onCloseModal = modal => {
+    this.setState({
+      [modal]: false
+    });
+  };
+
   shipperChange = e => {
     const { detailsInfo } = this.state;
     detailsInfo.shipperAddress = e.address;
@@ -412,6 +430,10 @@ class OrderDetail extends Component {
       });
   };
 
+  onSaveAttchments = attachments => {
+    console.log(attachments);
+  };
+
   render() {
     const {
       isLoading,
@@ -429,7 +451,8 @@ class OrderDetail extends Component {
       shippId,
       charges,
       hasShippment,
-      summary
+      summary,
+      showAttachmentModal
     } = this.state;
 
     const tabOptions = [
@@ -508,6 +531,7 @@ class OrderDetail extends Component {
             <>
               <OrderPrincipalInfo
                 handleSaveShippment={this.handleSaveShippment}
+                handleAddAttachment={this.handleAddAttachment}
                 orderId={orderId}
               />
               <div
@@ -546,6 +570,17 @@ class OrderDetail extends Component {
                   </div>
                 </div>
               </div>
+              <PPGModal
+                setOpen={showAttachmentModal}
+                handleClose={() => this.onCloseModal("showAttachmentModal")}
+                width="65%"
+                height="75%"
+              >
+                <AddAttachment
+                  handleCancel={() => this.onCloseModal("showAttachmentModal")}
+                  handleSave={this.onSaveAttchments}
+                />
+              </PPGModal>
             </>
           )}
         </BaseComponent>

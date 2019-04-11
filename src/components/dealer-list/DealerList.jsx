@@ -12,6 +12,7 @@ import AddDealer from "./add-dealer/AddDealer";
 import ReactNotification from "react-notifications-component";
 import "react-notifications-component/dist/theme.css";
 import { NOTIFICATION_TYPES } from "../../constants/NotificationTypes";
+import UpdateDealer from "./update-dealer/UpdateDealer";
 
 const styles = theme => ({
   button: {
@@ -35,7 +36,8 @@ class DealerList extends Component {
     super(props);
     this.state = {
       rows: [],
-      openModalAdd: false
+      openModalAdd: false,
+      openModalUpdate: false
     };
   }
 
@@ -143,14 +145,137 @@ class DealerList extends Component {
     );
   };
 
-  onCloseModal = () => {
+  onCloseModal = modal => {
     this.setState({
-      openModalAdd: false
+      [modal]: false
     });
   };
 
+  openUpdateModal = (e, rowId) => {
+    axios.get(`${ApiServer}/api/v1/consignee/${rowId}`).then(data => {
+      let response = data.data;
+      console.log(response);
+      this.setState({
+        openModalUpdate: true,
+        fetchedDealer: response
+      });
+    });
+  };
+
+  updateConsignee = consignee => {
+    const { rows } = this.state;
+
+    this.setState(
+      {
+        openModalUpdate: false
+      },
+      () => {
+        axios
+          .put(`${ApiServer}/api/v1/consignee?id=${consignee.consignee_id}`, {
+            consignee: {
+              name: consignee.consignee_name,
+              address: consignee.consignee_address
+            }
+          })
+          .then(
+            data => {
+              let response = data.data;
+              if (!!response) {
+                console.log(response);
+
+                this.updateRowsWithModifiedData(response);
+
+                this.props.addNotification(
+                  "Process has completed",
+                  "Dealer was updated successfully",
+                  2000,
+                  NOTIFICATION_TYPES.SUCCESS
+                );
+              }
+            },
+            err => {
+              this.props.addNotification(
+                "Process has completed",
+                "We couldn't update the dealer, please contact your administrator.",
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          );
+      }
+    );
+  };
+
+  updateRowsWithModifiedData = entity => {
+    const { rows } = this.state;
+
+    for (let i = 0; i < rows.length; i++) {
+      if (rows[i].id === entity.id) {
+        let row = rows[i];
+        row.content = [{ text: entity.name }, { text: entity.address }];
+        break;
+      }
+    }
+
+    this.setState({
+      rows: rows
+    });
+  };
+
+  deleteConsignee = consignee => {
+    const { rows } = this.state;
+    let modified_rows = [...rows];
+
+    this.setState(
+      {
+        openModalUpdate: false
+      },
+      () => {
+        axios
+          .delete(`${ApiServer}/api/v1/consignee?id=${consignee.consignee_id}`)
+          .then(data => {
+            let response = data.data;
+            if (!!response) {
+              modified_rows = modified_rows.filter(x => x.id !== response.id);
+              this.setState(
+                {
+                  rows: modified_rows
+                },
+                () => {
+                  this.props.addNotification(
+                    "Success!",
+                    "Consignee was deleted successfully",
+                    2000,
+                    NOTIFICATION_TYPES.SUCCESS
+                  );
+                }
+              );
+            }
+          })
+          .catch(err => {
+            if (
+              err &&
+              err.response &&
+              err.response.status &&
+              err.response.status === 502
+            ) {
+              console.log(err.response);
+              this.props.addNotification(
+                "Consignee couldn't be deleted",
+                !!err.response.data.error
+                  ? err.response.data.error
+                  : "An error ocurred, please contact your administrator.",
+                2000,
+                NOTIFICATION_TYPES.ERROR
+              );
+            }
+          });
+      }
+    );
+  };
+
   render() {
-    const { rows, openModalAdd } = this.state;
+    const { rows, openModalAdd, fetchedDealer, openModalUpdate } = this.state;
     const { classes } = this.props;
     return (
       <>
@@ -177,14 +302,30 @@ class DealerList extends Component {
               Create Dealer
             </Button>
           </div>
-          <PPGTable rows={rows} columns={columns} />
+          <PPGTable
+            handleOnRowDoubleClick={this.openUpdateModal}
+            rows={rows}
+            columns={columns}
+          />
           <PPGModal
             setOpen={openModalAdd}
-            handleClose={this.onCloseModal}
+            handleClose={() => this.onCloseModal("openModalUpdate")}
             width="40%"
             height="30%"
           >
             <AddDealer handleAdd={this.createDealer} />
+          </PPGModal>
+          <PPGModal
+            setOpen={openModalUpdate}
+            handleClose={() => this.onCloseModal("openModalUpdate")}
+            width="45%"
+            height="30%"
+          >
+            <UpdateDealer
+              handleUpdate={this.updateConsignee}
+              handleDelete={this.deleteConsignee}
+              fetchedDealer={fetchedDealer}
+            />
           </PPGModal>
         </BaseComponent>
       </>

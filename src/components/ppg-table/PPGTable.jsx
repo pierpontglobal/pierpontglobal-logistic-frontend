@@ -42,7 +42,7 @@ class PPGTable extends Component {
   };
 
   render() {
-    const { classes, columns, rows } = this.props;
+    const { classes, columns, rows, maxHeight } = this.props;
 
     return (
       <Paper className={classes.root}>
