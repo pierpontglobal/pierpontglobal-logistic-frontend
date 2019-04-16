@@ -22,10 +22,7 @@ export const PPG_SECRET_KEY =
 export const PPG_PUBLIC_KEY =
   process.env.NODE_ENV === "development" ? "dfSv2vzRieJMmbevVbQMHWpB" : "";
 
-export const GOOGLE_API_KEY =
-  process.env.NODE_ENV === "development"
-    ? "AIzaSyA6p9-yG5S0jb7CtGAFFo07Dk3eMV2lyZg&libraries"
-    : "";
+export const GOOGLE_API_KEY = process.env.NODE_ENV === "development" ? "" : "";
 
 export const DefaultTheme = createMuiTheme({
   palette: {
