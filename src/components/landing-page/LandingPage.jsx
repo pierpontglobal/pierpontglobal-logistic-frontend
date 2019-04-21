@@ -99,25 +99,25 @@ class HomeSeven extends React.Component {
         <Services />
 
         {/* Features Component */}
-        {/* <Features /> */}
+        <Features />
 
         {/* Process Component */}
-        {/* <Process /> */}
+        <Process />
 
         {/* Testi Component */}
-        {/* <Testi /> */}
+        <Testi />
 
         {/* Contact Component */}
-        {/* <Contact /> */}
+        <Contact />
 
         {/* SocialMedia Component */}
-        {/* <SocialMedia /> */}
+        <SocialMedia />
 
         {/* Footer Component */}
-        {/* <Footer /> */}
+        <Footer />
 
         {/* FooterLinks Component */}
-        {/* <FooterLinks /> */}
+        <FooterLinks />
       </Aux>
     );
   }
