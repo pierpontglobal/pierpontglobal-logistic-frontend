@@ -44,7 +44,7 @@ class SocialMedia extends React.Component {
             <div className="col-lg-3 margin-t-30 text-right">
               <p className="contact-title">
                 <i className="pe-7s-mail-open" />
-                &nbsp; support@pierpontglobal.com
+                &nbsp; pierpontlogistics1@gmail.com
               </p>
             </div>
           </div>

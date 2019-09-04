@@ -671,7 +671,7 @@ iframe {
 }
 
 .services-box:hover i {
-    background-color: #fb3e3e !important;
+    background-color: #FD7E28 !important;
     color: #ffffff !important;
     transition: all .3s ease-in-out;
 }
@@ -1054,8 +1054,8 @@ textarea.form-control {
 }
 
 .account-card .custom-control-input:checked~.custom-control-label::before{
-    background: #fb3e3e;
-    border-color: #fb3e3e;
+    background: #FD7E28;
+    border-color: #FD7E28;
 }
 
 .account-card .alert{
@@ -1288,7 +1288,7 @@ ul.pattern li a {
 }
 
 ul.pattern .color1 {
-    background-color: #fb3e3e;
+    background-color: #FD7E28;
 }
 
 ul.pattern .color2 {

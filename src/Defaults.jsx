@@ -28,7 +28,7 @@ export const DefaultTheme = createMuiTheme({
   palette: {
     primary: { main: "#A81919" },
     secondary: { main: "#696D7D" },
-    accent: { main: "#fb3e3e" }
+    accent: { main: "#FD7E28" }
   },
   typography: {
     useNextVariants: true,

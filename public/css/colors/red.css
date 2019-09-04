@@ -11,19 +11,19 @@
 .navbar-custom.navbar-white .navbar-nav li a:focus,
 .navbar-custom.navbar-white .navbar-nav li a:active,
 .play-btn,.blog-title:hover,.social-icon:hover i{
-    color: #fb3e3e !important;
+    color: #FD7E28 !important;
 }
 
 
 .section-title-border, .services-box:hover i, .bg-custom,.btn-custom,.features-item-list li:before,.process-left-icon-1 i,
 .process-left-icon-2 i{
-    background-color: #fb3e3e;
+    background-color: #FD7E28;
 }
 
 
 
 .btn-custom,.play-btn{
-    border-color:#fb3e3e !important;
+    border-color:#FD7E28 !important;
 }
 
 .btn-custom:hover,

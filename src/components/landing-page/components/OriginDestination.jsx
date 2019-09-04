@@ -107,8 +107,8 @@ class OriginDestination extends React.Component {
   }
 
   render() {
-    return (
-      <InputHolder>
+    return (<>
+      {/* <InputHolder>
         <InputComplete
           placeholder="Origin of shipment"
           icon="A"
@@ -148,7 +148,7 @@ class OriginDestination extends React.Component {
         >
           <i style={{ color: 'white' }} className="pe-7s-search" /> Search
         </button>
-      </InputHolder>
+      </InputHolder> */}</>
     );
   }
 }

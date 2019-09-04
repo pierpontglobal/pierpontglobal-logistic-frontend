@@ -20,32 +20,28 @@ class Services extends React.Component {
           <div className="row margin-t-30">
             <div className="col-lg-4 margin-t-20">
               <div className="services-box text-center hover-effect">
-                <i className="pe-7s-helm text-custom" />
-                <h4 className="padding-t-15">Sea</h4>
+                <i className="pe-7s-box1 text-custom" />
+                <h4 className="padding-t-15">Finding Loads</h4>
                 <p className="padding-t-15 text-muted">
-                  Take your car across the sea to reach its destination at an
-                  affordable pricing.
+                  We guarantee finding you loads with access to thousands of brokers and various customers.
                 </p>
               </div>
             </div>
             <div className="col-lg-4 margin-t-20">
               <div className="services-box text-center hover-effect">
-                <i className="pe-7s-car text-custom" />
-                <h4 className="padding-t-15">Land</h4>
+                <i className="pe-7s-cash text-custom" />
+                <h4 className="padding-t-15">Top dollar, Less miles</h4>
                 <p className="padding-t-15 text-muted">
-                  We have connections to multiple transport solutions on th
-                  ground to be able to move your car across all the US.
+                  We strive to consistently double the industry average of $1.50/mile.
                 </p>
               </div>
             </div>
             <div className="col-lg-4 margin-t-20">
               <div className="services-box text-center hover-effect">
-                <i className="pe-7s-plane text-custom" />
-                <h4 className="padding-t-15">Air</h4>
+                <i className="pe-7s-clock text-custom" />
+                <h4 className="padding-t-15">24 Hour Payment Guarantee</h4>
                 <p className="padding-t-15 text-muted">
-                  Given the nature, urgency and type of product you want to
-                  deliver we also cover air transportation so you can get it on
-                  time in any part of the world.
+                  We help our clients process invoices and guaranteed payments within 24 hours.
                 </p>
               </div>
             </div>

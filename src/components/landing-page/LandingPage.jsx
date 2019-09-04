@@ -67,7 +67,7 @@ class HomeSeven extends React.Component {
                 <div className="row">
                   <div className="col-lg-8 offset-lg-2 text-white text-center">
                     <h1 className="home-title text-rotate">
-                      The future of logistics
+                      Your complete Transportation Management Solution
                     </h1>
                     <p className="padding-t-15 home-desc">
                       Let us take care of your transportation necessities, we
