@@ -146,7 +146,7 @@ b {
 }
 
 .bg-overlay {
-    background: linear-gradient(to right, #888888, #787878);
+    background: linear-gradient(to right, #787878, #696969);
     opacity: 0.63;
     position: absolute;
     height: 100%;
